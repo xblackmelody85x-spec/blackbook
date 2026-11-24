@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>블랙북 · 책 모양으로 쓰는 글쓰기 공간</title>
+<meta name="description" content="소설, 에세이, 연구서를 한 권의 책 모양으로 쓰세요. 부·장 구조, 주장집, 목표, 표지 꾸미기까지. 카드 등록 없이 무료로 시작." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="블랙북 · 당신의 이야기를 한 권의 책으로" />
+<meta property="og:description" content="책 모양 편집기에서 직접 써 보세요. 카드 등록 없이 무료로 시작." />
+<meta name="theme-color" content="#0f0c09" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315110d'/%3E%3Cpath d='M32 20c-5-4-13-5-21-3v30c8-2 16-1 21 3 5-4 13-5 21-3V17c-8-2-16-1-21 3z' fill='none' stroke='%23e6c56a' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M32 20v30' stroke='%23e6c56a' stroke-width='3'/%3E%3C/svg%3E" />
+<link rel="manifest" href="manifest.webmanifest" />
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  /* Layout: dark hero and footer around alternating paper sections; one book cover as the page's visual anchor.
+     Single deliberate look (black cloth, gold foil, cream paper), same identity as the app. */
+  :root {
+    color-scheme: dark;
+    --ink: #15110d; --ink-raised: #1f1a15; --ink-card: #272018;
+    --paper: #f3eee4; --paper-deep: #e8dfcc; --paper-card: #fbf8f1;
+    --gold: #e6c56a; --gold-deep: #7a5619; --gold-lo: #c9a24d; --gold-hi: #fff6d0; --gold-title: #f3d78a; --gold-rgb: 230, 197, 106;
+    --cream: #efe3cf; --tan: #e3cc9f;
+    --on-dark: #f3eadf; --on-dark-muted: rgba(243, 234, 223, 0.7);
+    --on-paper: #2a241c; --on-paper-muted: rgba(42, 36, 28, 0.72);
+    --line-dark: rgba(230, 197, 106, 0.28); --line-paper: rgba(42, 36, 28, 0.16);
+    --serif: "Noto Serif KR", "Nanum Myeongjo", "Apple Myungjo", serif;
+    --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    --r-sm: 8px; --r-md: 12px; --r-lg: 20px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--ink); color: var(--on-dark); font-family: var(--sans); font-size: 16px; line-height: 1.7; }
+  a { color: inherit; }
+  .wrap { width: min(1160px, 100%); margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+  .on-paper .eyebrow { color: var(--gold-deep); }
+  h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; margin: 0; text-wrap: balance; word-break: keep-all; }
+  h2 { font-size: clamp(28px, 4.4vw, 42px); line-height: 1.35; letter-spacing: 0.01em; }
+  h3 { font-size: 22px; line-height: 1.4; }
+  p { margin: 0; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 26px; border-radius: 999px; font: 600 16px/1 var(--sans); text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease; }
+  .btn:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 3px; }
+  .btn-gold { background: var(--gold); color: #1a140c; }
+  .btn-gold:hover { background: var(--gold-title); transform: translateY(-1px); }
+  .btn-line { border-color: var(--line-dark); color: var(--on-dark); background: transparent; }
+  .btn-line:hover { background: rgba(255, 255, 255, 0.06); }
+  .btn-ink { background: var(--on-paper); color: var(--paper); }
+  .btn-ink:hover { background: #3a3228; }
+
+  /* nav */
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(15, 12, 9, 0.88); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(230, 197, 106, 0.18); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 66px; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 700; font-size: 21px; letter-spacing: 0.08em; color: var(--cream); text-decoration: none; }
+  .logo svg { width: 36px; height: 36px; stroke: var(--gold); }
+  .logo small { font-family: var(--serif); font-weight: 600; font-size: 15px; letter-spacing: 0.02em; color: var(--on-dark-muted); }
+  .nav-right { display: flex; align-items: center; gap: 40px; }
+  .links { display: flex; align-items: center; gap: 40px; font-size: 15px; font-weight: 500; }
+  .links a { text-decoration: none; color: var(--on-dark); opacity: 0.9; }
+  .links a:hover { color: var(--gold-title); }
+  .nav .actions { display: flex; align-items: center; gap: 12px; }
+  .nav .btn { min-height: 40px; padding: 0 22px; font-size: 14px; border-radius: 8px; }
+  .btn-tan { background: var(--tan); color: #1a140c; border-radius: 8px; }
+  .btn-tan:hover { background: #f0dcb4; transform: translateY(-1px); }
+
+  /* hero (dark, with a hardcover book) */
+  .hero { position: relative; overflow: hidden; background: radial-gradient(ellipse 46% 60% at 74% 46%, rgba(120, 90, 50, 0.22), transparent 70%), radial-gradient(ellipse 30% 40% at 96% 14%, rgba(255, 190, 110, 0.28), transparent 70%), #0f0c09; padding-block: 76px 52px; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; min-height: 440px; }
+  .hero .brandline { font-family: var(--serif); font-size: 13px; letter-spacing: 0.7em; color: var(--on-dark-muted); margin: 0 0 22px; }
+  .hero h1 { font-weight: 600; font-size: clamp(38px, 5.6vw, 62px); line-height: 1.28; letter-spacing: 0.04em; color: var(--cream); text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5); }
+  .hero .lead { margin-top: 30px; font-size: 18px; line-height: 1.9; color: var(--on-dark); max-width: 28em; }
+  .hero .cta { margin-top: 34px; }
+  .hero .cta .btn { min-height: 54px; padding: 0 30px; font-size: 17px; }
+
+  /* real product screenshots */
+  .laptop { position: relative; width: 100%; max-width: 660px; margin-left: auto; }
+  .laptop .lid { border-radius: 16px 16px 6px 6px; padding: 10px 10px 0; background: linear-gradient(#2a2724, #171513); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 40px 70px rgba(0, 0, 0, 0.6), 0 0 100px rgba(230, 197, 106, 0.1); }
+  .laptop .lid img { display: block; width: 100%; height: auto; border-radius: 8px 8px 0 0; }
+  .laptop .base { height: 14px; margin: 0 -4%; border-radius: 0 0 16px 16px; background: linear-gradient(#3a3631, #1a1815); box-shadow: 0 18px 28px rgba(0, 0, 0, 0.5); }
+  .shot { margin: 0; }
+  .shot img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid rgba(230, 197, 106, 0.22); box-shadow: 0 30px 56px rgba(0, 0, 0, 0.5); }
+  .on-paper-deep .shot img { border-color: var(--line-paper); box-shadow: 0 24px 44px rgba(42, 36, 28, 0.28); }
+  .fshot { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 100% 0; border-radius: var(--r-md); border: 1px solid var(--line-paper); background: #181410; }
+
+  /* a book you can really write in */
+  .write-stage { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .tbook { position: relative; width: min(400px, 100%); aspect-ratio: 400 / 560; perspective: 1800px; container-type: inline-size; }
+  .tpaper { position: absolute; inset: 0; border-radius: 3px 9px 9px 3px; display: flex; flex-direction: column; overflow: hidden; color: var(--on-paper);
+    background: linear-gradient(118deg, rgba(255, 255, 255, 0.5), transparent 36%), linear-gradient(#f7f3ea, #f3eee4 28%, #efe4d2); box-shadow: 0 34px 56px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+  .tpaper::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 22px; background: linear-gradient(to right, rgba(70, 42, 20, 0.14), transparent); pointer-events: none; z-index: 2; }
+  .tbook::after { content: ""; position: absolute; top: 4px; bottom: -6px; right: -8px; width: 8px; border-radius: 0 3px 3px 0; background: repeating-linear-gradient(to right, #fff6d2 0 1px, #e6c56a 1px 2px, #f8e7b0 2px 3px, #b8923e 3px 4px); z-index: -1; }
+  .th { flex: 0 0 138px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 30px 36px 0; text-align: center; }
+  .th[hidden] { display: none; }
+  .th .k { font-size: 11px; letter-spacing: 0.28em; color: var(--gold-deep); font-weight: 600; }
+  .th input { width: 100%; border: 0; background: transparent; text-align: center; font: 700 21px/1.3 var(--serif); color: var(--on-paper); padding: 0; }
+  .th input::placeholder { color: rgba(42, 36, 28, 0.3); font-weight: 400; }
+  .th input:focus { outline: none; border-bottom: 1px solid rgba(120, 84, 40, 0.35); }
+  .tpaper textarea { flex: 1; min-height: 0; resize: none; border: 0; outline: none; background-color: transparent; padding: 30px 36px 0 42px; font: 400 17px/36px var(--serif); color: var(--on-paper); overflow: hidden; caret-color: #6d3b28;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 35px, rgba(120, 84, 40, 0.2) 35px 36px); background-origin: content-box; background-clip: content-box; }
+  .tpaper.headed textarea { padding-top: 0; }
+  .tpaper textarea::placeholder { color: rgba(42, 36, 28, 0.32); }
+  .tpaper textarea.turned { animation: pgturn 0.45s ease; }
+  @keyframes pgturn { 0% { opacity: 0.2; transform: translateX(18px); } 100% { opacity: 1; transform: none; } }
+  .tfolio { flex: 0 0 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 12px; color: rgba(42, 36, 28, 0.55); text-align: center; position: relative; z-index: 3; }
+  .tfolio > div { display: flex; flex-direction: column; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  .tfolio .tcount.full { color: var(--gold-deep); }
+  .tnav { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(42, 36, 28, 0.2); background: rgba(255, 255, 255, 0.5); color: var(--on-paper); font-size: 18px; line-height: 1; cursor: pointer; }
+  .tnav:disabled { opacity: 0.3; cursor: default; }
+  .tnav:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+  .tcover { position: absolute; inset: 0; z-index: 4; padding: 0; border: 0; background: none; cursor: pointer; transform-origin: left center; transform-style: preserve-3d; transition: transform 1s cubic-bezier(0.42, 0.04, 0.18, 1); }
+  .tbook[data-open="true"] .tcover { transform: rotateY(-176deg); opacity: 0; visibility: hidden; pointer-events: none; transition: transform 1s cubic-bezier(0.42, 0.04, 0.18, 1), opacity 0.35s ease 0.7s, visibility 0s linear 1.05s; }
+  .tcover:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 4px; }
+  .tface { position: absolute; inset: 0; border-radius: 2px 9px 9px 2px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .tface.front { display: flex; padding: 7%; background: radial-gradient(ellipse at 28% 18%, rgba(255, 255, 255, 0.09), transparent 42%), linear-gradient(165deg, #2c2c2c 0%, #141414 40%, #070707 100%); box-shadow: inset 0 0 0 1px rgba(230, 197, 106, 0.28), 0 34px 56px rgba(0, 0, 0, 0.6); }
+  .tface.front::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(118deg, transparent 36%, rgba(255, 236, 180, 0.09) 48%, transparent 58%); }
+  .tface.back { transform: rotateY(180deg); background: linear-gradient(198deg, #242424 0%, #101010 46%, #070707 100%); box-shadow: inset 0 0 0 1px rgba(230, 197, 106, 0.42); }
+  .tframe { position: relative; flex: 1; border: 1px solid rgba(230, 197, 106, 0.82); box-shadow: inset 0 0 0 5px transparent, inset 0 0 0 6px rgba(230, 197, 106, 0.38); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.4cqi; padding: 9% 8%; z-index: 1; }
+  .tcrest { width: 9cqi; height: 9cqi; border-radius: 50%; border: 1px solid var(--gold); display: grid; place-items: center; box-shadow: inset 0 0 0 2px #0c0c0c, inset 0 0 0 3px rgba(230, 197, 106, 0.75); }
+  .tcrest i { width: 22%; height: 22%; display: block; background: linear-gradient(135deg, var(--gold-hi), var(--gold) 45%, var(--gold-lo)); transform: rotate(45deg); }
+  .torn { width: 38%; height: 1px; background: var(--gold); position: relative; display: block; }
+  .torn::before, .torn::after { content: ""; position: absolute; top: 50%; width: 5px; height: 5px; background: linear-gradient(135deg, var(--gold-hi), var(--gold-lo)); transform: translateY(-50%) rotate(45deg); }
+  .torn::before { left: -3px; } .torn::after { right: -3px; }
+  .tt { font-family: var(--serif); font-weight: 700; font-size: 16cqi; letter-spacing: 0.12em; line-height: 1.2; color: var(--gold-title); text-shadow: 0 1px 0 rgba(255, 246, 210, 0.7), 0 2px 2px rgba(70, 46, 8, 0.4); }
+  .ten { font-size: 3.4cqi; letter-spacing: 0.32em; color: var(--gold); opacity: 0.8; }
+  .topen { margin-top: 6cqi; font-size: 3.8cqi; letter-spacing: 0.14em; color: var(--gold-title); border: 1px solid var(--line-dark); border-radius: 999px; padding: 1.8cqi 5cqi; }
+  .tcover:hover .topen { background: rgba(230, 197, 106, 0.12); }
+  .wbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .wbar [hidden] { display: none; }
+  .wbar .btn { min-height: 42px; padding: 0 18px; font-size: 14px; }
+  .wbar[data-off="true"] .btn { opacity: 0.4; pointer-events: none; }
+  .wnote { font-size: 13px; color: var(--on-dark-muted); text-align: center; min-height: 20px; }
+  .wnote a { color: var(--gold-title); }
+  @media (prefers-reduced-motion: reduce) { .tcover, .tbook[data-open="true"] .tcover { transition: none; } .tpaper textarea.turned { animation: none; } }
+
+  /* feature strip */
+  .strip { background: linear-gradient(to bottom, #0f0c09, #100d0a); border-top: 1px solid rgba(230, 197, 106, 0.14); border-bottom: 1px solid rgba(230, 197, 106, 0.14); }
+  .strip .wrap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .strip .item { display: flex; align-items: center; gap: 12px; padding: 24px 14px; min-width: 0; }
+  .strip .item + .item { border-left: 1px solid rgba(230, 197, 106, 0.16); }
+  .strip svg { flex: 0 0 38px; width: 38px; height: 38px; stroke: var(--gold); fill: none; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+  .strip b { display: block; font-weight: 600; font-size: 15px; color: var(--on-dark); line-height: 1.4; }
+  .strip span { display: block; font-size: 12.5px; color: var(--on-dark-muted); line-height: 1.5; margin-top: 2px; }
+
+  /* app showcase on a laptop */
+  .showcase-app { background: #0f0c09; padding-block: 72px 96px; }
+  .showcase-app .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 56px; align-items: center; }
+  .showcase-app h2 { color: var(--cream); font-weight: 600; font-size: clamp(26px, 3.6vw, 38px); line-height: 1.5; }
+  .showcase-app .rule { height: 1px; background: linear-gradient(to right, rgba(230, 197, 106, 0.4), transparent); margin: 26px 0; }
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .checks li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; font-size: 17px; line-height: 1.6; }
+  .checks li::before { content: "✓"; color: var(--gold); font-weight: 700; }
+  .checks b { font-weight: 600; color: var(--gold-title); }
+
+    position: relative; width: 100%; aspect-ratio: 148 / 210; container-type: inline-size; border-radius: 2px 6px 6px 2px; padding: 7%; display: flex; overflow: hidden;
+    background: radial-gradient(ellipse at 28% 18%, rgba(255, 255, 255, 0.08), transparent 42%), var(--bg);
+    box-shadow: inset 0 0 0 1px rgba(var(--foil-rgb), 0.28), 0 28px 44px rgba(0, 0, 0, 0.55); }
+
+  /* sections */
+  section { padding-block: 104px; }
+  .on-paper { background: var(--paper); color: var(--on-paper); }
+  .on-paper-deep { background: var(--paper-deep); color: var(--on-paper); }
+  .head { max-width: 40em; margin-bottom: 52px; }
+  .head p { margin-top: 16px; font-size: 18px; color: var(--on-paper-muted); }
+  .on-ink .head p { color: var(--on-dark-muted); }
+
+  /* features */
+  .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .feature { background: var(--paper-card); border: 1px solid var(--line-paper); border-radius: var(--r-lg); padding: 30px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  .feature p { color: var(--on-paper-muted); }
+
+  .ficon { width: 44px; height: 44px; stroke: var(--gold-deep); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* modes */
+  .modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .mode { border: 1px solid var(--line-dark); border-radius: var(--r-lg); padding: 34px; background: var(--ink-raised); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .mode ul { margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .mode li { font-size: 14px; padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line-dark); color: var(--gold-title); }
+  .mode p { color: var(--on-dark-muted); }
+
+  /* cover showcase */
+  .showcase { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: center; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .tags span { padding: 5px 14px; border: 1px solid var(--line-paper); border-radius: 999px; font-size: 14px; background: var(--paper-card); }
+
+  /* pricing */
+  .pricing { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .price-card { background: var(--paper-card); color: var(--on-paper); border-radius: var(--r-lg); padding: 38px; border: 1px solid var(--gold); box-shadow: 0 0 0 6px rgba(var(--gold-rgb), 0.12); display: flex; flex-direction: column; gap: 18px; }
+  .price-card .trial { font-size: 14px; font-weight: 600; color: var(--gold-deep); letter-spacing: 0.06em; }
+  .price { font-family: var(--serif); font-weight: 700; font-size: 52px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .price small { font-family: var(--sans); font-weight: 500; font-size: 16px; color: var(--on-paper-muted); margin-left: 6px; }
+  .price-card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .price-card li::before { content: "✓"; color: var(--gold-deep); font-weight: 700; margin-right: 10px; }
+  .fine { font-size: 13px; color: var(--on-paper-muted); }
+  .steps { display: grid; gap: 18px; margin-top: 28px; padding: 0; list-style: none; counter-reset: s; }
+  .steps li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; counter-increment: s; }
+  .steps li::before { content: counter(s); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-dark); display: grid; place-items: center; font-family: var(--serif); font-weight: 700; color: var(--gold); }
+  .steps b { display: block; font-weight: 600; }
+  .steps span { color: var(--on-dark-muted); font-size: 15px; }
+
+  /* faq */
+  .faq { max-width: 780px; display: grid; gap: 12px; }
+  details { background: var(--paper-card); border: 1px solid var(--line-paper); border-radius: var(--r-md); padding: 0 22px; }
+  summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; font-weight: 600; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-size: 22px; color: var(--gold-deep); transition: transform 0.2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { padding: 0 0 20px; color: var(--on-paper-muted); }
+  summary:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 4px; border-radius: var(--r-sm); }
+
+  /* closing + footer */
+  .closing { text-align: center; background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255, 214, 150, 0.1), transparent 70%), var(--ink); border-top: 1px solid var(--line-dark); }
+  .closing h2 { color: var(--gold-title); }
+  .closing p { margin: 16px auto 32px; color: var(--on-dark-muted); max-width: 30em; font-size: 18px; }
+  footer { background: #0f0c09; border-top: 1px solid var(--line-dark); padding-block: 44px 56px; font-size: 14px; color: var(--on-dark-muted); }
+  footer .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; }
+  footer .legal { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+  footer .biz { margin-top: 22px; line-height: 1.9; font-size: 13px; opacity: 0.85; }
+
+  @media (max-width: 920px) {
+    .links { display: none; }
+    .nav-right { gap: 0; }
+    section { padding-block: 72px; }
+    .hero { padding-block: 48px 40px; }
+    .hero .wrap, .showcase, .pricing, .showcase-app .wrap { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .hero .wrap { min-height: 0; }
+    .write-stage { order: 2; }
+    .features, .modes { grid-template-columns: minmax(0, 1fr); }
+    .strip .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .strip .item + .item { border-left: 0; }
+    .strip .item:nth-child(even) { border-left: 1px solid rgba(230, 197, 106, 0.16); }
+    .strip .item { border-top: 1px solid rgba(230, 197, 106, 0.1); }
+    .showcase-app { padding-block: 56px 72px; }
+  }
+  @media (max-width: 520px) {
+    .price { font-size: 42px; }
+    .nav .btn.line-only { display: none; }
+    .logo small { display: none; }
+    .strip .wrap { grid-template-columns: minmax(0, 1fr); }
+    .strip .item:nth-child(even) { border-left: 0; }
+    .feature, .mode, .price-card { padding: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="블랙북 처음으로">
+      <svg viewBox="0 0 40 40" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12c-3-2.4-8-3-14-2v20c6-1 11-.4 14 2 3-2.4 8-3 14-2V10c-6-1-11-.4-14 2z"/><path d="M20 12v20"/></svg>
+      블랙북 <small>Blackbook</small>
+    </a>
+    <div class="nav-right">
+      <nav class="links" aria-label="주요 메뉴"><a href="#features">기능 안내</a><a href="#pricing">요금제</a><a href="#faq">가이드</a></nav>
+      <div class="actions"><a class="btn btn-line line-only" href="app/">로그인</a><a class="btn btn-tan" href="app/">무료로 시작하기</a></div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p class="brandline" aria-hidden="true">BLACKBOOK</p>
+        <h1 id="hero-title">당신의 이야기를<br>한 권의 책으로</h1>
+        <p class="lead">소설도, 에세이도, 연구서도 —<br>기획부터 집필, 정리까지 한곳에서.</p>
+        <div class="cta"><a class="btn btn-tan" href="app/">지금, 블랙북 시작하기 &nbsp;→</a><button type="button" class="btn btn-line" id="tryBtn">직접 써 보기</button></div>
+      </div>
+      <div class="write-stage">
+        <div class="tbook" id="tbook" data-open="false">
+          <div class="tpaper" id="tpaper">
+            <div class="th" id="th" hidden>
+              <span class="k" id="thk">1장</span>
+              <input id="thi" type="text" maxlength="40" placeholder="제목 없음" aria-label="장 제목">
+            </div>
+            <textarea id="tw" spellcheck="false" placeholder="첫 문장을 적어 보세요" aria-label="책의 첫 쪽에 직접 써 보기" tabindex="-1"></textarea>
+            <div class="tfolio"><button type="button" class="tnav" id="tprev" aria-label="이전 쪽" disabled>‹</button><div><span id="tpg">— 1 —</span><span class="tcount" id="tcount">0 / 432자</span></div><button type="button" class="tnav" id="tnext" aria-label="다음 쪽" disabled>›</button></div>
+          </div>
+          <button type="button" class="tcover" id="tcover" aria-label="표지를 열고 직접 써 보기">
+            <span class="tface front"><span class="tframe">
+              <span class="tcrest"><i></i></span><span class="torn"></span><span class="tt">블랙북</span><span class="ten">BLACK BOOK</span><span class="torn"></span>
+              <span class="topen">표지를 눌러 열기</span>
+            </span></span>
+            <span class="tface back"></span>
+          </button>
+        </div>
+        <div class="wbar" id="wbar" aria-label="책 만들기 도구">
+          <button type="button" class="btn btn-line" id="tpart">+ 부 추가</button>
+          <button type="button" class="btn btn-line" id="tchap">+ 장 추가</button>
+          <button type="button" class="btn btn-line" id="tdel" hidden>제목 지우기</button>
+        </div>
+        <p class="wnote" id="wnote" aria-live="polite">표지를 열고 직접 써 보세요. 여기서 쓴 글은 저장되지 않아요.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip" role="list">
+    <div class="wrap">
+      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 12c-3-2.4-8-3-14-2v20c6-1 11-.4 14 2 3-2.4 8-3 14-2V10c-6-1-11-.4-14 2z"/><path d="M20 12v20"/></svg><div><b>책처럼 쓰는 편집기</b><span>쪽을 넘기며 쓰는 원고</span></div></div>
+      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 8l14 7-14 7-14-7z"/><path d="M6 21l14 7 14-7"/><path d="M6 27l14 7 14-7"/></svg><div><b>체계적인 책 구조</b><span>부 · 장 · 목차로 정리</span></div></div>
+      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M31 6C19 8 10 18 9 33l3-3c1-8 6-14 13-17-5 5-8 10-9 16 6-2 14-8 15-23z"/><path d="M12 30l-4 4"/></svg><div><b>문학 · 비문학 모드</b><span>주장집으로 깊이 있게</span></div></div>
+      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><circle cx="20" cy="20" r="8"/><circle cx="20" cy="20" r="2.5"/><path d="M20 20L33 7"/></svg><div><b>목표와 진행 관리</b><span>하루 목표 · 마일스톤</span></div></div>
+      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="5" width="22" height="30" rx="2"/><path d="M14 10h12M14 30h12"/><path d="M20 16l3 4-3 4-3-4z"/></svg><div><b>아름다운 표지 디자인</b><span>나만의 책으로 완성</span></div></div>
+    </div>
+  </div>
+
+  <section class="showcase-app" aria-labelledby="sa-title">
+    <div class="wrap">
+      <figure class="shot"><img src="img/app-toc.jpg" width="1800" height="1125" alt="블랙북의 목차 패널과 부·장 추가 버튼" loading="lazy"></figure>
+      <div>
+        <h2 id="sa-title">기획부터 집필, 정리까지<br>작가를 위한 올인원 글쓰기 공간</h2>
+        <div class="rule"></div>
+        <ul class="checks">
+          <li><span>책 모양 편집기로 실제 책처럼 집필</span></li>
+          <li><span>세계관 · 아틀라스 · 캐릭터 · 플롯 등 <b>주장집</b> 제공</span></li>
+          <li><span>각주 · 참고자료 · 용어집으로 탄탄한 <b>비문학</b> 집필</span></li>
+          <li><span>목표 설정과 진행률로 꾸준한 집필 습관</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+<section class="on-paper" id="features" aria-labelledby="f-title">
+    <div class="wrap">
+      <div class="head"><p class="eyebrow">기능</p><h2 id="f-title">쓰는 데 필요한 것만, 책의 모양으로</h2><p>편집기는 조용하고, 구조와 자료는 곁에 있어요.</p></div>
+      <div class="features">
+        <article class="feature">
+          <img class="fshot" src="img/app-toc.jpg" width="1800" height="1125" alt="블랙북의 목차 패널" loading="lazy">
+          <h3>부와 장으로 나누는 책</h3><p>"부 추가", "장 추가" 버튼으로 구조를 만들어요. 목차는 한 번에 채워지고, 장이 시작되는 쪽에는 제목이 붙어요.</p>
+        </article>
+        <article class="feature">
+          <img class="fshot" src="img/app-lore.jpg" width="1800" height="1125" alt="블랙북의 주장집 패널" loading="lazy">
+          <h3>주장집으로 모으는 자료</h3><p>문학 모드에는 세계관, 아틀라스, 캐릭터, 플롯. 비문학 모드에는 핵심 주장, 참고자료, 각주, 용어집, 사례가 있어요.</p>
+        </article>
+        <article class="feature">
+          <img class="fshot" src="img/app-goals.jpg" width="1800" height="1125" alt="블랙북의 목표 패널" loading="lazy">
+          <h3>목표가 보이는 집필</h3><p>책 전체 목표와 하루 목표를 정하면 진행률과 연속 달성 일수를 보여 줘요. 마일스톤은 체크리스트로 남겨요.</p>
+        </article>
+        <article class="feature">
+          <img class="fshot" src="img/app-open.jpg" width="1800" height="1125" alt="블랙북의 저장 버튼이 있는 편집 화면" loading="lazy" style="object-position:50% 0">
+          <h3 data-show="paid">내가 누르면 올라가는 저장</h3><p data-show="paid">저장 버튼을 눌러야 계정에 올라가요. 두 기기에서 따로 고쳤다면 어느 쪽을 쓸지 고를 수 있어요.</p>
+          <h3 data-show="beta">내가 누르는 저장, 내 손의 원고</h3><p data-show="beta">저장 버튼으로 글을 남기고, 원고와 백업 파일은 언제든 내려받아 보관할 수 있어요.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="modes" aria-labelledby="m-title">
+    <div class="wrap on-ink">
+      <div class="head"><p class="eyebrow">두 가지 모드</p><h2 id="m-title">이야기를 쓰든, 주장을 쓰든</h2><p>책마다 모드를 골라요. 바꿔도 반대쪽 자료는 지워지지 않아요.</p></div>
+      <div class="modes">
+        <article class="mode"><h3>문학 모드</h3><p>인물과 세계, 줄거리를 한곳에서 챙기며 쓰는 소설·에세이용이에요.</p><ul><li>세계관</li><li>아틀라스</li><li>캐릭터</li><li>플롯</li></ul></article>
+        <article class="mode"><h3>비문학 모드</h3><p>주장과 근거, 출처를 정리하며 쓰는 책이에요. 본문에 각주를 달면 참고문헌까지 원고에 담겨요.</p><ul><li>핵심 주장</li><li>참고자료</li><li>각주</li><li>용어집</li><li>사례</li></ul></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="on-paper-deep" id="cover" aria-labelledby="c-title">
+    <div class="wrap showcase">
+      <div>
+        <p class="eyebrow" style="color:var(--gold-deep)">표지 꾸미기</p>
+        <h2 id="c-title">내 책의 표지를, 내 책답게</h2>
+        <p style="margin-top:16px;font-size:18px;color:var(--on-paper-muted)">표지 색, 금박 색, 제목 글꼴, 질감, 테두리 장식을 고르고 사진도 올릴 수 있어요.</p>
+        <div class="tags"><span>표지 색</span><span>금박·은박</span><span>글꼴</span><span>가죽·천·종이 질감</span><span>내 사진</span></div>
+      </div>
+      <figure class="shot"><img src="img/app-cover.jpg" width="1800" height="1125" alt="블랙북의 표지 꾸미기 패널: 표지 색, 금박 색, 글꼴, 질감, 장식" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section id="pricing" aria-labelledby="p-title">
+    <div class="wrap pricing" data-show="paid">
+      <div>
+        <p class="eyebrow">가격</p>
+        <h2 id="p-title" style="color:var(--gold-title)">먼저 14일, 마음에 들면 계속</h2>
+        <ol class="steps">
+          <li><div><b>가입하고 바로 14일 무료</b><span>카드 등록은 필요 없어요. 모든 기능을 써 보세요.</span></div></li>
+          <li><div><b>체험이 끝나도 원고는 그대로</b><span>읽기와 내려받기는 계속 돼요. 새로 쓰려면 구독하세요.</span></div></li>
+          <li><div><b>구독은 언제든 해지</b><span>해지하면 낸 기간까지 쓰고, 다음 결제는 없어요.</span></div></li>
+        </ol>
+      </div>
+      <div class="price-card">
+        <span class="trial">14일 무료 체험 후</span>
+        <div class="price">9,000원<small>/ 2주</small></div>
+        <ul><li>모든 기능 제한 없이</li><li>여러 기기에서 이어쓰기</li><li>원고·백업 파일 내려받기</li><li>표지 꾸미기 포함</li></ul>
+        <a class="btn btn-ink" href="app/">무료로 시작하기</a>
+        <p class="fine">부가가치세와 환불 조건은 <a href="legal/refund.html">환불 안내</a>를 확인하세요.</p>
+      </div>
+    </div>
+
+    <div class="wrap pricing" data-show="beta">
+      <div>
+        <p class="eyebrow">요금</p>
+        <h2 style="color:var(--gold-title)">지금은 베타예요. 무료로 쓰세요</h2>
+        <ol class="steps">
+          <li><div><b>카드 등록 없이 바로 시작</b><span>모든 기능을 써 볼 수 있어요.</span></div></li>
+          <li><div><b>원고는 언제든 내 손에</b><span>원고(.txt)와 백업 파일을 내려받아 보관하세요.</span></div></li>
+          <li><div><b>요금이 생기면 미리 알려요</b><span>정식 요금은 정해지면 이 자리에 먼저 안내해요.</span></div></li>
+        </ol>
+      </div>
+      <div class="price-card">
+        <span class="trial">베타 기간</span>
+        <div class="price">무료</div>
+        <ul><li>모든 기능 제한 없이</li><li>원고·백업 파일 내려받기</li><li>표지 꾸미기 포함</li></ul>
+        <a class="btn btn-ink" href="app/">무료로 시작하기</a>
+        <p class="fine">베타 기간에는 기능과 화면이 바뀔 수 있어요.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="on-paper" id="faq" aria-labelledby="q-title">
+    <div class="wrap">
+      <div class="head"><p class="eyebrow">자주 묻는 질문</p><h2 id="q-title">궁금한 것</h2></div>
+      <div class="faq">
+        <details data-show="paid"><summary>정말 카드 없이 시작하나요?</summary><p>네. 가입하면 14일 동안 카드 없이 모든 기능을 쓸 수 있어요. 체험이 끝났다고 자동으로 결제되지 않아요.</p></details>
+        <details data-show="paid"><summary>체험이 끝나면 쓴 글은 어떻게 되나요?</summary><p>글은 그대로 남아요. 읽기와 원고 내려받기는 계속 되고, 새로 쓰거나 저장하려면 구독이 필요해요.</p></details>
+        <details data-show="paid"><summary>휴대폰과 노트북을 같이 쓸 수 있나요?</summary><p>저장 버튼을 누르면 계정에 올라가고, 다른 기기에서 열면 같은 책이 보여요. 두 기기에서 따로 고친 경우에는 어느 쪽을 쓸지 고를 수 있어요.</p></details>
+        <details data-show="paid"><summary>구독은 어떻게 해지하나요?</summary><p>서비스 안의 "구독 관리"에서 언제든 해지할 수 있어요. 이미 낸 기간이 끝날 때까지는 계속 쓸 수 있어요.</p></details>
+        <details data-show="paid"><summary>내 글은 안전한가요?</summary><p>내 계정으로 로그인한 나만 내 책을 볼 수 있어요. 운영자가 글을 광고나 학습에 쓰지 않아요. 계정을 삭제하면 글도 함께 지워지고, 언제든 파일로 내려받을 수 있어요.</p></details>
+        <details data-show="beta"><summary>정말 무료인가요?</summary><p>지금은 베타 기간이라 무료예요. 카드 등록도 필요 없어요. 요금이 생기면 미리 안내할게요.</p></details>
+        <details data-show="beta"><summary>휴대폰과 노트북을 같이 쓸 수 있나요?</summary><p>계정에 연결된 상태에서 저장하면 다른 기기에서도 같은 책을 볼 수 있어요. 연결되지 않았을 때는 글이 이 브라우저에만 남으니, 원고 파일을 내려받아 옮겨 주세요.</p></details>
+        <details data-show="beta"><summary>내 글은 어디에 저장되나요?</summary><p>글은 먼저 쓰고 있는 브라우저에 남아요. 계정에 연결된 경우에만 저장 버튼으로 계정에도 올라가요. 중요한 원고는 파일로 내려받아 따로 보관하세요.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="z-title">
+    <div class="wrap">
+      <h2 id="z-title">첫 문장을 적을 시간이에요</h2>
+      <p>표지를 열면, 빈 쪽이 기다리고 있어요.</p>
+      <a class="btn btn-gold" href="app/"><span data-show="paid">14일 무료로 시작하기</span><span data-show="beta">무료로 시작하기</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <a class="logo" href="#top">블랙북</a>
+      <div class="legal"><a href="legal/terms.html" data-show="paid">이용약관</a><a href="legal/privacy.html" data-show="paid">개인정보처리방침</a><a href="legal/refund.html" data-show="paid">환불 안내</a><a href="#" id="contactLink">문의하기</a></div>
+    </div>
+    <p class="biz" id="bizLine"></p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  var c = window.BB_CONFIG || {};
+  var paid = !!(c.SUPABASE_URL && !/YOUR_/.test(c.SUPABASE_URL));
+  window.BB_MODE = paid ? "paid" : "beta";
+  document.body.dataset.mode = window.BB_MODE;
+  document.querySelectorAll("[data-show]").forEach(function (e) { e.hidden = e.dataset.show !== window.BB_MODE; });
+  window.BB_APPURL = c.APP_URL || "app/";
+  document.querySelectorAll('a[href="app/"]').forEach(function (a) { a.href = window.BB_APPURL; if (/^https?:/.test(window.BB_APPURL)) { a.target = "_blank"; a.rel = "noopener"; } });
+  var link = document.getElementById("contactLink");
+  if (link) { if (c.CONTACT_EMAIL && !/example\.com/.test(c.CONTACT_EMAIL)) link.href = "mailto:" + c.CONTACT_EMAIL; else link.removeAttribute("href"); }
+  var biz = document.getElementById("bizLine");
+  if (biz) {
+    var parts = [c.BIZ_NAME, c.BIZ_OWNER && ("대표 " + c.BIZ_OWNER), c.BIZ_REG && ("사업자등록번호 " + c.BIZ_REG), c.BIZ_MAILORDER && ("통신판매업 신고번호 " + c.BIZ_MAILORDER), c.BIZ_ADDRESS, c.CONTACT_EMAIL && !/example\.com/.test(c.CONTACT_EMAIL) ? c.CONTACT_EMAIL : ""].filter(Boolean);
+    biz.textContent = parts.join(" · ");
+    if (!parts.length) biz.hidden = true;
+  }
+})();
+</script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var book = $("tbook"), cover = $("tcover"), paper = $("tpaper"), ta = $("tw"), th = $("th"), thk = $("thk"), thi = $("thi"),
+      pg = $("tpg"), cnt = $("tcount"), prev = $("tprev"), next = $("tnext"), bar = $("wbar"), note = $("wnote"), del = $("tdel");
+  if (!book || !ta) return;
+  var HEAD = 108, CAP = 432;
+  var pages = [""], heads = [null], idx = 0, composing = false, noteTimer = 0, shownHeaded = false;
+  bar.dataset.off = "true";
+
+  var meas = document.createElement("div");
+  meas.setAttribute("aria-hidden", "true");
+  meas.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre-wrap;word-break:break-word;box-sizing:border-box;overflow:hidden";
+  document.body.appendChild(meas);
+
+  function sync() {
+    var cs = getComputedStyle(ta);
+    meas.style.font = cs.font; meas.style.letterSpacing = cs.letterSpacing;
+    meas.style.width = ta.clientWidth + "px"; meas.style.padding = "30px 36px 0 42px";
+  }
+  function base() { return ta.clientHeight + (shownHeaded ? HEAD + 30 : 0); }
+  function fits(text, i, b) { meas.textContent = text.length ? text : " "; return meas.scrollHeight <= b - (heads[i] ? HEAD : 0) + 1; }
+  function maxFit(text, i) {
+    if (!text) return "";
+    sync(); var b = base(), u = Array.from(text);
+    var ok = function (n) { return fits(u.slice(0, n).join(""), i, b); };
+    if (!ok(1)) return u[0];
+    if (ok(u.length)) return text;
+    var lo = 1, hi = u.length, best = 1;
+    while (lo <= hi) { var mid = (lo + hi) >> 1; if (ok(mid)) { best = mid; lo = mid + 1; } else hi = mid - 1; }
+    return u.slice(0, best).join("");
+  }
+  function cascade(from, carry) {
+    var i = from;
+    while (carry && i < 400) {
+      if (i >= pages.length) { pages.push(""); heads.push(null); }
+      var all = carry + pages[i], f = maxFit(all, i);
+      if (!f) f = Array.from(all)[0];
+      pages[i] = f; carry = all.slice(f.length); i++;
+    }
+  }
+  function labelFor(i) {
+    var pn = 0, cn = 0;
+    for (var j = 0; j <= i; j++) { if (heads[j]) { if (heads[j].k === "p") pn++; else cn++; } }
+    return heads[i].k === "p" ? pn + "부" : cn + "장";
+  }
+  function total() { return pages.reduce(function (n, t) { return n + t.replace(/\n/g, "").length; }, 0); }
+  function show(focus) {
+    ta.value = pages[idx];
+    paper.classList.toggle("headed", !!heads[idx]);
+    th.hidden = !heads[idx]; shownHeaded = !!heads[idx];
+    del.hidden = !heads[idx];
+    if (heads[idx]) { thk.textContent = labelFor(idx); thi.value = heads[idx].t; }
+    pg.textContent = "— " + (idx + 1) + " —";
+    var used = pages[idx].replace(/\n/g, "").length;
+    cnt.textContent = used + " / " + (CAP - (heads[idx] ? 72 : 0)) + "자";
+    prev.disabled = idx === 0; next.disabled = idx >= pages.length - 1;
+    if (focus) ta.focus({ preventScroll: true });
+  }
+  function say(msg, withCta) {
+    clearTimeout(noteTimer); note.textContent = msg;
+    if (withCta) { var a = document.createElement("a"); a.href = window.BB_APPURL || "app/"; if (/^https?:/.test(a.href) && a.href.indexOf(location.origin) !== 0) { a.target = "_blank"; a.rel = "noopener"; } a.textContent = window.BB_MODE === "paid" ? "이어서 쓰려면 14일 무료로 시작하기 →" : "이어서 쓰려면 블랙북 앱에서 시작하기 →"; note.appendChild(document.createTextNode(" ")); note.appendChild(a); }
+    else noteTimer = setTimeout(function () { var n = total(); note.textContent = n > 0 ? "총 " + n + "자, " + pages.length + "쪽. 여기서 쓴 글은 저장되지 않아요." : "표지를 열고 직접 써 보세요. 여기서 쓴 글은 저장되지 않아요."; }, 2600);
+  }
+  function onInput() {
+    if (composing) { pages[idx] = ta.value; show(false); return; }
+    var text = ta.value, caret = ta.selectionStart || 0, f = maxFit(text, idx);
+    if (f === text) { pages[idx] = text; show(false); }
+    else {
+      pages[idx] = f; cascade(idx + 1, text.slice(f.length));
+      if (caret > f.length) {
+        idx++; show(true); ta.setSelectionRange(Math.min(caret - f.length, pages[idx].length), Math.min(caret - f.length, pages[idx].length));
+        ta.classList.remove("turned"); void ta.offsetWidth; ta.classList.add("turned");
+        say("한 쪽이 차서 다음 쪽으로 넘어갔어요");
+      } else { show(false); }
+    }
+    if (total() >= 40) say("지금 " + total() + "자째, " + pages.length + "쪽이에요.", true);
+  }
+  function open() {
+    if (book.dataset.open === "true") return;
+    book.dataset.open = "true"; bar.dataset.off = "false"; ta.tabIndex = 0;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(function () { ta.focus({ preventScroll: true }); }, reduce ? 0 : 950);
+    say("첫 문장을 적어 보세요");
+  }
+  function refit() { var f = maxFit(pages[idx], idx); var rest = pages[idx].slice(f.length); pages[idx] = f; if (rest) cascade(idx + 1, rest); }
+  function addHead(k) {
+    if (book.dataset.open !== "true") { open(); }
+    if (heads[idx]) { if (heads[idx].k !== k) { heads[idx].k = k; show(false); } thi.focus(); return; }
+    heads[idx] = { k: k, t: "" }; show(false); refit(); show(false); thi.focus();
+    say(k === "p" ? "부를 추가했어요. 제목을 적어 보세요" : "장을 추가했어요. 제목을 적어 보세요");
+  }
+  cover.addEventListener("click", open);
+  $("tryBtn").addEventListener("click", function () { book.scrollIntoView({ behavior: "smooth", block: "center" }); open(); });
+  ta.addEventListener("input", onInput);
+  ta.addEventListener("compositionstart", function () { composing = true; });
+  ta.addEventListener("compositionend", function () { composing = false; onInput(); });
+  thi.addEventListener("input", function () { if (heads[idx]) heads[idx].t = thi.value; });
+  thi.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); ta.focus(); } });
+  prev.addEventListener("click", function () { if (idx > 0) { idx--; show(true); } });
+  next.addEventListener("click", function () { if (idx < pages.length - 1) { idx++; show(true); } });
+  $("tpart").addEventListener("click", function () { addHead("p"); });
+  $("tchap").addEventListener("click", function () { addHead("c"); });
+  del.addEventListener("click", function () { heads[idx] = null; show(true); say("제목을 지웠어요"); });
+  window.addEventListener("resize", function () { sync(); });
+  show(false);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2331 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#15110d" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315110d'/%3E%3Cpath d='M32 20c-5-4-13-5-21-3v30c8-2 16-1 21 3 5-4 13-5 21-3V17c-8-2-16-1-21 3z' fill='none' stroke='%23e6c56a' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M32 20v30' stroke='%23e6c56a' stroke-width='3'/%3E%3C/svg%3E" />
+<style>
+  :root { color-scheme: light; }
+  html, body { margin: 0; }
+  body { font: 14px system-ui, sans-serif; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>블랙북 · 글쓰기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Lora:wght@400;700&family=Nanum+Pen+Script&family=Black+Han+Sans&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    color-scheme: dark;
+    --desk-bg: radial-gradient(ellipse 62% 48% at 50% 42%, rgba(255, 214, 150, 0.1), transparent 62%), radial-gradient(ellipse at 50% 40%, #3c342e 0%, #1c1814 54%, #100e0c 100%);
+    --accent: #e6c56a;
+    --on-accent: #1a140c;
+    --chip-bg: rgba(0, 0, 0, 0.22);
+    --chip-border: rgba(230, 197, 106, 0.28);
+    --turn-bg: rgba(12, 10, 8, 0.62);
+    --turn-border: rgba(230, 197, 106, 0.4);
+    --hover: rgba(255, 255, 255, 0.07);
+    --panel-bg: #272219;
+    --panel-sheen: rgba(255, 255, 255, 0.04);
+    --panel-ink: #efe6d6;
+    --panel-rgb: 239, 230, 214;
+    --panel-accent: #e6c56a;
+    --danger: #ff9d88;
+    --ink: #2a241c;
+    --ink-soft: rgba(42, 36, 28, 0.46);
+    --paper: #f3eee4;
+    --gold: #e6c56a;
+    --gold-dim: rgba(230, 197, 106, 0.72);
+    --desk-text: #f3eadf;
+    --serif: "Lora", "Nanum Myeongjo", "Noto Serif KR", "Apple Myungjo", "Batang", serif;
+    --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    --fs: 19px;
+    --ease: cubic-bezier(0.4, 0.05, 0.2, 1);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      color-scheme: light;
+      --desk-bg: radial-gradient(ellipse 62% 48% at 50% 42%, rgba(255, 255, 255, 0.75), transparent 62%), radial-gradient(ellipse at 50% 40%, #efe9dc 0%, #e2dac9 54%, #d3c9b5 100%);
+      --desk-text: #2a241c;
+      --accent: #7a5619; --on-accent: #fff7e6;
+      --chip-bg: rgba(255, 255, 255, 0.55); --chip-border: rgba(122, 86, 25, 0.32);
+      --turn-bg: rgba(255, 252, 244, 0.85); --turn-border: rgba(122, 86, 25, 0.42);
+      --hover: rgba(42, 36, 28, 0.07);
+      --panel-bg: #f3eee4; --panel-sheen: rgba(255, 255, 255, 0.35); --panel-ink: #2a241c; --panel-rgb: 42, 36, 28; --panel-accent: #8c6230; --danger: #8a2e1c;
+    }
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --desk-bg: radial-gradient(ellipse 62% 48% at 50% 42%, rgba(255, 255, 255, 0.75), transparent 62%), radial-gradient(ellipse at 50% 40%, #efe9dc 0%, #e2dac9 54%, #d3c9b5 100%);
+    --desk-text: #2a241c;
+    --accent: #7a5619; --on-accent: #fff7e6;
+    --chip-bg: rgba(255, 255, 255, 0.55); --chip-border: rgba(122, 86, 25, 0.32);
+    --turn-bg: rgba(255, 252, 244, 0.85); --turn-border: rgba(122, 86, 25, 0.42);
+    --hover: rgba(42, 36, 28, 0.07);
+    --panel-bg: #f3eee4; --panel-sheen: rgba(255, 255, 255, 0.35); --panel-ink: #2a241c; --panel-rgb: 42, 36, 28; --panel-accent: #8c6230; --danger: #8a2e1c;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    color: var(--desk-text);
+    font-family: var(--sans);
+    background: var(--desk-bg);
+    background-color: var(--panel-bg);
+    min-height: 100dvh;
+  }
+  button, input { font-family: inherit; color: inherit; }
+  button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .app { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 12px 14px 10px; gap: 6px; }
+  .top { width: min(920px, 100%); display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
+  .brand { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 14px; }
+  .theme-seg button { padding: 4px 10px; font-size: 12px; }
+  .brand-mark { font-family: var(--serif); font-size: 18px; letter-spacing: 0.14em; margin: 0; font-weight: 700; color: var(--accent); }
+  .brand-note { font-size: 12px; letter-spacing: 0.08em; opacity: 0.62; }
+  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 8px 10px; }
+  .control { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .control-label { font-size: 10px; letter-spacing: 0.16em; opacity: 0.72; }
+  .seg { display: flex; border: 1px solid var(--chip-border); border-radius: 999px; padding: 3px; background: var(--chip-bg); }
+  .seg button, .tool-btn, .turn, .open-btn, .text-btn, .toc-item, .close-x { border: 0; background: transparent; color: inherit; }
+  .seg button { color: var(--desk-text); border-radius: 999px; padding: 6px 11px; font-size: 13px; line-height: 1.15; }
+  .seg button small { display: block; font-size: 9px; letter-spacing: 0.12em; opacity: 0.66; font-weight: 400; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .seg button[aria-pressed="true"] small { opacity: 0.7; }
+  .font-seg button { font-family: var(--serif); width: 34px; height: 32px; padding: 0; display: grid; place-items: center; }
+  .tool-btn, .limit-pill { border: 1px solid var(--chip-border); background: var(--chip-bg); color: var(--desk-text); border-radius: 999px; padding: 7px 13px; font-size: 13px; min-height: 36px; }
+  .limit-pill { font-variant-numeric: tabular-nums; letter-spacing: 0.03em; color: var(--accent); }
+  .tool-btn:hover, .seg button:hover, .open-btn:hover, .turn:hover:not(:disabled) { background: var(--hover); }
+  .seg button[aria-pressed="true"]:hover { background: var(--accent); }
+  .pos { font-variant-numeric: tabular-nums; font-size: 14px; letter-spacing: 0.06em; padding: 6px 2px; min-width: 52px; text-align: center; }
+  .pos b { font-weight: 600; }
+  .text-btn { color: var(--gold); opacity: 0.85; font-size: 13px; padding: 6px 4px; letter-spacing: 0.06em; text-decoration: underline; text-underline-offset: 3px; }
+  .stage { flex: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .book-wrap { position: relative; display: flex; align-items: center; justify-content: center; perspective: 1600px; }
+  .book-wrap::before { content: ""; position: absolute; inset: 4% -8% -12%; background: radial-gradient(ellipse at 50% 40%, rgba(230, 197, 106, 0.14), transparent 68%); pointer-events: none; }
+  .turn {
+    position: absolute; top: 50%; width: 40px; height: 40px; margin-top: -20px; border-radius: 50%;
+    border: 1px solid var(--turn-border); color: var(--accent); font-size: 22px;
+    display: grid; place-items: center; background: var(--turn-bg); z-index: 5;
+  }
+  .turn.prev { right: calc(100% + 14px); left: auto; }
+  .turn.next { left: calc(100% + 14px); right: auto; }
+  .turn.label { width: auto; min-width: 52px; padding: 0 12px; border-radius: 999px; font-size: 12px; letter-spacing: 0.06em; }
+  .turn:disabled { opacity: 0.28; cursor: default; }
+  .book {
+    position: relative; z-index: 1; container-type: inline-size; transform-style: preserve-3d;
+    transition: width 0.4s var(--ease);
+  }
+  .book { --pw: 148; --ph: 210; width: min(calc(var(--pw) * 3.7795px), calc((100vw - 160px) * var(--pw) / 148), calc(max(100dvh - 148px, 620px) * var(--pw) / var(--ph))); aspect-ratio: var(--pw) / var(--ph); }
+  .book[data-fit="screen"] {
+    width: min(560px, calc(100vw - 76px)) !important;
+    height: min(820px, calc(100dvh - 158px)) !important;
+    max-height: calc(100dvh - 158px);
+    aspect-ratio: auto !important;
+  }
+  .book.shake { animation: shake 0.32s ease; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 35% { transform: translateX(-5px); } 70% { transform: translateX(4px); } }
+  .edges {
+    position: absolute; top: 3px; bottom: 3px; width: var(--edge, 8px); right: calc(var(--edge, 8px) * -1);
+    border-radius: 0 3px 3px 0; pointer-events: none;
+    background: repeating-linear-gradient(to right, #fff6d2 0 1px, #e6c56a 1px 2px, #f8e7b0 2px 3px, #b8923e 3px 4px);
+    box-shadow: 2px 0 3px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 236, 180, 0.35);
+  }
+  .cover, .sheet, .leaf, .face { position: absolute; inset: 0; border-radius: 2px 5px 5px 2px; }
+  .cover {
+    display: none; cursor: pointer; z-index: 4;
+    transform-origin: left center; transform-style: preserve-3d;
+    background: transparent; box-shadow: none;
+  }
+  .cover.is-turning { z-index: 8; }
+  .cover, .cover-preview { --foil: #e6c56a; --foil-rgb: 230, 197, 106; --foil-hi: #fff6d0; --foil-lo: #c9a24d; --foil-title: #f3d78a; --foil-sh: #fff6d2; --cv-base: #0c0c0c; --cv-grad: linear-gradient(165deg, #2c2c2c 0%, #141414 40%, #070707 100%); --cv-grad-back: linear-gradient(198deg, #242424 0%, #101010 46%, #070707 100%); }
+  .cover-face.front::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .cover-face.front[data-tex="leather"]::before { background-image: radial-gradient(rgba(255, 255, 255, 0.09) 0.6px, transparent 0.9px), radial-gradient(rgba(0, 0, 0, 0.3) 0.8px, transparent 1.1px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+  .cover-face.front[data-tex="cloth"]::before { background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px); }
+  .cover-face.front[data-tex="paper"]::before { background-image: radial-gradient(rgba(255, 255, 255, 0.14) 0.5px, transparent 0.8px), radial-gradient(rgba(0, 0, 0, 0.12) 0.5px, transparent 0.8px); background-size: 2px 2px, 3px 3px; background-position: 0 0, 1px 1px; }
+  .cover-face.front[data-corner="none"] .foil-corner { display: none; }
+  .cover-face.front[data-corner="double"] .foil-corner { display: none; }
+  .cover-face.front[data-corner="double"] .cover-frame { box-shadow: inset 0 0 0 5px transparent, inset 0 0 0 6px rgba(var(--foil-rgb), 0.38), inset 0 0 0 11px transparent, inset 0 0 0 12px rgba(var(--foil-rgb), 0.3); }
+  .cover-preview { position: relative; width: 190px; max-width: 100%; aspect-ratio: 148 / 210; container-type: inline-size; flex: 0 0 auto; border-radius: 2px 5px 5px 2px; box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4); }
+  .cover-preview .cover-face.front { cursor: default; }
+  .cover-face {
+    position: absolute; inset: 0; display: flex; overflow: hidden;
+    border-radius: 2px 5px 5px 2px;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .cover-face.front {
+    padding: 7%;
+    background:
+      radial-gradient(ellipse at 28% 18%, rgba(255, 255, 255, 0.08), transparent 42%),
+      var(--cv-grad);
+    box-shadow: inset 0 0 0 1px rgba(var(--foil-rgb), 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 28px rgba(0, 0, 0, 0.45);
+  }
+  .cover-face.front::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(118deg, transparent 36%, rgba(255, 236, 180, 0.09) 48%, transparent 58%);
+  }
+  .cover-face.back {
+    transform: rotateY(180deg); padding: 8%;
+    background:
+      radial-gradient(ellipse at 72% 18%, rgba(var(--foil-rgb), 0.1), transparent 46%),
+      var(--cv-grad-back);
+    box-shadow: inset 0 0 0 1px rgba(var(--foil-rgb), 0.42);
+  }
+  .cover.is-turning .cover-face.front {
+    box-shadow: 18px 16px 34px rgba(0, 0, 0, 0.48), inset 0 0 0 1px rgba(var(--foil-rgb), 0.28);
+  }
+  .endpaper {
+    position: relative; flex: 1; min-width: 0;
+    border: 1px solid rgba(var(--foil-rgb), 0.62);
+    box-shadow: inset 0 0 0 5px transparent, inset 0 0 0 6px rgba(var(--foil-rgb), 0.26);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; gap: 10px; padding: 10% 8%;
+  }
+  .end-kicker { font-size: clamp(9px, 3.2cqi, 11px); letter-spacing: 0.32em; color: var(--foil); opacity: 0.72; }
+  .end-title {
+    font-family: var(--cv-font, var(--serif)); font-size: clamp(18px, 8cqi, 28px); font-weight: 700;
+    letter-spacing: 0.12em; color: var(--foil-title);
+    text-shadow: 0 1px 0 var(--foil-sh), 0 2px 2px rgba(70, 46, 8, 0.4);
+  }
+  .end-note { font-size: clamp(11px, 3.6cqi, 13px); letter-spacing: 0.12em; color: rgba(var(--foil-rgb), 0.66); }
+  .cover-lip {
+    position: absolute; top: 1px; bottom: 1px; right: 0; width: 7px;
+    transform: rotateY(90deg); transform-origin: right center;
+    background: linear-gradient(var(--foil-hi), var(--foil-lo) 42%, #5c481c 68%, var(--foil));
+    pointer-events: none;
+  }
+  .lift-hint {
+    position: absolute; right: 0; bottom: 0; width: 34px; height: 34px; pointer-events: none;
+    background: linear-gradient(135deg, transparent 52%, rgba(var(--foil-rgb), 0.72) 54%, rgba(255, 246, 208, 0.9) 100%);
+  }
+  .book[data-state="cover"] .cover,
+  .book[data-state="opening"] .cover,
+  .book[data-state="closing"] .cover { display: flex; }
+  .book[data-state="opening"] .sheet,
+  .book[data-state="closing"] .sheet,
+  .book[data-state="reading"] .sheet { display: flex; flex-direction: column; }
+  .cover-frame {
+    position: relative; flex: 1; border: 1px solid rgba(var(--foil-rgb), 0.82);
+    box-shadow: inset 0 0 0 5px transparent, inset 0 0 0 6px rgba(var(--foil-rgb), 0.38);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 9% 8%; gap: 9px; min-width: 0; z-index: 1;
+  }
+  .foil-corner { position: absolute; width: 16px; height: 16px; border: 1px solid var(--foil); pointer-events: none; }
+  .foil-corner::after { content: ""; position: absolute; width: 5px; height: 5px; background: linear-gradient(135deg, var(--foil-hi), var(--foil-lo)); transform: rotate(45deg); }
+  .foil-corner.tl { top: 7px; left: 7px; border-width: 1.5px 0 0 1.5px; }
+  .foil-corner.tr { top: 7px; right: 7px; border-width: 1.5px 1.5px 0 0; }
+  .foil-corner.bl { bottom: 7px; left: 7px; border-width: 0 0 1.5px 1.5px; }
+  .foil-corner.br { bottom: 7px; right: 7px; border-width: 0 1.5px 1.5px 0; }
+  .foil-corner.tl::after { top: -3px; left: -3px; }
+  .foil-corner.tr::after { top: -3px; right: -3px; }
+  .foil-corner.bl::after { bottom: -3px; left: -3px; }
+  .foil-corner.br::after { bottom: -3px; right: -3px; }
+  .crest { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--foil); display: grid; place-items: center; box-shadow: inset 0 0 0 3px var(--cv-base), inset 0 0 0 4px rgba(var(--foil-rgb), 0.75); flex: 0 0 auto; }
+  .crest i { width: 8px; height: 8px; display: block; background: linear-gradient(135deg, var(--foil-hi), var(--foil) 45%, var(--foil-lo)); transform: rotate(45deg); }
+  .ornament { width: min(92px, 52%); height: 11px; background: linear-gradient(var(--foil), var(--foil)) center / 100% 1px no-repeat; position: relative; flex: 0 0 auto; }
+  .ornament::before, .ornament::after { content: ""; position: absolute; top: 50%; width: 5px; height: 5px; background: linear-gradient(135deg, var(--foil-hi), var(--foil-lo)); transform: translateY(-50%) rotate(45deg); }
+  .ornament::before { left: -2px; } .ornament::after { right: -2px; }
+  .cover-title { width: 100%; font-family: var(--cv-font, var(--serif)); font-size: clamp(20px, 12cqi, 34px); font-weight: 700; line-height: 1.3; text-align: center; letter-spacing: 0.12em; word-break: keep-all; color: var(--foil-title); caret-color: var(--foil-title); text-shadow: 0 1px 0 var(--foil-sh), 0 2px 2px rgba(70, 46, 8, 0.45); padding: 2px 0; min-height: 1.3em; }
+  .cover-title:focus { outline: none; }
+  .foil-en { font-size: clamp(9px, 3.4cqi, 11px); letter-spacing: 0.32em; color: var(--foil); opacity: 0.78; }
+  .cover-sub { font-size: clamp(10px, 4cqi, 12px); letter-spacing: 0.16em; color: rgba(var(--foil-rgb), 0.7); }
+  .cover-meta { margin-top: 2px; font-size: clamp(11px, 4cqi, 13px); letter-spacing: 0.18em; color: var(--foil); }
+  .sheet { display: none; overflow: hidden; background: linear-gradient(118deg, rgba(255,255,255,0.45), transparent 36%), linear-gradient(#f7f3ea, var(--paper) 28%, #efe4d2); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35), 0 18px 28px rgba(0,0,0,0.45); }
+  .sheet::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to right, rgba(70, 42, 20, 0.1), transparent 22px); z-index: 3; }
+  .sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.22; background-image: radial-gradient(rgba(90, 60, 30, 0.22) 0.45px, transparent 0.55px); background-size: 3px 3px; z-index: 2; }
+  textarea, .prose, #measure { font-family: var(--serif); font-size: var(--fs); line-height: 1.9; letter-spacing: 0.01em; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+  textarea, .prose { padding: var(--pad-top, 18px) var(--pad-x, 16px) 0; }
+  textarea {
+    position: relative; z-index: 1; width: 100%; flex: 1; min-height: 0; border: 0; resize: none;
+    display: block; caret-color: #6d3b28; overflow: hidden; background-color: transparent;
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.9em - 1px), rgba(120, 84, 40, 0.2) calc(1.9em - 1px), rgba(120, 84, 40, 0.2) 1.9em);
+    background-size: 100% calc(1.9em * var(--rows, 18));
+    background-repeat: no-repeat; background-origin: content-box; background-clip: content-box;
+  }
+  .book[data-fit="screen"] textarea { overflow-y: auto; }
+  textarea:focus, textarea:focus-visible { outline: none; }
+  textarea::placeholder { color: rgba(42, 36, 28, 0.32); }
+  textarea::selection { background: rgba(196, 148, 78, 0.28); }
+  .folio { position: relative; flex: 0 0 var(--folio, 20px); text-align: center; z-index: 4; pointer-events: none; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+  .folio-num { font-family: var(--serif); font-size: clamp(10px, 2.2cqi, 13px); letter-spacing: 0.18em; color: rgba(42, 36, 28, 0.48); }
+  .folio-count { margin-top: 1px; font-size: clamp(9px, 1.8cqi, 11px); letter-spacing: 0.03em; color: rgba(42, 36, 28, 0.42); font-variant-numeric: tabular-nums; }
+  .folio-count.full { color: #8c6230; }
+  .hotspot { position: absolute; top: 0; bottom: 0; width: 26px; z-index: 5; border: 0; background: transparent; }
+  .hotspot.left { left: 0; cursor: w-resize; }
+  .hotspot.right { right: 0; cursor: e-resize; }
+  .book[data-state="cover"] .hotspot.left { display: none; }
+  .leaf { display: none; transform-origin: left center; transform-style: preserve-3d; z-index: 6; pointer-events: none; }
+  .leaf.show { display: block; }
+  .face { overflow: hidden; backface-visibility: hidden; background: #f3eee4; }
+  .face.front { background: linear-gradient(to right, rgba(50, 30, 12, 0.08), transparent 24px), #f6f1e6; }
+  .face.back { transform: rotateY(180deg); background: linear-gradient(to left, rgba(50, 30, 12, 0.08), transparent 24px), #f3eee3; }
+  .face .prose { position: absolute; inset: 0; overflow: hidden; }
+  .book-foot { display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 18px; }
+  .under-hint, .save-note, .spec-note { font-size: 12px; letter-spacing: 0.02em; opacity: 0.68; text-align: center; min-height: 16px; }
+  .spec-note { font-size: 11px; letter-spacing: 0.03em; opacity: 0.55; font-variant-numeric: tabular-nums; }
+  .save-note { opacity: 0.5; }
+  .open-btn { border: 1px solid var(--turn-border); color: var(--accent); border-radius: 999px; padding: 10px 22px; letter-spacing: 0.18em; font-size: 13px; background: var(--chip-bg); }
+  .open-btn[hidden] { display: none; }
+  #measure { position: absolute; left: -10000px; top: 0; visibility: hidden; overflow: hidden; pointer-events: none; }
+  .backdrop { position: fixed; inset: 0; background: rgba(8, 7, 6, 0.5); z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .backdrop.show { opacity: 1; pointer-events: auto; }
+  .toc { position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, calc(100vw - 20px)); background: linear-gradient(180deg, var(--panel-sheen), transparent 80px), var(--panel-bg); color: var(--panel-ink); z-index: 21; transform: translateX(104%); transition: transform 0.38s var(--ease); display: flex; flex-direction: column; box-shadow: -18px 0 50px rgba(0,0,0,0.28); }
+  .toc.open { transform: translateX(0); }
+  .shelf {
+    position: fixed; top: 0; left: 0; bottom: 0; width: min(380px, calc(100vw - 20px));
+    background: linear-gradient(180deg, var(--panel-sheen), transparent 80px), var(--panel-bg);
+    color: var(--panel-ink); z-index: 21; transform: translateX(-104%); transition: transform 0.38s var(--ease);
+    display: flex; flex-direction: column; box-shadow: 18px 0 50px rgba(0,0,0,0.28);
+  }
+  .shelf.open { transform: translateX(0); }
+  .shelf .toc-item { grid-template-columns: 44px minmax(0, 1fr); }
+  .shelf .toc-item .num { font-size: 11px; letter-spacing: 0.08em; }
+  .toc-head, .toc-foot { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .toc-head h2 { font-family: var(--serif); font-size: 28px; font-weight: 700; margin: 0; letter-spacing: 0.08em; }
+  .toc-stats { font-size: 12px; color: rgba(var(--panel-rgb), 0.55); }
+  .close-x { width: 36px; height: 36px; border-radius: 50%; font-size: 20px; color: var(--panel-ink); flex: 0 0 auto; }
+  .toc-list { flex: 1; overflow: auto; padding: 4px 12px 12px; }
+  .toc-item { width: 100%; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 8px; align-items: baseline; text-align: left; padding: 11px 10px; border-radius: 8px; color: var(--panel-ink); min-width: 0; }
+  .toc-item:hover { background: rgba(var(--panel-rgb), 0.05); }
+  .toc-item.current { background: rgba(166, 122, 48, 0.16); }
+  .toc-item .num { font-variant-numeric: tabular-nums; font-size: 13px; letter-spacing: 0.08em; color: rgba(var(--panel-rgb), 0.5); }
+  .toc-item.current .num { color: var(--panel-accent); }
+  .toc-item .ex { font-family: var(--serif); font-size: 15px; line-height: 1.45; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .toc-item .ex.empty { color: rgba(var(--panel-rgb), 0.55); font-style: italic; }
+  .toc-foot { border-top: 1px solid rgba(var(--panel-rgb), 0.08); flex-wrap: wrap; }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 2px 0 8px; }
+  .spec-table th, .spec-table td { padding: 5px 4px; text-align: center; font-variant-numeric: tabular-nums; }
+  .spec-table th { font-weight: 500; color: rgba(var(--panel-rgb), 0.55); font-size: 11px; }
+  .spec-table td.now { background: rgba(166, 122, 48, 0.18); color: var(--panel-accent); font-weight: 600; border-radius: 6px; }
+  .spec-cap { width: 100%; font-size: 11px; color: rgba(var(--panel-rgb), 0.55); margin: 0 0 8px; }
+  .toc-foot button { border: 0; background: transparent; color: var(--panel-ink); font-size: 13px; padding: 6px 2px; text-decoration: underline; text-underline-offset: 3px; }
+  .lore-btn.armed, .toc-foot button.armed { color: var(--danger); }
+  .confirm-row { width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 12px; border-radius: 8px; background: rgba(140, 60, 40, 0.1); font-size: 13px; }
+  .confirm-row span { flex: 1 1 100%; }
+  .toc-foot .confirm-row .danger { color: var(--danger); font-weight: 600; }
+  .keys { width: 100%; font-size: 11px; color: rgba(var(--panel-rgb), 0.55); }
+  .lore { position: fixed; top: 0; right: 0; bottom: 0; width: min(820px, calc(100vw - 20px)); background: linear-gradient(180deg, var(--panel-sheen), transparent 80px), var(--panel-bg); color: var(--panel-ink); z-index: 22; transform: translateX(104%); transition: transform 0.38s var(--ease); display: flex; flex-direction: column; box-shadow: -18px 0 50px rgba(0, 0, 0, 0.28); }
+  .lore.open { transform: translateX(0); }
+  .lore button, .lore input, .lore select, .lore textarea { color: inherit; }
+  .lore-tabs { display: flex; gap: 6px; padding: 0 16px 12px; overflow-x: auto; flex: 0 0 auto; }
+  .lore-tab { border: 1px solid rgba(var(--panel-rgb), 0.22); background: transparent; border-radius: 999px; padding: 7px 14px; font-size: 13px; white-space: nowrap; min-height: 34px; }
+  .lore-tab[aria-selected="true"] { background: var(--panel-ink); color: var(--panel-bg); border-color: var(--panel-ink); }
+  .lore-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 250px minmax(0, 1fr); border-top: 1px solid rgba(var(--panel-rgb), 0.1); }
+  .lore-list { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid rgba(var(--panel-rgb), 0.1); }
+  .lore-list-head { display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+  .lore-add { border: 1px dashed rgba(var(--panel-rgb), 0.4); background: transparent; border-radius: 8px; padding: 9px; font-size: 13px; }
+  .lore-add:hover, .lore-item:hover { background: rgba(var(--panel-rgb), 0.06); }
+  .lore-items { flex: 1; overflow-y: auto; padding: 0 8px 14px; display: flex; flex-direction: column; gap: 2px; }
+  .lore-item { display: flex; align-items: baseline; gap: 8px; width: 100%; text-align: left; border: 0; background: transparent; border-radius: 8px; padding: 10px; min-width: 0; }
+  .lore-item.current { background: rgba(var(--panel-rgb), 0.1); }
+  .li-no { font-variant-numeric: tabular-nums; font-size: 11px; opacity: 0.55; flex: 0 0 auto; min-width: 1.4em; }
+  .li-title { font-family: var(--serif); font-size: 15px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .li-sub { font-size: 11px; opacity: 0.6; flex: 0 0 auto; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip { border: 1px solid rgba(var(--panel-rgb), 0.3); border-radius: 999px; padding: 1px 8px; opacity: 1; }
+  .chip[data-s="초안"] { border-color: var(--panel-accent); color: var(--panel-accent); }
+  .chip[data-s="완료"] { background: var(--panel-accent); border-color: var(--panel-accent); color: var(--panel-bg); }
+  .lore-empty { padding: 18px 12px; font-size: 13px; opacity: 0.6; line-height: 1.7; }
+  .lore-edit { overflow-y: auto; padding: 14px 20px 32px; display: flex; flex-direction: column; gap: 14px; min-height: 0; min-width: 0; }
+  .lore-edit > *, .lore-goals > * { flex-shrink: 0; }
+  .goals-panel { width: min(580px, calc(100vw - 20px)); }
+  .cover-editor { display: flex; flex-wrap: wrap; gap: 24px; padding: 18px 20px 32px; align-items: flex-start; }
+  @media (min-width: 721px) { .cover-preview { align-self: flex-start; position: sticky; top: 12px; } }
+  .cover-ctrls { flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+  .cv-group { display: flex; flex-direction: column; gap: 8px; }
+  .cv-label { font-size: 11px; letter-spacing: 0.12em; opacity: 0.65; }
+  .cv-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cv-opt { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; border: 1px solid rgba(var(--panel-rgb), 0.22); background: transparent; border-radius: 10px; padding: 7px 9px; min-width: 62px; font-size: 12px; }
+  .cv-opt[aria-pressed="true"] { border-color: var(--panel-accent); box-shadow: 0 0 0 1px var(--panel-accent); }
+  .cv-sw { width: 34px; height: 44px; border-radius: 3px 5px 5px 3px; border: 1px solid rgba(var(--panel-rgb), 0.3); }
+  .cv-dot { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(var(--panel-rgb), 0.3); }
+  .cv-fontsample { font-size: 18px; line-height: 1.2; }
+  .pro-badge { font-size: 9px; letter-spacing: 0.06em; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--panel-accent); color: var(--panel-accent); }
+  .cv-note { font-size: 12px; opacity: 0.7; line-height: 1.6; }
+  .goals-body { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; border-top: 1px solid rgba(var(--panel-rgb), 0.1); }
+  .goals-body .lore-goals { overflow: visible; flex: 1 0 auto; }
+  .page-head { position: relative; z-index: 4; flex: 0 0 auto; height: calc(var(--pad-top, 18px) + var(--fs) * 1.9 * var(--head-lines, 3)); padding: var(--pad-top, 18px) var(--pad-x, 16px) 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--fs) * 0.2); text-align: center; overflow: hidden; }
+  .page-head[hidden] { display: none; }
+  .ph-kind { font-size: calc(var(--fs) * 0.58); letter-spacing: 0.28em; text-transform: uppercase; color: rgba(42, 36, 28, 0.55); font-family: var(--sans); line-height: 1.2; }
+  .ph-title { width: 100%; border: 0; background: transparent; text-align: center; font-family: var(--serif); font-weight: 700; font-size: calc(var(--fs) * 1.12); line-height: 1.3; color: var(--ink); padding: 0; min-width: 0; }
+  .ph-title::placeholder { color: rgba(42, 36, 28, 0.3); font-weight: 400; }
+  .ph-title:focus { outline: none; border-bottom: 1px solid rgba(120, 84, 40, 0.35); }
+  .page-head[data-k="p"] { gap: calc(var(--fs) * 0.6); }
+  .page-head[data-k="p"] .ph-kind { font-size: calc(var(--fs) * 0.78); }
+  .page-head[data-k="p"] .ph-title { font-size: calc(var(--fs) * 1.7); }
+  .page-head[data-k="p"]::after { content: ""; width: 42px; height: 1px; background: rgba(120, 84, 40, 0.5); }
+  .sheet.headed textarea { padding-top: 0; }
+  .foot-strip { width: min(560px, 100%); display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border: 1px solid var(--chip-border); border-radius: 10px; background: var(--chip-bg); font-size: 12px; line-height: 1.6; text-align: left; }
+  .foot-strip[hidden] { display: none; }
+  .fs-title { font-size: 10px; letter-spacing: 0.16em; opacity: 0.65; }
+  .fs-line { border: 0; background: transparent; color: var(--desk-text); text-align: left; padding: 2px 0; font-size: 12px; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fs-line:hover { text-decoration: underline; }
+  body[data-ro] .lore .f-input, body[data-ro] .lore .lore-title, body[data-ro] .lore-add, body[data-ro] .lore-btn:not(.lore-back), body[data-ro] .cover-editor .cv-opt, body[data-ro] .ms-row input[type="checkbox"], body[data-ro] .cover-editor .lore-btn { pointer-events: none; opacity: 0.55; }
+  .save-btn { min-height: 34px; padding: 6px 16px; }
+  .save-btn[data-dirty="1"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
+  .save-state { font-size: 12px; opacity: 0.75; }
+  .save-conflict { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 12px; padding: 10px 14px; border: 1px solid var(--danger); border-radius: 12px; font-size: 13px; }
+  .save-conflict[hidden] { display: none; }
+  .struct-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 10px; }
+  .struct-bar[hidden] { display: none; }
+  .where { font-size: 13px; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; min-width: 8em; text-align: center; }
+  .struct-bar .tool-btn { min-height: 34px; padding: 6px 14px; }
+  .struct-bar .tool-btn.armed { color: var(--danger); border-color: var(--danger); }
+  .toc-item.head-p, .toc-item.head-c { grid-template-columns: 56px minmax(0, 1fr) auto; }
+  .toc-item.head-p { font-weight: 700; background: rgba(var(--panel-rgb), 0.07); margin-top: 6px; }
+  .toc-item.head-p .ex { font-size: 17px; font-weight: 700; }
+  .toc-item.head-c .ex { font-weight: 600; }
+  .toc-item.head-c .num, .toc-item.head-p .num { color: var(--panel-accent); }
+  .toc-item .pg { font-size: 11px; font-variant-numeric: tabular-nums; color: rgba(var(--panel-rgb), 0.5); }
+  .toc-item.sub { padding-left: 26px; }
+  .toc-item.sub .ex { font-size: 14px; }
+  .mode-seg button { padding: 6px 12px; }
+  .lore-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .lore-bar .grow { flex: 1; }
+  .lore-btn { flex: 0 0 auto; white-space: nowrap; border: 1px solid rgba(var(--panel-rgb), 0.22); background: transparent; border-radius: 999px; padding: 6px 12px; font-size: 12px; min-height: 32px; }
+  .lore-btn:hover { background: rgba(var(--panel-rgb), 0.07); }
+  .lore-btn.armed { color: var(--danger); border-color: var(--danger); }
+  .lore-btn:disabled { opacity: 0.35; }
+  .lore-back { display: none; }
+  .lore-tabs[hidden] { display: none; }
+  .lore-title { width: 100%; font-family: var(--serif); font-size: 24px; font-weight: 700; border: 0; border-bottom: 1px solid rgba(var(--panel-rgb), 0.2); background: transparent; padding: 6px 0; }
+  .f-row { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .f-label { font-size: 11px; letter-spacing: 0.1em; opacity: 0.62; }
+  .f-input { width: 100%; border: 1px solid rgba(var(--panel-rgb), 0.2); background: rgba(var(--panel-rgb), 0.05); border-radius: 8px; padding: 9px 11px; font-family: var(--sans); font-size: 14px; line-height: 1.6; min-width: 0; }
+  .f-input::placeholder { color: rgba(var(--panel-rgb), 0.38); }
+  .f-long { flex: none; font-family: var(--serif); font-size: 15px; line-height: 1.75; resize: none; overflow: hidden; min-height: 44px; }
+  select.f-input { background-color: var(--panel-bg); }
+  .lore-goals { grid-column: 1 / -1; overflow-y: auto; padding: 18px 20px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 0; }
+  .lore-goals h3 { margin: 0; font-family: var(--serif); font-size: 18px; letter-spacing: 0.06em; }
+  .goal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .goal-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .goal-num { display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
+  .goal-num b { font-size: 26px; font-weight: 600; }
+  .goal-num span { font-size: 12px; opacity: 0.6; }
+  .bar { height: 8px; border-radius: 4px; background: rgba(var(--panel-rgb), 0.12); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--panel-accent); transition: width 0.3s ease; }
+  .goal-stats { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; font-variant-numeric: tabular-nums; opacity: 0.8; }
+  .ms-row { display: flex; align-items: center; gap: 10px; }
+  .ms-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--panel-accent); flex: 0 0 auto; }
+  .ms-row .f-input.done { text-decoration: line-through; opacity: 0.55; }
+  @media (max-width: 640px) {
+    .lore-body { grid-template-columns: minmax(0, 1fr); }
+    .lore-body[data-mode="edit"] .lore-list, .lore-body[data-mode="list"] .lore-edit { display: none; }
+    .lore-back { display: inline-flex; align-items: center; }
+    .lore-edit { padding: 12px 16px 28px; }
+  }
+  .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(8px); background: #1a140c; color: var(--gold); border: 1px solid rgba(230, 197, 106, 0.4); border-radius: 999px; padding: 10px 16px; font-size: 13px; opacity: 0; pointer-events: none; transition: 0.25s ease; z-index: 40; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 640px) {
+    .app { padding: 8px 8px 8px; }
+    .brand-note { display: none; }
+    .toolbar { gap: 6px 8px; }
+    .turn { width: 34px; height: 34px; margin-top: -17px; }
+    .turn.prev { right: calc(100% + 4px); }
+    .turn.next { left: calc(100% + 4px); }
+    .control-label, .seg button small { display: none; }
+    .turn.label { min-width: 40px; padding: 0 8px; font-size: 11px; letter-spacing: 0; }
+    .seg button { padding: 7px 11px; }
+    .book[data-fit="screen"] { width: min(560px, calc(100vw - 104px)) !important; height: min(820px, calc(100dvh - 190px)) !important; max-height: calc(100dvh - 190px); }
+    .under-hint, .save-note { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .book, .toc, .shelf, .backdrop, .toast, .leaf, .cover { transition: none !important; animation: none !important; }
+  }
+</style>
+  </head>
+<body>
+<div class="app">
+    <header class="top">
+      <div class="brand">
+        <h1 class="brand-mark">블랙북</h1>
+        <button type="button" class="tool-btn save-btn" id="saveBtn" data-dirty="0" title="저장 (Ctrl+S)">저장</button>
+        <span class="save-state" id="saveState" aria-live="polite"></span>
+        <div class="seg theme-seg" role="group" aria-label="언어">
+          <button type="button" data-lang="ko" aria-pressed="true">한국어</button>
+          <button type="button" data-lang="en" aria-pressed="false" data-i18n-skip>English</button>
+        </div>
+        <div class="seg theme-seg" role="group" aria-label="화면 테마">
+          <button type="button" data-theme-pref="auto" aria-pressed="true">자동</button>
+          <button type="button" data-theme-pref="light" aria-pressed="false">밝게</button>
+          <button type="button" data-theme-pref="dark" aria-pressed="false">어둡게</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="control">
+          <span class="control-label">크기</span>
+          <div class="seg" role="group" aria-label="책 크기">
+            <button type="button" data-psize="A6" aria-pressed="false">A6<small>105×148</small></button>
+            <button type="button" data-psize="B6" aria-pressed="false">B6<small>128×182</small></button>
+            <button type="button" data-psize="A5" aria-pressed="true">A5<small>148×210</small></button>
+            <button type="button" data-psize="SK" aria-pressed="false"><span>신국판</span><small>152×225</small></button>
+          </div>
+        </div>
+        <div class="control">
+          <span class="control-label">글자</span>
+          <div class="seg font-seg" role="group" aria-label="글자 크기">
+            <button type="button" data-font="13" aria-pressed="false" aria-label="글자 더 작게, 9.75pt" title="9.75pt" style="font-size:12px">가</button>
+            <button type="button" data-font="16" aria-pressed="false" aria-label="글자 작게, 12pt" title="12pt" style="font-size:15px">가</button>
+            <button type="button" data-font="19" aria-pressed="true" aria-label="글자 보통, 14.25pt" title="14.25pt" style="font-size:18px">가</button>
+            <button type="button" data-font="22" aria-pressed="false" aria-label="글자 크게, 16.5pt" title="16.5pt" style="font-size:21px">가</button>
+            <button type="button" data-font="26" aria-pressed="false" aria-label="글자 아주 크게, 19.5pt" title="19.5pt" style="font-size:24px">가</button>
+          </div>
+        </div>
+        <div class="control">
+          <span class="control-label">한 쪽</span>
+          <div class="limit-pill" id="limitLabel" aria-live="polite">크기별</div>
+        </div>
+        <div class="control">
+          <span class="control-label">서가</span>
+          <button type="button" class="tool-btn" id="shelfBtn">서가</button>
+        </div>
+        <div class="control">
+          <span class="control-label">목차</span>
+          <button type="button" class="tool-btn" id="tocBtn">목차</button>
+        </div>
+        <div class="control">
+          <span class="control-label">목표</span>
+          <button type="button" class="tool-btn" id="goalsBtn">목표</button>
+        </div>
+        <div class="control">
+          <span class="control-label">주장집</span>
+          <button type="button" class="tool-btn" id="loreBtn">주장집</button>
+        </div>
+        <div class="control">
+          <span class="control-label">표지</span>
+          <button type="button" class="tool-btn" id="coverEditBtn">표지</button>
+        </div>
+        <div class="control">
+          <span class="control-label">모드</span>
+          <div class="seg mode-seg" role="group" aria-label="글쓰기 모드">
+            <button type="button" data-bmode="lit" aria-pressed="true">문학</button>
+            <button type="button" data-bmode="non" aria-pressed="false">비문학</button>
+          </div>
+        </div>
+        <div class="pos" id="pos" aria-live="polite"><b>1</b> 쪽</div>
+        <button type="button" class="tool-btn" id="coverBtn" hidden>덮기</button>
+      </div>
+    </header>
+    <div class="save-conflict" id="saveConflict" hidden>
+      <span>다른 기기에서 먼저 저장한 내용이 있어요. 어떻게 할까요?</span>
+      <button type="button" class="tool-btn" id="cfOverwrite">내 것으로 덮어쓰기</button>
+      <button type="button" class="tool-btn" id="cfTake">다른 기기 것 불러오기</button>
+    </div>
+    <div class="stage" id="stage" data-state="cover">
+      <div class="book-wrap">
+        <button type="button" class="turn prev" id="prevBtn" aria-label="이전 쪽" disabled>‹</button>
+        <div class="book" id="book" data-size="A5" data-state="cover">
+          <div class="edges"></div>
+          <div class="cover" id="cover">
+            <div class="cover-face front">
+              <div class="cover-frame">
+                <span class="foil-corner tl"></span><span class="foil-corner tr"></span>
+                <span class="foil-corner bl"></span><span class="foil-corner br"></span>
+                <div class="crest" aria-hidden="true"><i></i></div>
+                <div class="ornament"></div>
+                <div class="cover-title" id="titleInput" data-i18n-skip contenteditable="true" spellcheck="false" role="textbox" aria-label="책 제목">블랙북</div>
+                <div class="foil-en">BLACK BOOK</div>
+                <div class="ornament"></div>
+                <div class="cover-sub" id="coverSub">혼자 쓰는 노트</div>
+                <div class="cover-meta" id="coverMeta">A5 · 저널</div>
+              </div>
+              <span class="lift-hint" aria-hidden="true"></span>
+            </div>
+            <div class="cover-face back" aria-hidden="true">
+              <div class="endpaper">
+                <span class="foil-corner tl"></span><span class="foil-corner tr"></span>
+                <span class="foil-corner bl"></span><span class="foil-corner br"></span>
+                <div class="crest" aria-hidden="true"><i></i></div>
+                <div class="ornament"></div>
+                <div class="end-kicker">BLACK BOOK</div>
+                <div class="end-title">속표지</div>
+                <div class="ornament"></div>
+                <div class="end-note">표지를 덮으면 다시 닫혀요</div>
+              </div>
+            </div>
+            <div class="cover-lip" aria-hidden="true"></div>
+          </div>
+          <div class="sheet" id="sheetEl">
+            <div class="page-head" id="pageHead" hidden>
+              <div class="ph-kind" id="phKind"></div>
+              <input class="ph-title" id="phTitle" type="text" maxlength="120" placeholder="제목 없음" aria-label="제목" />
+            </div>
+            <textarea id="writing" spellcheck="false" placeholder="첫 문장을 적어 보세요" aria-label="이 쪽의 글"></textarea>
+            <div class="folio">
+              <div class="folio-num" id="folio">— 1 —</div>
+              <div class="folio-count" id="folioCount"></div>
+            </div>
+          </div>
+          <div class="leaf" id="leaf" aria-hidden="true">
+            <div class="face front"><div class="prose" id="faceFront"></div></div>
+            <div class="face back"><div class="prose" id="faceBack"></div></div>
+          </div>
+          <button type="button" class="hotspot left" id="hotPrev" aria-label="이전 쪽"></button>
+          <button type="button" class="hotspot right" id="hotNext" aria-label="다음 쪽"></button>
+        </div>
+        <button type="button" class="turn next label" id="nextBtn" aria-label="표지 넘기기">열기</button>
+      </div>
+      <div class="book-foot">
+        <div class="struct-bar" id="structBar" hidden>
+          <button type="button" class="tool-btn" id="addPartBtn">+ 부 추가</button>
+          <button type="button" class="tool-btn" id="addChapterBtn">+ 장 추가</button>
+          <button type="button" class="tool-btn" id="addFootBtn" hidden>+ 각주</button>
+          <span class="where" id="whereNow" aria-live="polite"></span>
+          <button type="button" class="tool-btn" id="delHeadBtn">삭제</button>
+        </div>
+        <div class="foot-strip" id="footStrip" hidden></div>
+        <div class="under-hint" id="hint">오른쪽 열기로 표지를 넘기세요</div>
+        <div class="spec-note" id="specNote"></div>
+        <div class="save-note" id="saveNote">글은 이 브라우저에 임시로 남아요. 저장 버튼(Ctrl+S)을 눌러야 내 계정에 올라가요.</div>
+      </div>
+    </div>
+  </div>
+  <div id="measure" aria-hidden="true"></div>
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="shelf" id="shelf" aria-hidden="true" aria-label="서가">
+    <div class="toc-head">
+      <div><h2>서가</h2><div class="toc-stats" id="shelfStats">1권</div></div>
+      <button type="button" class="close-x" id="shelfClose" aria-label="서가 닫기">×</button>
+    </div>
+    <div class="toc-list" id="shelfList"></div>
+    <div class="toc-foot">
+      <button type="button" id="newLitBtn">새 책 · 문학</button>
+      <button type="button" id="newNonBtn">새 책 · 비문학</button>
+      <button type="button" id="deleteBookBtn">이 책 지우기</button>
+      <div class="confirm-row" id="deleteConfirm" hidden>
+        <span>이 책을 지울까요? 되돌릴 수 없어요.</span>
+        <button type="button" id="deleteYes" class="danger">지우기</button>
+        <button type="button" id="deleteNo">취소</button>
+      </div>
+      <div class="keys">글은 이 브라우저에 임시로 남아요 · 새 책은 표지부터 시작합니다</div>
+    </div>
+  </aside>
+  <aside class="toc" id="toc" aria-hidden="true" aria-label="목차">
+    <div class="toc-head">
+      <div><h2>목차</h2><div class="toc-stats" id="tocStats">1장</div></div>
+      <button type="button" class="close-x" id="tocClose" aria-label="목차 닫기">×</button>
+    </div>
+    <div class="toc-list" id="tocList"></div>
+    <div class="toc-foot">
+      <table class="spec-table" id="specTable" aria-label="용지별 한 쪽 분량"></table>
+      <div class="spec-cap" id="specCap"></div>
+      <button type="button" id="tocFillBtn">부·장으로 목차 채우기</button>
+      <button type="button" id="tocPageBtn">목차 쪽 만들기</button>
+      <button type="button" id="tocPageDel" hidden>목차 쪽 없애기</button>
+      <button type="button" id="exportTxt">원고 내려받기</button>
+      <button type="button" id="exportJson">백업</button>
+      <button type="button" id="importBtn">불러오기</button>
+      <div class="keys">표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →</div>
+    </div>
+  </aside>
+  <aside class="lore" id="lore" aria-hidden="true" aria-label="주장집">
+    <div class="toc-head">
+      <div><h2>주장집</h2><div class="toc-stats" id="loreStats"></div></div>
+      <button type="button" class="close-x" id="loreClose" aria-label="주장집 닫기">×</button>
+    </div>
+    <div class="lore-tabs" id="loreTabs" role="tablist" aria-label="주장집 분류"></div>
+    <div class="lore-body" id="loreBody"></div>
+  </aside>
+  <aside class="lore goals-panel" id="goalsPanel" aria-hidden="true" aria-label="목표">
+    <div class="toc-head">
+      <div><h2>목표</h2><div class="toc-stats" id="goalsStats"></div></div>
+      <button type="button" class="close-x" id="goalsClose" aria-label="목표 닫기">×</button>
+    </div>
+    <div class="goals-body" id="goalsBody"></div>
+  </aside>
+  <aside class="lore goals-panel" id="coverPanel" aria-hidden="true" aria-label="표지 꾸미기">
+    <div class="toc-head">
+      <div><h2>표지 꾸미기</h2><div class="toc-stats" id="coverStats"></div></div>
+      <button type="button" class="close-x" id="coverClose" aria-label="표지 닫기">×</button>
+    </div>
+    <div class="goals-body" id="coverBody"></div>
+  </aside>
+  <div class="toast" id="toast" role="status"></div>
+  <input type="file" id="filePick" accept="application/json,.json" hidden />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="../config.js"></script>
+<script src="../service.js"></script>
+<script>
+(function () {
+  const KEY = "blackbook.v1";
+  const EN = {"신국판": "Trade", "블랙북": "Blackbook", "목차": "Contents", "{0} 한 쪽이 차서 다음 쪽으로 넘어갔어요": "That page is full ({0}), so writing moved on to the next page", "화면 글씨 · 한 쪽은 인쇄 기준": "screen text · page size follows print", "인쇄 비율": "print scale", "{0} {1}×{2}mm · {3}자×{4}줄 · {5}자 · {6}": "{0} {1}×{2}mm · {3} cols × {4} rows · {5} chars · {6}", "더 작게": "XS", "작게": "S", "보통": "M", "크게": "L", "아주 크게": "XL", "{0}자 × {1}줄": "{0} cols × {1} rows", "지금 {0} · {1}pt · {2}자 × {3}줄 · {4}자. 휴대폰에서는 글씨를 줄이지 않고, 한 쪽 분량만 이 규격을 씁니다.": "Now {0} · {1}pt · {2} cols × {3} rows · {4} chars. English text fits about 1.9× the characters of Korean per line. On phones the text is not shrunk; only the page capacity follows this spec.", "{0}자": "{0} chars", "공백 포함, 줄바꿈 제외": "spaces included, line breaks excluded", "{0}부": "Part {0}", "{0}장": "Chapter {0}", "제목 없음": "Untitled", "검은 표지, 금박": "Black cover, gold foil", "비문학": "Non-fiction", "문학": "Fiction", "생각을 책으로": "Ideas into a book", "혼자 쓰는 노트": "A notebook of your own", "쪽": "p.", "목차 쪽으로 가기": "Go to contents page", "목차 쪽 만들기": "Create contents page", "{0}쪽": "p. {0}", "삭제": "Delete", "{0} 삭제": "Delete {0}", "덮기": "Close", "표지 덮기": "Close the cover", "이전 쪽": "Previous page", "열기": "Open", "표지 넘기기": "Open the cover", "새 쪽": "New page", "다음 쪽": "Next page", "오른쪽 열기, 또는 표지 모서리를 눌러 넘기세요": "Press Open on the right, or the corner of the cover", "왼쪽 덮기로 표지를 다시 덮을 수 있어요": "Press Close on the left to shut the cover again", "한 쪽이 차면 다음 쪽으로 넘어갑니다": "When a page fills up, writing moves on to the next", "{0}쪽 · 글이 있는 쪽 {1}": "{0} pages · {1} with writing", "목차 {0}쪽": "{0} contents pp.", "글이 있는 쪽 {0}": "{0} with writing", "{0}권": "{0} books", "빈 쪽": "Blank page", "새 책": "New book", "새 책을 만들었어요. 표지에 제목을 적으세요": "New book created. Write a title on the cover.", "부를 추가했어요. 제목을 적으세요": "Part added. Write its title.", "장을 추가했어요. 제목을 적으세요": "Chapter added. Write its title.", "{0}을(를) 지웠어요": "Deleted {0}", "비문학 모드로 바꿨어요": "Switched to non-fiction mode", "문학 모드로 바꿨어요": "Switched to fiction mode", "목차 쪽을 맨 앞에 만들었어요": "Contents page created at the front", "목차 쪽을 만들었어요. 책을 열면 맨 앞에 있어요": "Contents page created. It is at the front when you open the book.", "(빈 쪽)": "(blank page)", "주장집": "Notes", "원고를 내려받았어요": "Manuscript downloaded", "백업을 내려받았어요": "Backup downloaded", "한 번 더 누르면 {0}의 표지가 지워져요. 장은 남아요": "Press again to delete the cover page of {0}. Its chapters stay.", "한 번 더 누르면 {0}({1}쪽)이 지워져요": "Press again to delete {0} ({1} pages)", "한 번 더 누르면 목차 쪽이 사라져요": "Press again to remove the contents page", "마지막 쪽이에요. 오른쪽 + 로 새 쪽을 더하세요.": "This is the last page. Use + on the right to add one.", "이름 없음": "Unnamed", "목표": "Goals", "총 목표": "Total goal", "하루 목표": "Daily goal", "{0} · 항목 {1}개": "{0} · entries: {1}", "{0} 찾기": "Search {0}", "+ 새 {0}": "+ New {0}", "찾는 항목이 없어요": "Nothing matches", "‹ 목록": "‹ List", "위로": "Up", "아래로": "Down", "지우기": "Delete", "한 번 더 누르면 지워요": "Press again to delete", "{0} 이름": "{0} name", "집필 목표": "Writing goals", "책 전체 목표 글자 수": "Total characters for the book", "예: 100000": "e.g. 100000", "하루 목표 글자 수": "Characters per day", "예: 2000": "e.g. 2000", "목표를 정하면 진행률이 보여요": "Set a goal to see progress", "본문": "Body text", "현재 판형 기준": "At current page size", "약 {0}쪽": "about {0} pages", "오늘": "Today", "연속 달성": "Streak", "{0}일": "{0} days", "마일스톤": "Milestones", "완료": "Done", "예: 1부 초고 끝내기": "e.g. Finish the Part 1 draft", "새 마일스톤": "New milestone", "추가": "Add", "계정에 저장된 서가를 불러왔어요": "Loaded the shelf saved in your account", "세계관": "Worldbuilding", "설정": "setting", "아직 설정이 없어요. 마법, 역사, 종교, 규칙처럼 세계를 이루는 것을 하나씩 적어 보세요.": "No settings yet. Add the things that make up your world, one at a time: magic, history, religion, rules.", "왼쪽에서 설정을 고르거나 새로 만드세요.": "Pick a setting on the left or create a new one.", "분류": "Category", "역사 · 종교 · 마법 · 사회 · 기술": "History · religion · magic · society · technology", "설명": "Description", "이 설정이 무엇인지 적어 두세요": "Describe what this is", "규칙과 한계": "Rules and limits", "반드시 지켜야 하는 규칙, 할 수 없는 일": "Rules that must hold, things it cannot do", "이야기에서 쓰이는 곳": "Where it appears in the story", "어느 장면, 어느 인물과 이어지나요": "Which scenes and characters does it touch?", "아틀라스": "Atlas", "장소": "place", "아직 장소가 없어요. 도시, 국가, 산맥, 방 하나도 좋아요.": "No places yet. A city, a country, a mountain range, even a single room.", "왼쪽에서 장소를 고르거나 새로 만드세요.": "Pick a place on the left or create a new one.", "종류": "Type", "도시 · 국가 · 산맥 · 건물": "City · country · mountains · building", "지형과 기후": "Terrain and climate", "사람과 문화": "People and culture", "이어진 장소와 이동": "Connected places and travel", "어디에서 얼마나 걸리나요": "From where, and how long does it take?", "여기서 벌어지는 일": "What happens here", "캐릭터": "Characters", "인물": "character", "아직 인물이 없어요. 이름만 먼저 적어도 됩니다.": "No characters yet. A name alone is enough to start.", "왼쪽에서 인물을 고르거나 새로 만드세요.": "Pick a character on the left or create a new one.", "역할": "Role", "주인공 · 조력자 · 적대자": "Protagonist · ally · antagonist", "나이와 생일": "Age and birthday", "외모": "Appearance", "성격과 말투": "Personality and voice", "원하는 것": "What they want", "겉으로 드러나는 목표": "The outward goal", "진짜 필요한 것과 결핍": "What they truly need, and what is missing", "비밀": "Secret", "관계": "Relationships", "누구와 어떤 사이인가요": "Who are they to each other?", "변화": "Change", "이야기 끝에서 어떻게 달라지나요": "How are they different by the end?", "플롯": "Plot", "장면": "scene", "아직 장면이 없어요. 위에서 아래로 순서대로 쌓으면 줄거리가 됩니다.": "No scenes yet. Stack them from top to bottom and they become your plot.", "왼쪽에서 장면을 고르거나 새로 만드세요.": "Pick a scene on the left or create a new one.", "상태": "Status", "구상": "Idea", "초안": "Draft", "연결된 장": "Linked chapter", "예: 12~14장": "e.g. chapters 12-14", "장면 요약": "Scene summary", "무슨 일이 일어나나요": "What happens?", "갈등과 장애물": "Conflict and obstacles", "복선과 회수": "Setups and payoffs", "깔아 둘 것, 거둘 것": "What to plant, what to pay off", "핵심 주장": "Core claims", "주장": "claim", "아직 주장이 없어요. 책이 말하려는 것을 한 문장씩 적어 보세요.": "No claims yet. Write what the book argues, one sentence at a time.", "왼쪽에서 주장을 고르거나 새로 만드세요.": "Pick a claim on the left or create a new one.", "유형": "Kind", "핵심 주장 · 근거 · 반론 · 결론": "Core claim · support · objection · conclusion", "한 문장 주장": "One-sentence claim", "독자가 기억해야 할 문장": "The sentence the reader should remember", "근거": "Evidence", "자료·사례·논리": "Sources, cases, logic", "예상 반론과 답": "Likely objection and reply", "독자에게 의미": "What it means for the reader", "그래서 무엇이 달라지나요": "So what changes?", "쓸 장": "Chapter to write it in", "예: 3장": "e.g. chapter 3", "참고자료": "References", "자료": "reference", "아직 참고자료가 없어요. 읽은 책, 논문, 기사, 인터뷰를 모아 두세요. 이름 칸에는 제목을 적으면 참고문헌이 됩니다.": "No references yet. Collect the books, papers, articles and interviews you read. The name you give each one becomes its title in the bibliography.", "왼쪽에서 참고자료를 고르거나 새로 만드세요.": "Pick a reference on the left or create a new one.", "책 · 논문 · 기사 · 인터뷰 · 웹": "Book · paper · article · interview · web", "저자·기관": "Author or organization", "연도·날짜": "Year or date", "위치·링크·쪽": "Location, link or page", "핵심 내용": "Key points", "인용할 문장": "Quote to use", "신뢰도와 한계": "Reliability and limits", "쓰는 곳": "Where it is used", "예: 2장 첫 문단": "e.g. first paragraph of chapter 2", "용어집": "Glossary", "용어": "term", "아직 용어가 없어요. 책에서 반복해 쓸 말을 정의해 두세요.": "No terms yet. Define the words you will use again and again.", "왼쪽에서 용어를 고르거나 새로 만드세요.": "Pick a term on the left or create a new one.", "분야": "Field", "정의": "Definition", "이 책에서 이 말이 뜻하는 것": "What this word means in this book", "예시": "Example", "헷갈리는 말": "Easily confused with", "비슷하지만 다른 말": "Similar but different words", "처음 나오는 곳": "First appears in", "사례": "Cases", "아직 사례가 없어요. 주장을 받쳐 줄 이야기를 모아 두세요.": "No cases yet. Collect the stories that support your claims.", "왼쪽에서 사례를 고르거나 새로 만드세요.": "Pick a case on the left or create a new one.", "실제 사례 · 가상 사례 · 비교": "Real case · hypothetical · comparison", "배경": "Background", "무슨 일이 있었나": "What happened", "시사점": "Takeaway", "한국어": "한국어", "자동": "Auto", "밝게": "Light", "어둡게": "Dark", "크기": "Size", "글자": "Text", "가": "A", "한 쪽": "Per page", "크기별": "by size", "서가": "Shelf", "모드": "Mode", "A5 · 저널": "A5 · journal", "속표지": "Title page", "표지를 덮으면 다시 닫혀요": "Close the cover to shut the book", "+ 부 추가": "+ Add part", "+ 장 추가": "+ Add chapter", "오른쪽 열기로 표지를 넘기세요": "Press Open on the right to turn the cover", "책을 열다": "Open the book", "1권": "1 book", "새 책 · 문학": "New book · Fiction", "새 책 · 비문학": "New book · Non-fiction", "이 책 지우기": "Delete this book", "이 책을 지울까요? 되돌릴 수 없어요.": "Delete this book? This cannot be undone.", "취소": "Cancel", "1장": "1 ch.", "부·장으로 목차 채우기": "Fill contents from parts and chapters", "목차 쪽 없애기": "Remove contents page", "원고 내려받기": "Download manuscript", "백업": "Backup", "불러오기": "Import", "표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →": "Open turns the cover, Close shuts it · Alt + ← →", "언어": "Language", "화면 테마": "Theme", "책 크기": "Book size", "글자 크기": "Text size", "글자 더 작게, 9.75pt": "Text extra small, 9.75pt", "글자 작게, 12pt": "Text small, 12pt", "글자 보통, 14.25pt": "Text medium, 14.25pt", "글자 크게, 16.5pt": "Text large, 16.5pt", "글자 아주 크게, 19.5pt": "Text extra large, 19.5pt", "글쓰기 모드": "Writing mode", "책 제목": "Book title", "제목": "Title", "첫 문장을 적어 보세요": "Write your first sentence", "이 쪽의 글": "Text of this page", "서가 닫기": "Close shelf", "목차 닫기": "Close contents", "용지별 한 쪽 분량": "Capacity per page by paper size", "주장집 닫기": "Close notes", "주장집 분류": "Note categories", "목표 닫기": "Close goals", "저장 공간이 부족해요": "Not enough storage space", "책이 너무 많아요": "Too many books", "지울 책이 없어요": "There is no book to delete", "책을 지웠어요": "Book deleted", "너무 길어 더 나눌 수 없어요": "This book is too long to add more pages", "목차와 본문은 이어 붙일 수 없어요": "Contents and body cannot be joined", "제목이 있는 쪽은 앞 쪽과 이어 붙일 수 없어요. 아래 삭제 버튼을 쓰세요": "A page with a heading cannot be joined to the one before it. Use the delete button below.", "목차를 채웠어요. 쪽 번호는 본문 기준이에요": "Contents filled in. Page numbers count body pages only.", "먼저 부나 장을 추가하세요": "Add a part or chapter first", "내려받기를 취소했어요": "Download cancelled", "잠시 뒤에 다시 눌러 주세요": "Please try again in a moment", "파일로 저장할 수 없어 클립보드에 복사했어요": "Could not save a file, so it was copied to the clipboard", "여기서는 파일로 저장할 수 없어요": "Saving files is not available here", "새 책으로 불러왔어요": "Imported as a new book", "이 파일은 백업이 아니에요": "This file is not a backup", "항목이 너무 많아요": "Too many entries", "마일스톤이 너무 많아요": "Too many milestones", "계정에 다 저장하지 못했어요. 이 브라우저에는 남아 있어요": "Could not save everything to your account. It is still in this browser.", "책": "book", "목차 쪽을 없앴어요": "Contents page removed", "다른 기기의 변경을 불러왔어요": "Loaded changes from another device", "+ 각주": "+ Footnote", "각주": "Footnotes", "각주 내용": "Footnote text", "쪽 아래에 달 설명이나 출처": "A note or source to show at the foot of the page", "연결된 참고자료": "Linked reference", "(없음)": "None", "내용이 비어 있어요": "No text yet", "이 쪽의 각주": "FOOTNOTES ON THIS PAGE", "각주 {0}을 만들었어요. 내용을 적으세요": "Footnote {0} created. Write its text.", "목차 쪽에는 각주를 달 수 없어요": "Footnotes cannot be added on the contents page", "참고문헌": "Bibliography", "아직 각주가 없어요. 비문학 모드에서 책 아래의 '+ 각주'를 누르면 본문에 [^1] 같은 표시가 들어가고, 여기에 내용을 적어요.": "No footnotes yet. In non-fiction mode, press '+ Footnote' under the book to drop a marker like [^1] into the text, then write its content here.", "왼쪽에서 각주를 고르세요.": "Pick a footnote on the left.", "표지": "Cover", "표지 꾸미기": "Customize cover", "표지 닫기": "Close cover settings", "표지 색": "Cover color", "금박·글자 색": "Foil and text color", "제목 글꼴": "Title font", "질감": "Texture", "테두리 장식": "Border style", "표지 이미지": "Cover picture", "이미지 올리기": "Upload picture", "이미지 지우기": "Remove picture", "프리미엄": "Premium", "프리미엄 표시 항목은 나중에 유료가 될 수 있어요. 지금은 모두 써 볼 수 있어요.": "Items marked Premium may become paid later. For now you can try them all.", "가나다 Abc": "Aa Abc", "검정": "Black", "남색": "Navy", "와인": "Wine", "숲 초록": "Forest", "아이보리": "Ivory", "자두": "Plum", "청회색": "Slate", "금박": "Gold foil", "은박": "Silver foil", "로즈골드": "Rose gold", "구리": "Copper", "흰색": "White", "잉크": "Ink", "명조": "Serif", "고딕": "Sans", "손글씨": "Handwriting", "굵은 제목": "Heavy", "질감 없음": "No texture", "가죽": "Leather", "천": "Cloth", "종이": "Paper", "기본 장식": "Standard", "이중 테두리": "Double frame", "장식 없음": "Plain", "프리미엄 기능이에요": "This is a premium feature", "이미지가 너무 커요. 다른 사진을 골라 주세요": "The picture is too large. Please pick another.", "이미지를 읽을 수 없어요": "Could not read the picture", "저장": "Save", "저장 (Ctrl+S)": "Save (Ctrl+S)", "저장됨": "Saved", "저장 중…": "Saving…", "저장 안 된 변경이 있어요": "Unsaved changes", "이 브라우저에만 저장돼요": "Saved in this browser only", "다른 기기에 더 새로운 저장본이 있어요": "A newer save exists on another device", "저장했어요": "Saved", "이미 저장돼 있어요": "Already saved", "계정에 연결되지 않아서 이 브라우저에만 저장돼요": "Not connected to an account, so it is saved in this browser only", "저장하지 못했어요. 이 브라우저에는 남아 있어요": "Could not save. Your text is still in this browser.", "다른 기기에서 먼저 저장한 내용이 있어요. 어떻게 할까요?": "Another device saved something first. What would you like to do?", "내 것으로 덮어쓰기": "Overwrite with mine", "다른 기기 것 불러오기": "Load the other device's version", "다른 기기의 저장본을 불러왔어요": "Loaded the other device's saved version", "글은 이 브라우저에 임시로 남고, 저장 버튼(Ctrl+S)을 눌러야 내 계정과 다른 기기에 올라가요.": "Your writing is kept in this browser as a draft. Press Save (Ctrl+S) to put it in your account and on other devices.", "저장 버튼을 누르면 내 계정에 올라가요 · 나만 볼 수 있어요 · 새 책은 표지부터 시작합니다": "Press Save to put it in your account · only you can see it · a new book starts at the cover", "글은 이 브라우저에 임시로 남아요. 저장 버튼(Ctrl+S)을 눌러야 내 계정에 올라가요.": "Your writing is kept in this browser as a draft. Press Save (Ctrl+S) to put it in your account.", "글은 이 브라우저에 임시로 남아요 · 새 책은 표지부터 시작합니다": "Kept in this browser as a draft · a new book starts at the cover", "체험이 끝나서 새로 저장할 수 없어요. 구독하면 계속 쓸 수 있어요": "Your trial has ended, so new changes cannot be saved. Subscribe to keep writing."};
+  const LANG_KEY = "blackbook.lang";
+  let lang = "ko";
+  try { if (localStorage.getItem(LANG_KEY) === "en") lang = "en"; } catch (e) {}
+  function t(ko) {
+    let out = (lang === "en" && Object.prototype.hasOwnProperty.call(EN, ko)) ? EN[ko] : ko;
+    if (arguments.length > 1) { const a = arguments; out = out.replace(/\{(\d+)\}/g, (m, i) => (a[Number(i) + 1] !== undefined ? a[Number(i) + 1] : m)); }
+    return out;
+  }
+  function nf(n) { return Number(n).toLocaleString(lang === "en" ? "en-US" : "ko-KR"); }
+  const domOrig = new WeakMap(), attrOrig = new WeakMap();
+  function tr(k) { return (lang === "en" && Object.prototype.hasOwnProperty.call(EN, k)) ? EN[k] : k; }
+  function i18nDom(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode(n) { const par = n.parentNode; if (!par || /^(SCRIPT|STYLE|TEXTAREA)$/.test(par.nodeName) || (par.closest && par.closest("[data-i18n-skip]"))) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; } });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(n => {
+      let o = domOrig.get(n);
+      if (o === undefined) { o = n.nodeValue; if (!/[가-힣]/.test(o)) return; domOrig.set(n, o); }
+      const key = o.trim(), out = tr(key);
+      const nv = o.replace(key, () => out);
+      if (n.nodeValue !== nv) n.nodeValue = nv;
+    });
+    root.querySelectorAll("[aria-label],[title],[placeholder]").forEach(e => {
+      if (e.closest("[data-i18n-skip]")) return;
+      ["aria-label", "title", "placeholder"].forEach(a => {
+        if (!e.hasAttribute(a)) return;
+        let m = attrOrig.get(e); if (!m) { m = {}; attrOrig.set(e, m); }
+        if (m[a] === undefined) { const v = e.getAttribute(a); if (!/[가-힣]/.test(v)) return; m[a] = v; }
+        const out = tr(m[a]);
+        if (e.getAttribute(a) !== out) e.setAttribute(a, out);
+      });
+    });
+  }
+  const OLD = "blankbook.v1";
+  const LIB = "blackbook.library.v2" + (window.BB_SUFFIX ? ":" + window.BB_SUFFIX : "");
+  const FONTS = [13, 16, 19, 22, 26];
+  const PAGE_CAP = 2000;
+  const BOOK_CAP = 40;
+  const SAMPLE = "";
+  const PX_PER_MM = 96 / 25.4;
+  const PAPER = {
+    A6: { w: 105, h: 148, textW: 77, textH: 113, top: 16, bottom: 19 },
+    B6: { w: 128, h: 182, textW: 99, textH: 146, top: 17, bottom: 19 },
+    A5: { w: 148, h: 210, textW: 117, textH: 172, top: 18, bottom: 20 },
+    SK: { w: 152, h: 225, textW: 120, textH: 185, top: 19, bottom: 21 }
+  };
+  function sizeName(k) { return k === "SK" ? t("신국판") : k; }
+  const ENTRY_CAP = 300;
+  const PREMIUM_LOCKED = false; // flip to true once payment exists; premium options are marked but still usable
+  const COVER_BG = {
+    black: { n: "검정", g: "linear-gradient(165deg, #2c2c2c 0%, #141414 40%, #070707 100%)", gb: "linear-gradient(198deg, #242424 0%, #101010 46%, #070707 100%)", base: "#0c0c0c" },
+    navy: { n: "남색", g: "linear-gradient(165deg, #26385c 0%, #14213a 40%, #0a111f 100%)", gb: "linear-gradient(198deg, #1e2d4a 0%, #101a2e 46%, #0a111f 100%)", base: "#0e1626" },
+    wine: { n: "와인", g: "linear-gradient(165deg, #5a2230 0%, #33121b 40%, #17070c 100%)", gb: "linear-gradient(198deg, #4a1c27 0%, #2a0f16 46%, #17070c 100%)", base: "#2a0d14" },
+    forest: { n: "숲 초록", g: "linear-gradient(165deg, #2a4a3b 0%, #15291f 40%, #08130d 100%)", gb: "linear-gradient(198deg, #213c30 0%, #10201a 46%, #08130d 100%)", base: "#0f2219" },
+    ivory: { n: "아이보리", pro: true, g: "linear-gradient(165deg, #f4ecd8 0%, #e8dcbf 45%, #d2c19b 100%)", gb: "linear-gradient(198deg, #efe5cd 0%, #e2d5b6 46%, #d2c19b 100%)", base: "#e3d6b8" },
+    plum: { n: "자두", pro: true, g: "linear-gradient(165deg, #4b2a52 0%, #2b1530 40%, #150a18 100%)", gb: "linear-gradient(198deg, #3d2243 0%, #24112a 46%, #150a18 100%)", base: "#2b1530" },
+    slate: { n: "청회색", pro: true, g: "linear-gradient(165deg, #3c4650 0%, #262d35 40%, #13171c 100%)", gb: "linear-gradient(198deg, #323b44 0%, #1f252b 46%, #13171c 100%)", base: "#262d35" }
+  };
+  const COVER_FOIL = {
+    gold: { n: "금박", hex: "#e6c56a", rgb: "230, 197, 106", hi: "#fff6d0", lo: "#c9a24d", title: "#f3d78a", sh: "#fff6d2" },
+    silver: { n: "은박", hex: "#cfd5dc", rgb: "207, 213, 220", hi: "#ffffff", lo: "#8e98a4", title: "#e6ebf0", sh: "#ffffff" },
+    rose: { n: "로즈골드", pro: true, hex: "#e0a58f", rgb: "224, 165, 143", hi: "#ffe5da", lo: "#b3705a", title: "#f0bca9", sh: "#ffe9e0" },
+    copper: { n: "구리", pro: true, hex: "#c98a55", rgb: "201, 138, 85", hi: "#f5cfa6", lo: "#8f5a30", title: "#dfa571", sh: "#f5d9b8" },
+    white: { n: "흰색", pro: true, hex: "#f4f1ea", rgb: "244, 241, 234", hi: "#ffffff", lo: "#b9b4a8", title: "#fffdf8", sh: "#ffffff" },
+    ink: { n: "잉크", pro: true, hex: "#2a241c", rgb: "42, 36, 28", hi: "#5a4e40", lo: "#1a1510", title: "#2a241c", sh: "rgba(255, 255, 255, 0.35)" }
+  };
+  const COVER_FONT = {
+    serif: { n: "명조", css: "var(--serif)" },
+    sans: { n: "고딕", css: "var(--sans)" },
+    pen: { n: "손글씨", pro: true, css: '"Nanum Pen Script", var(--serif)' },
+    heavy: { n: "굵은 제목", pro: true, css: '"Black Han Sans", var(--sans)' }
+  };
+  const COVER_TEX = { none: { n: "질감 없음" }, leather: { n: "가죽", pro: true }, cloth: { n: "천", pro: true }, paper: { n: "종이", pro: true } };
+  const COVER_CORNER = { std: { n: "기본 장식" }, double: { n: "이중 테두리", pro: true }, none: { n: "장식 없음", pro: true } };
+  function normCover(raw) {
+    const r = raw && typeof raw === "object" ? raw : {};
+    const pick = (map, k, d) => (typeof k === "string" && Object.prototype.hasOwnProperty.call(map, k) ? k : d);
+    return { bg: pick(COVER_BG, r.bg, "black"), foil: pick(COVER_FOIL, r.foil, "gold"), font: pick(COVER_FONT, r.font, "serif"), tex: pick(COVER_TEX, r.tex, "none"), corner: pick(COVER_CORNER, r.corner, "std"),
+      img: typeof r.img === "string" && r.img.startsWith("data:image/") && r.img.length <= 200000 ? r.img : "" };
+  }
+  const LIST_KEYS = ["world", "atlas", "chars", "plot", "thesis", "sources", "foot", "terms", "cases"];
+  const NOTE_KEYS = LIST_KEYS.concat(["goals"]);
+  const LORE = [
+    { key: "world", name: "세계관", single: "설정", empty: "아직 설정이 없어요. 마법, 역사, 종교, 규칙처럼 세계를 이루는 것을 하나씩 적어 보세요.", hint: "왼쪽에서 설정을 고르거나 새로 만드세요.", fields: [
+      { k: "kind", label: "분류", type: "short", ph: "역사 · 종교 · 마법 · 사회 · 기술" },
+      { k: "body", label: "설명", type: "long", ph: "이 설정이 무엇인지 적어 두세요" },
+      { k: "rules", label: "규칙과 한계", type: "long", ph: "반드시 지켜야 하는 규칙, 할 수 없는 일" },
+      { k: "story", label: "이야기에서 쓰이는 곳", type: "long", ph: "어느 장면, 어느 인물과 이어지나요" } ] },
+    { key: "atlas", name: "아틀라스", single: "장소", empty: "아직 장소가 없어요. 도시, 국가, 산맥, 방 하나도 좋아요.", hint: "왼쪽에서 장소를 고르거나 새로 만드세요.", fields: [
+      { k: "kind", label: "종류", type: "short", ph: "도시 · 국가 · 산맥 · 건물" },
+      { k: "land", label: "지형과 기후", type: "long", ph: "" },
+      { k: "people", label: "사람과 문화", type: "long", ph: "" },
+      { k: "links", label: "이어진 장소와 이동", type: "long", ph: "어디에서 얼마나 걸리나요" },
+      { k: "events", label: "여기서 벌어지는 일", type: "long", ph: "" } ] },
+    { key: "chars", name: "캐릭터", single: "인물", empty: "아직 인물이 없어요. 이름만 먼저 적어도 됩니다.", hint: "왼쪽에서 인물을 고르거나 새로 만드세요.", fields: [
+      { k: "role", label: "역할", type: "short", ph: "주인공 · 조력자 · 적대자" },
+      { k: "age", label: "나이와 생일", type: "short", ph: "" },
+      { k: "look", label: "외모", type: "long", ph: "" },
+      { k: "trait", label: "성격과 말투", type: "long", ph: "" },
+      { k: "want", label: "원하는 것", type: "long", ph: "겉으로 드러나는 목표" },
+      { k: "need", label: "진짜 필요한 것과 결핍", type: "long", ph: "" },
+      { k: "secret", label: "비밀", type: "long", ph: "" },
+      { k: "tie", label: "관계", type: "long", ph: "누구와 어떤 사이인가요" },
+      { k: "arc", label: "변화", type: "long", ph: "이야기 끝에서 어떻게 달라지나요" } ] },
+    { key: "plot", name: "플롯", single: "장면", empty: "아직 장면이 없어요. 위에서 아래로 순서대로 쌓으면 줄거리가 됩니다.", hint: "왼쪽에서 장면을 고르거나 새로 만드세요.", fields: [
+      { k: "status", label: "상태", type: "select", options: ["구상", "초안", "완료"] },
+      { k: "chapter", label: "연결된 장", type: "short", ph: "예: 12~14장" },
+      { k: "summary", label: "장면 요약", type: "long", ph: "무슨 일이 일어나나요" },
+      { k: "conflict", label: "갈등과 장애물", type: "long", ph: "" },
+      { k: "setup", label: "복선과 회수", type: "long", ph: "깔아 둘 것, 거둘 것" } ] }
+  ];
+  LORE.forEach(d => { d.mode = "lit"; });
+  LORE.push(
+    { key: "thesis", mode: "non", name: "핵심 주장", single: "주장", empty: "아직 주장이 없어요. 책이 말하려는 것을 한 문장씩 적어 보세요.", hint: "왼쪽에서 주장을 고르거나 새로 만드세요.", fields: [
+      { k: "role", label: "유형", type: "short", ph: "핵심 주장 · 근거 · 반론 · 결론" },
+      { k: "claim", label: "한 문장 주장", type: "long", ph: "독자가 기억해야 할 문장" },
+      { k: "evidence", label: "근거", type: "long", ph: "자료·사례·논리" },
+      { k: "counter", label: "예상 반론과 답", type: "long", ph: "" },
+      { k: "sowhat", label: "독자에게 의미", type: "long", ph: "그래서 무엇이 달라지나요" },
+      { k: "chapter", label: "쓸 장", type: "short", ph: "예: 3장" } ] },
+    { key: "sources", mode: "non", name: "참고자료", single: "자료", empty: "아직 참고자료가 없어요. 읽은 책, 논문, 기사, 인터뷰를 모아 두세요. 이름 칸에는 제목을 적으면 참고문헌이 됩니다.", hint: "왼쪽에서 참고자료를 고르거나 새로 만드세요.", fields: [
+      { k: "kind", label: "종류", type: "short", ph: "책 · 논문 · 기사 · 인터뷰 · 웹" },
+      { k: "author", label: "저자·기관", type: "short", ph: "" },
+      { k: "year", label: "연도·날짜", type: "short", ph: "" },
+      { k: "where", label: "위치·링크·쪽", type: "short", ph: "" },
+      { k: "points", label: "핵심 내용", type: "long", ph: "" },
+      { k: "quote", label: "인용할 문장", type: "long", ph: "" },
+      { k: "trust", label: "신뢰도와 한계", type: "long", ph: "" },
+      { k: "used", label: "쓰는 곳", type: "short", ph: "예: 2장 첫 문단" } ] },
+    { key: "foot", mode: "non", name: "각주", single: "각주", empty: "아직 각주가 없어요. 비문학 모드에서 책 아래의 '+ 각주'를 누르면 본문에 [^1] 같은 표시가 들어가고, 여기에 내용을 적어요.", hint: "왼쪽에서 각주를 고르세요.", fields: [
+      { k: "text", label: "각주 내용", type: "long", ph: "쪽 아래에 달 설명이나 출처" },
+      { k: "src", label: "연결된 참고자료", type: "source" } ] },
+    { key: "terms", mode: "non", name: "용어집", single: "용어", empty: "아직 용어가 없어요. 책에서 반복해 쓸 말을 정의해 두세요.", hint: "왼쪽에서 용어를 고르거나 새로 만드세요.", fields: [
+      { k: "kind", label: "분야", type: "short", ph: "" },
+      { k: "definition", label: "정의", type: "long", ph: "이 책에서 이 말이 뜻하는 것" },
+      { k: "example", label: "예시", type: "long", ph: "" },
+      { k: "confuse", label: "헷갈리는 말", type: "long", ph: "비슷하지만 다른 말" },
+      { k: "first", label: "처음 나오는 곳", type: "short", ph: "" } ] },
+    { key: "cases", mode: "non", name: "사례", single: "사례", empty: "아직 사례가 없어요. 주장을 받쳐 줄 이야기를 모아 두세요.", hint: "왼쪽에서 사례를 고르거나 새로 만드세요.", fields: [
+      { k: "kind", label: "종류", type: "short", ph: "실제 사례 · 가상 사례 · 비교" },
+      { k: "context", label: "배경", type: "long", ph: "" },
+      { k: "what", label: "무슨 일이 있었나", type: "long", ph: "" },
+      { k: "lesson", label: "시사점", type: "long", ph: "" },
+      { k: "used", label: "쓰는 곳", type: "short", ph: "" } ] }
+  );
+  function budgetOf(size, font) {
+    let base = BUDGET[size] && BUDGET[size][font];
+    if (!base) {
+      const p = PAPER[size] || PAPER.A5, em = font / PX_PER_MM;
+      const cols = Math.max(4, Math.floor(p.textW / (em * 1.01))), rows = Math.max(3, Math.floor(p.textH / (em * 1.9)));
+      base = { cols, rows, chars: cols * rows, pt: Math.round(font * 75) / 100 };
+    }
+    const cols = Math.round(base.cols * (lang === "en" ? 1.9 : 1));
+    return { cols, rows: base.rows, chars: cols * base.rows, pt: base.pt };
+  }
+  function loreDefs() { return LORE.filter(d => d.mode === (state.mode === "non" ? "non" : "lit")); }
+  function shownTitle(x) { return ['블랙북', 'Blackbook'].includes(x) ? t("블랙북") : (['새 책', 'New book'].includes(x) ? t("새 책") : x); }
+  function isDefaultTitle(x) { return ['블랙북', 'Blackbook', '새 책', 'New book'].includes(x); }
+  function clampInt(n) { n = Math.floor(Number(n)); return isFinite(n) && n > 0 ? Math.min(n, 1e9) : 0; }
+  function cleanFields(f) {
+    const out = {};
+    if (f && typeof f === "object") Object.keys(f).slice(0, 24).forEach(k => { if (typeof f[k] === "string") out[k] = f[k].slice(0, 20000); });
+    return out;
+  }
+  function normNotes(raw) {
+    const r = raw && typeof raw === "object" ? raw : {};
+    const out = {};
+    LIST_KEYS.forEach(k => {
+      out[k] = (Array.isArray(r[k]) ? r[k] : []).slice(0, ENTRY_CAP).map(e => ({ id: String((e && e.id) || uid()), title: String((e && e.title) || "").slice(0, 80), f: cleanFields(e && e.f), updated: Number(e && e.updated) || 0, no: clampInt(e && e.no) }));
+    });
+    const g = r.goals && typeof r.goals === "object" ? r.goals : {};
+    const history = {};
+    if (g.history && typeof g.history === "object") Object.keys(g.history).slice(-150).forEach(d => { if (/^\d{4}-\d{2}-\d{2}$/.test(d)) history[d] = clampInt(g.history[d]); });
+    out.goals = { total: clampInt(g.total), daily: clampInt(g.daily), dayDate: String(g.dayDate || ""), dayStart: clampInt(g.dayStart), history,
+      items: (Array.isArray(g.items) ? g.items : []).slice(0, 100).map(i => ({ id: String((i && i.id) || uid()), text: String((i && i.text) || "").slice(0, 200), done: !!(i && i.done) })) };
+    return out;
+  }
+  const BUDGET = {
+    A5: { 16: { cols: 28, rows: 21, chars: 588, pt: 12 }, 19: { cols: 24, rows: 18, chars: 432, pt: 14.25 }, 22: { cols: 20, rows: 15, chars: 300, pt: 16.5 }, 26: { cols: 17, rows: 13, chars: 221, pt: 19.5 } },
+    A6: { 16: { cols: 18, rows: 14, chars: 252, pt: 12 }, 19: { cols: 15, rows: 11, chars: 165, pt: 14.25 }, 22: { cols: 13, rows: 10, chars: 130, pt: 16.5 }, 26: { cols: 11, rows: 8, chars: 88, pt: 19.5 } }
+  };
+  const stage = document.getElementById("stage");
+  const book = document.getElementById("book");
+  const writing = document.getElementById("writing");
+  const measure = document.getElementById("measure");
+  const folio = document.getElementById("folio");
+  const folioCount = document.getElementById("folioCount");
+  const limitLabel = document.getElementById("limitLabel");
+  const leaf = document.getElementById("leaf");
+  const faceFront = document.getElementById("faceFront");
+  const faceBack = document.getElementById("faceBack");
+  const titleInput = document.getElementById("titleInput");
+  const coverMeta = document.getElementById("coverMeta");
+  const pos = document.getElementById("pos");
+  const hint = document.getElementById("hint");
+  const openBtn = { hidden: true, addEventListener() {} }; // the round button at the right edge is the only open control
+  const coverBtn = document.getElementById("coverBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const toc = document.getElementById("toc");
+  const tocList = document.getElementById("tocList");
+  const tocStats = document.getElementById("tocStats");
+  const backdrop = document.getElementById("backdrop");
+  const toastEl = document.getElementById("toast");
+  const specNote = document.getElementById("specNote");
+  const brandNote = document.getElementById("brandNote");
+  const shelf = document.getElementById("shelf");
+  const shelfList = document.getElementById("shelfList");
+  const shelfStats = document.getElementById("shelfStats");
+  const loreEl = document.getElementById("lore");
+  const loreTabsEl = document.getElementById("loreTabs");
+  const loreBody = document.getElementById("loreBody");
+  const loreStatsEl = document.getElementById("loreStats");
+  const goalsEl = document.getElementById("goalsPanel");
+  const goalsBody = document.getElementById("goalsBody");
+  const goalsStatsEl = document.getElementById("goalsStats");
+  const sheetEl = document.getElementById("sheetEl");
+  const pageHead = document.getElementById("pageHead");
+  const phKind = document.getElementById("phKind");
+  const phTitle = document.getElementById("phTitle");
+  const structBar = document.getElementById("structBar");
+  const whereEl = document.getElementById("whereNow");
+  const delHeadBtn = document.getElementById("delHeadBtn");
+  const coverSub = document.getElementById("coverSub");
+  const saveBtn = document.getElementById("saveBtn");
+  const saveState = document.getElementById("saveState");
+  const saveConflict = document.getElementById("saveConflict");
+  const coverEl = document.getElementById("cover");
+  const coverPanel = document.getElementById("coverPanel");
+  const coverBody = document.getElementById("coverBody");
+  const coverStatsEl = document.getElementById("coverStats");
+  const addFootBtn = document.getElementById("addFootBtn");
+  const footStrip = document.getElementById("footStrip");
+  let loreTab = "world", loreMode = "list", loreQuery = "", loreSel = {}, loreRefs = null;
+  let library = loadLibrary();
+  const lastSig = new Map();
+  // Signature of what the writer typed (pagination, page size and font do not count), so opening a book never makes an old copy look newer.
+  function sigOf(b) {
+    const secs = []; let cur = null;
+    for (let i = 0; i < b.pages.length; i++) {
+      const v = b.breaks[i];
+      if (i === 0 || v) { cur = { k: v && typeof v === "object" ? v.k + ":" + v.t : "", t: "" }; secs.push(cur); }
+      cur.t += b.pages[i];
+    }
+    const g = b.notes.goals;
+    const cv = Object.assign({}, b.cover, { img: b.cover && b.cover.img ? b.cover.img.length + ":" + b.cover.img.slice(-48) : "" });
+    return JSON.stringify([b.title, b.mode, !!b.hasToc, cv, secs, Object.assign({}, b.notes, { goals: { total: g.total, daily: g.daily, items: g.items } })]);
+  }
+  Object.keys(library.books).forEach(id => lastSig.set(id, sigOf(library.books[id])));
+  let state = library.books[library.currentId];
+  let animating = false;
+  let turnGen = 0;
+  let saveTimer = 0;
+  let toastTimer = 0;
+  let composing = false;
+  let capCache = 0;
+  let capKey = "";
+  let toldJump = false;
+
+  function uid() { return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function fresh(mode) { return { id: uid(), title: t("블랙북"), size: "A5", font: 19, pages: [""], breaks: [true], hasToc: false, mode: mode === "non" ? "non" : "lit", cover: normCover(null), notes: normNotes(null), index: 0, opened: false, hintSeen: false, updated: Date.now() }; }
+  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+  function parseBook(data, fallbackId) {
+    const pages = Array.isArray(data.pages) && data.pages.length ? data.pages.map(p => String(p ?? "")).slice(0, PAGE_CAP) : [""];
+    return {
+      id: String(data.id || fallbackId || uid()),
+      title: String(data.title || t("블랙북")).slice(0, 24),
+      size: PAPER[data.size] ? data.size : "A5",
+      font: FONTS.includes(data.font) ? data.font : 19,
+      pages, breaks: normBreaks(data.breaks, pages), hasToc: !!data.hasToc, mode: data.mode === "non" ? "non" : "lit", cover: normCover(data.cover), notes: normNotes(data.notes), index: clamp(data.index | 0, 0, pages.length - 1),
+      opened: !!data.opened, hintSeen: !!data.hintSeen,
+      updated: Number(data.updated) || Date.now()
+    };
+  }
+  function normBreaks(raw, pages) {
+    // breaks[i] === true: page i starts a new section (a page added with +). Text never flows across a section.
+    return pages.map((p, i) => {
+      const v = Array.isArray(raw) ? raw[i] : undefined;
+      if (v && typeof v === "object" && (v.k === "p" || v.k === "c")) return { k: v.k, t: String(v.t || "").slice(0, 120) };
+      return i === 0 || (Array.isArray(raw) ? !!v : p === "");
+    });
+  }
+  function recordOf(book) {
+    return {
+      id: book.id, title: book.title, size: book.size, font: book.font,
+      pages: book.pages.slice(0, PAGE_CAP), breaks: normBreaks(book.breaks, book.pages.slice(0, PAGE_CAP)), hasToc: !!book.hasToc, mode: book.mode === "non" ? "non" : "lit", cover: book.cover, notes: book.notes, index: book.index,
+      opened: !!book.opened, hintSeen: !!book.hintSeen, updated: book.updated || Date.now()
+    };
+  }
+  function loadLibrary() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LIB) || "null");
+      if (raw && raw.books && typeof raw.books === "object") {
+        const books = {};
+        const order = [];
+        const seen = {};
+        const src = Array.isArray(raw.order) ? raw.order.concat(Object.keys(raw.books)) : Object.keys(raw.books);
+        src.forEach(id => {
+          if (seen[id] || !raw.books[id] || !Array.isArray(raw.books[id].pages)) return;
+          seen[id] = true;
+          books[id] = parseBook(raw.books[id], id);
+          order.push(id);
+        });
+        if (order.length) {
+          const currentId = books[raw.currentId] ? raw.currentId : order[0];
+          const deleted = Array.isArray(raw.deleted) ? raw.deleted.map(String).slice(-200) : [];
+          return { currentId, order, books, deleted };
+        }
+      }
+    } catch (e) {}
+    let first = fresh();
+    try {
+      const cur = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (cur && Array.isArray(cur.pages) && cur.pages.length) first = parseBook(cur);
+      else {
+        const old = JSON.parse(localStorage.getItem(OLD) || "null");
+        if (old && Array.isArray(old.pages) && old.pages.length) first = parseBook(old);
+      }
+    } catch (e) {}
+    return { currentId: first.id, order: [first.id], books: { [first.id]: first }, deleted: [] };
+  }
+  function saveNow() {
+    if (window.BB_NOSAVE) return;
+    try {
+      if (writing) state.pages[state.index] = writing.value;
+      if (titleInput && document.activeElement === titleInput) state.title = titleText() || state.title;
+      clearTimeout(saveTimer);
+      goalsTick();
+      const sig = sigOf(state);
+      if (lastSig.get(state.id) !== sig) { lastSig.set(state.id, sig); state.updated = Date.now(); }
+      library.books[state.id] = recordOf(state);
+      library.currentId = state.id;
+      trackUnsaved(state.id, sig);
+      localStorage.setItem(LIB, JSON.stringify(library));
+    } catch (e) { if (!cloud) toast(t("저장 공간이 부족해요")); }
+  }
+  function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 250); }
+  function todayStr() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function bodyChars() { let n = 0; for (let i = tocCount(); i < state.pages.length; i++) { const t = state.pages[i] || ""; n += t.length - (t.match(/\n/g) || []).length; } return n; }
+  function goalsTick() {
+    const g = state.notes.goals, day = todayStr(), total = bodyChars();
+    if (g.dayDate !== day) { g.dayDate = day; g.dayStart = total; }
+    const today = Math.max(0, total - g.dayStart);
+    if (today > 0 || g.history[day] != null) g.history[day] = today;
+    const keys = Object.keys(g.history).sort();
+    while (keys.length > 150) delete g.history[keys.shift()];
+  }
+  function tocCount() { return state.hasToc ? sectionEnd(0) + 1 : 0; }
+  function pageLabel(i) { const tc = tocCount(); return i < tc ? (tc > 1 ? t("목차") + " " + (i + 1) : t("목차")) : String(i - tc + 1); }
+  function toast(msg) { toastEl.textContent = msg; toastEl.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1700); }
+  function excerpt(text) { const line = String(text || "").replace(/\s+/g, " ").trim(); return !line ? "" : (line.length > 28 ? line.slice(0, 28) + "…" : line); }
+  function countChars(text) { return Array.from(text || "").filter(ch => ch !== "\n").length; }
+  function edgeFor(n) { return Math.max(6, Math.min(16, Math.round(5 + Math.min(n, 40) * 0.2))); }
+  function titleText() { return (titleInput.textContent || "").replace(/\s+/g, " ").trim(); }
+  function escapeHtml(s) { return s.replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch])); }
+  function absCursor() { let n = 0; for (let i = 0; i < state.index; i++) n += state.pages[i].length; return n + (writing.selectionStart || 0); }
+  function syncMeasure() {
+    const cs = getComputedStyle(writing);
+    measure.style.fontFamily = cs.fontFamily; measure.style.fontSize = cs.fontSize; measure.style.lineHeight = cs.lineHeight;
+    measure.style.letterSpacing = cs.letterSpacing; measure.style.padding = (parseFloat(book.style.getPropertyValue("--pad-top")) || 0) + "px " + (parseFloat(book.style.getPropertyValue("--pad-x")) || 0) + "px 0px"; measure.style.width = writing.clientWidth + "px";
+    measure.style.boxSizing = "border-box"; measure.style.whiteSpace = "pre-wrap"; measure.style.wordBreak = "break-word";
+  }
+  function isScreenFit() {
+    return window.matchMedia("(max-width: 720px)").matches;
+  }
+  let domHeadLines = 0;
+  function lineHeightPx() { return parseFloat(getComputedStyle(writing).lineHeight) || 0; }
+  function unheadedClient() {
+    const pad = parseFloat(book.style.getPropertyValue("--pad-top")) || 0;
+    return writing.clientHeight + (domHeadLines ? pad + domHeadLines * lineHeightPx() : 0);
+  }
+  function fits(text, L) {
+    if (isScreenFit()) return true;
+    if (!writing.clientHeight) return true;
+    syncMeasure();
+    measure.textContent = text.length ? text : " ";
+    return measure.scrollHeight <= unheadedClient() - (L || 0) * lineHeightPx() + 1;
+  }
+  function paperSpec() {
+    const p = PAPER[state.size] || PAPER.A5;
+    const b = budgetOf(state.size, state.font);
+    return { p, cols: b.cols, rows: b.rows, chars: b.chars, pt: b.pt };
+  }
+  function applyPaper() {
+    const spec = paperSpec();
+    const p = spec.p;
+    const screen = isScreenFit();
+    book.dataset.fit = screen ? "screen" : "paper";
+    const lifeW = p.w * PX_PER_MM;
+    const paperScale = book.clientWidth > 20 ? book.clientWidth / lifeW : 1;
+    const scale = screen ? 1 : paperScale;
+    const fs = state.font * scale;
+    const h = book.clientHeight || lifeW * p.h / p.w;
+    book.style.setProperty("--fs", fs + "px");
+    document.documentElement.style.setProperty("--fs", fs + "px");
+    book.style.setProperty("--pad-x", (book.clientWidth * (p.w - p.textW) / 2 / p.w) + "px");
+    book.style.setProperty("--pad-top", screen ? "22px" : (h * p.top / p.h) + "px");
+    book.style.setProperty("--folio", screen ? "36px" : (h * p.bottom / p.h) + "px");
+    book.style.setProperty("--rows", String(spec.rows));
+    return spec;
+  }
+  function capacity() { return paperSpec().chars; }
+  function capFor(L) { const sp = paperSpec(); return Math.max(1, sp.cols * Math.max(1, sp.rows - (L || 0))); }
+  function isMark(v) { return !!v && typeof v === "object"; }
+  function markAt(i) { return i >= tocCount() && isMark(state.breaks[i]) ? state.breaks[i] : null; }
+  function headLinesFor(m) { if (!m) return 0; return Math.max(0, Math.min(m.k === "p" ? 7 : 3, paperSpec().rows - 2)); }
+  function invalidateCap() { capCache = 0; capKey = ""; }
+  function withinCap(units, n, cap) {
+    let used = 0;
+    for (let i = 0; i < n; i++) if (units[i] !== "\n") used++;
+    return used <= cap;
+  }
+  function maxFit(text, L) {
+    if (!text) return "";
+    const units = Array.from(text);
+    const cap = capFor(L);
+    const ok = (n) => withinCap(units, n, cap) && fits(units.slice(0, n).join(""), L);
+    if (!fits(units[0], L)) return units[0];
+    if (ok(units.length)) return text;
+    let best = 1, a = 1, b = units.length;
+    while (a <= b) {
+      const mid = Math.floor((a + b) / 2);
+      if (ok(mid)) { best = mid; a = mid + 1; }
+      else b = mid - 1;
+    }
+    return units.slice(0, best).join("");
+  }
+  function sectionEnd(i) { let e = i; while (e + 1 < state.pages.length && !state.breaks[e + 1]) e++; return e; }
+  function reflowFrom(i) {
+    // Re-paginate pages i..end of i's section as one stream. Stops early once the remaining text lines up with an old page start.
+    const e = sectionEnd(i);
+    const old = state.pages.slice(i, e + 1);
+    const suffix = new Map();
+    let acc = 0;
+    for (let j = old.length - 1; j >= 1; j--) { acc += old[j].length; suffix.set(acc, j); }
+    const out = [];
+    const L0 = headLinesFor(markAt(i));
+    let rest = old.join(""), guard = 0;
+    while (rest && guard < PAGE_CAP) {
+      if (out.length && suffix.has(rest.length)) { out.push(...old.slice(suffix.get(rest.length))); rest = ""; break; }
+      const fit = maxFit(rest, out.length ? 0 : L0) || Array.from(rest)[0];
+      out.push(fit); rest = rest.slice(fit.length); guard++;
+    }
+    if (!out.length) out.push("");
+    const room = PAGE_CAP - (state.pages.length - old.length);
+    if (out.length > room) out.length = Math.max(1, room);
+    state.pages.splice(i, old.length, ...out);
+    state.breaks.splice(i, old.length, state.breaks[i], ...out.slice(1).map(() => false));
+  }
+  function trimTrailingEmpty() {
+    while (state.pages.length > 1 && state.pages.length - 1 > state.index && state.pages[state.pages.length - 1] === "" && !isMark(state.breaks[state.pages.length - 1])) { state.pages.pop(); state.breaks.pop(); }
+  }
+  function focusInStream(start, offset) {
+    let left = Math.max(0, offset), i = start;
+    while (i < state.pages.length) {
+      if (left <= state.pages[i].length) { state.index = i; showPage(true); writing.setSelectionRange(left, left); return; }
+      left -= state.pages[i].length; i++;
+    }
+    state.index = Math.max(0, state.pages.length - 1); showPage(true);
+    writing.setSelectionRange(writing.value.length, writing.value.length);
+  }
+  function reflowAll(cursorAbs) {
+    const cursor = cursorAbs == null ? absCursor() : cursorAbs;
+    const pages = [], breaks = [];
+    let i = 0;
+    while (i < state.pages.length) {
+      const e = sectionEnd(i), startVal = state.breaks[i] || true, L0 = headLinesFor(markAt(i));
+      let rest = state.pages.slice(i, e + 1).join(""), first = true, guard = 0;
+      if (!rest) { pages.push(""); breaks.push(startVal); }
+      while (rest && guard < PAGE_CAP) { const fit = maxFit(rest, first ? L0 : 0) || Array.from(rest)[0]; pages.push(fit); breaks.push(first ? startVal : false); first = false; rest = rest.slice(fit.length); guard++; }
+      i = e + 1;
+    }
+    state.pages = pages.length ? pages.slice(0, PAGE_CAP) : [""];
+    state.breaks = breaks.length ? breaks.slice(0, PAGE_CAP) : [true];
+    state.breaks[0] = state.breaks[0] || true;
+    if (state.index >= state.pages.length) state.index = state.pages.length - 1;
+    focusInStream(0, cursor); scheduleSave();
+  }
+  function onEdit() {
+    const i = state.index;
+    const cursor = writing.selectionStart || 0;
+    state.pages[i] = writing.value;
+    const before = state.pages.length;
+    reflowFrom(i);
+    trimTrailingEmpty();
+    // The textarea must show the re-paginated page before saving: saveNow() copies the textarea back into pages[index].
+    if (cursor > state.pages[i].length && i + 1 < state.pages.length) {
+      if (!toldJump) { toldJump = true; toast(t("{0} 한 쪽이 차서 다음 쪽으로 넘어갔어요", sizeName(state.size))); }
+      focusInStream(i, cursor); scheduleSave(); return;
+    }
+    if (writing.value !== state.pages[i]) {
+      writing.value = state.pages[i];
+      const c = Math.min(cursor, writing.value.length); writing.setSelectionRange(c, c);
+    }
+    scheduleSave();
+    if (before !== state.pages.length && toc.classList.contains("open")) renderToc();
+    updateCount(); applyChrome();
+  }
+  function backspaceAtStart() {
+    // Backspace at the very start of a page: join a + page to the one before, or delete the previous page's last character.
+    const i = state.index, prev = i - 1;
+    state.pages[i] = writing.value;
+    if (state.hasToc && i === tocCount()) { toast(t("목차와 본문은 이어 붙일 수 없어요")); return; }
+    if (isMark(state.breaks[i])) { toast(t("제목이 있는 쪽은 앞 쪽과 이어 붙일 수 없어요. 아래 삭제 버튼을 쓰세요")); return; }
+    let caret;
+    if (state.breaks[i]) {
+      state.breaks[i] = false;
+      caret = state.pages[prev].length;
+    } else {
+      const units = Array.from(state.pages[prev]);
+      units.pop();
+      state.pages[prev] = units.join("");
+      caret = state.pages[prev].length;
+    }
+    reflowFrom(prev);
+    trimTrailingEmpty();
+    focusInStream(prev, caret); saveNow();
+  }
+  function specLine(spec) {
+    const fit = isScreenFit() ? t("화면 글씨 · 한 쪽은 인쇄 기준") : t("인쇄 비율");
+    return t("{0} {1}×{2}mm · {3}자×{4}줄 · {5}자 · {6}", sizeName(state.size), spec.p.w, spec.p.h, spec.cols, spec.rows, spec.chars, fit);
+  }
+  function renderSpecTable() {
+    const table = document.getElementById("specTable");
+    const cap = document.getElementById("specCap");
+    if (!table) return;
+    const labels = { 13: t("더 작게"), 16: t("작게"), 19: t("보통"), 22: t("크게"), 26: t("아주 크게") };
+    let html = "<tr><th></th>" + FONTS.map(px => "<th>" + labels[px] + "</th>").join("") + "</tr>";
+    ["A6", "B6", "A5", "SK"].forEach(size => {
+      html += "<tr><th>" + escapeHtml(sizeName(size)) + "</th>";
+      FONTS.forEach(px => {
+        const cell = budgetOf(size, px);
+        const now = state.size === size && state.font === px;
+        html += '<td class="' + (now ? "now" : "") + '" title="' + escapeHtml(t("{0}자 × {1}줄", cell.cols, cell.rows)) + '">' + cell.chars + "</td>";
+      });
+      html += "</tr>";
+    });
+    table.innerHTML = html;
+    if (cap) {
+      const spec = paperSpec();
+      cap.textContent = t("지금 {0} · {1}pt · {2}자 × {3}줄 · {4}자. 휴대폰에서는 글씨를 줄이지 않고, 한 쪽 분량만 이 규격을 씁니다.", sizeName(state.size), spec.pt, spec.cols, spec.rows, spec.chars);
+    }
+  }
+  function updateCount() {
+    const spec = paperSpec(), L = headLinesFor(markAt(state.index)), chars = capFor(L);
+    const used = state.opened ? countChars(writing.value) : 0;
+    limitLabel.textContent = (state.opened ? used + " / " : "") + t("{0}자", chars);
+    limitLabel.title = specLine(spec) + " · " + spec.pt + "pt · " + t("공백 포함, 줄바꿈 제외");
+    if (specNote) specNote.textContent = specLine(spec);
+    renderFootStrip();
+    if (!state.opened || !writing.clientHeight) { folioCount.textContent = t("{0}자 × {1}줄", spec.cols, spec.rows); folioCount.classList.remove("full"); return; }
+    folioCount.textContent = used + " / " + chars + " · " + spec.cols + "×" + Math.max(1, spec.rows - L);
+    folioCount.classList.toggle("full", used >= chars || (writing.value.length > 0 && !fits(writing.value + /*nt*/"가", L)));
+  }
+  function structure() {
+    const tc = tocCount(), marks = [], at = [];
+    let pn = 0, cn = 0, curP = null, curC = null;
+    for (let i = 0; i < state.pages.length; i++) {
+      const m = i >= tc ? state.breaks[i] : null;
+      if (isMark(m)) {
+        if (m.k === "p") { pn++; curP = { no: pn, title: m.t }; curC = null; marks[i] = { k: "p", no: pn, title: m.t }; }
+        else { cn++; curC = { no: cn, title: m.t }; marks[i] = { k: "c", no: cn, title: m.t }; }
+      }
+      at[i] = { part: curP, chapter: curC };
+    }
+    return { marks, at, parts: pn, chapters: cn };
+  }
+  function labelOf(k, no) { return k === "p" ? t("{0}부", no) : t("{0}장", no); }
+  function unitStart(i) { const tc = tocCount(); if (i < tc) return -1; for (let j = i; j >= tc; j--) if (isMark(state.breaks[j])) return j; return -1; }
+  function spanEndFrom(i, kinds) {
+    let e = i;
+    while (e + 1 < state.pages.length) { const v = state.breaks[e + 1]; if (isMark(v) && (!kinds || kinds.includes(v.k))) break; e++; }
+    return e;
+  }
+  function applyCover(root, cv) {
+    const bg = COVER_BG[cv.bg] || COVER_BG.black, f = COVER_FOIL[cv.foil] || COVER_FOIL.gold, fo = COVER_FONT[cv.font] || COVER_FONT.serif, st = root.style;
+    st.setProperty("--cv-grad", bg.g); st.setProperty("--cv-grad-back", bg.gb); st.setProperty("--cv-base", bg.base);
+    st.setProperty("--foil", f.hex); st.setProperty("--foil-rgb", f.rgb); st.setProperty("--foil-hi", f.hi); st.setProperty("--foil-lo", f.lo); st.setProperty("--foil-title", f.title); st.setProperty("--foil-sh", f.sh);
+    st.setProperty("--cv-font", fo.css);
+    const front = root.querySelector(".cover-face.front");
+    if (!front) return;
+    front.dataset.tex = cv.tex; front.dataset.corner = cv.corner;
+    front.style.backgroundImage = cv.img ? 'linear-gradient(rgba(8, 6, 4, 0.35), rgba(8, 6, 4, 0.6)), url("' + cv.img + '")' : "";
+    front.style.backgroundSize = cv.img ? "cover" : ""; front.style.backgroundPosition = cv.img ? "center" : "";
+  }
+  function coverChanged() { applyCover(coverEl, state.cover); drawCoverPreview(); noteTouch(); }
+  function drawCoverPreview() {
+    const box = coverBody.querySelector(".cover-preview"); if (!box) return;
+    box.textContent = "";
+    const front = coverEl.querySelector(".cover-face.front").cloneNode(true);
+    front.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
+    const ct = front.querySelector(".cover-title"); ct.removeAttribute("contenteditable"); ct.textContent = shownTitle(state.title);
+    box.appendChild(front); applyCover(box, state.cover);
+  }
+  function renderCover() {
+    coverBody.textContent = ""; coverStatsEl.textContent = shownTitle(state.title);
+    const wrap = el("div", "cover-editor"), prev = el("div", "cover-preview"), ctrls = el("div", "cover-ctrls");
+    const group = (label, map, key, draw) => {
+      const g = el("div", "cv-group"); g.appendChild(el("div", "cv-label", t(label)));
+      const row = el("div", "cv-row");
+      Object.keys(map).forEach(k => {
+        const it = map[k], b = el("button", "cv-opt"); b.type = "button"; b.setAttribute("aria-pressed", String(state.cover[key] === k));
+        b.appendChild(draw(k, it)); b.appendChild(el("span", null, t(it.n)));
+        if (it.pro) b.appendChild(el("span", "pro-badge", t("프리미엄")));
+        b.addEventListener("click", () => {
+          if (it.pro && PREMIUM_LOCKED) { toast(t("프리미엄 기능이에요")); return; }
+          state.cover[key] = k; row.querySelectorAll(".cv-opt").forEach((x, i) => x.setAttribute("aria-pressed", String(Object.keys(map)[i] === k))); coverChanged();
+        });
+        row.appendChild(b);
+      });
+      g.appendChild(row); return g;
+    };
+    const sw = (k, it) => { const d = el("span", "cv-sw"); d.style.background = it.g; return d; };
+    const dot = (k, it) => { const d = el("span", "cv-dot"); d.style.background = "linear-gradient(135deg, " + it.hi + ", " + it.hex + " 50%, " + it.lo + ")"; return d; };
+    const fnt = (k, it) => { const d = el("span", "cv-fontsample", t("가나다 Abc")); d.style.fontFamily = it.css; return d; };
+    const txt = (k, it) => { const d = el("span", "cv-sw"); d.style.background = "linear-gradient(135deg, #3a3a3a, #111)"; return d; };
+    ctrls.append(group(t("표지 색"), COVER_BG, "bg", sw), group(t("금박·글자 색"), COVER_FOIL, "foil", dot), group(t("제목 글꼴"), COVER_FONT, "font", fnt), group(t("질감"), COVER_TEX, "tex", txt), group(t("테두리 장식"), COVER_CORNER, "corner", txt));
+    // picture
+    const ig = el("div", "cv-group"); ig.appendChild(el("div", "cv-label", t("표지 이미지")));
+    const irow = el("div", "cv-row"), pick = el("button", "lore-btn", t("이미지 올리기")), clear = el("button", "lore-btn", t("이미지 지우기"));
+    pick.type = "button"; clear.type = "button";
+    const file = el("input"); file.type = "file"; file.accept = "image/*"; file.hidden = true;
+    pick.addEventListener("click", () => file.click());
+    file.addEventListener("change", () => { const f0 = file.files && file.files[0]; file.value = ""; if (f0) loadCoverImage(f0); });
+    clear.addEventListener("click", () => { state.cover.img = ""; coverChanged(); });
+    irow.append(pick, clear, file, el("span", "pro-badge", t("프리미엄"))); ig.appendChild(irow);
+    ctrls.append(ig, el("div", "cv-note", t("프리미엄 표시 항목은 나중에 유료가 될 수 있어요. 지금은 모두 써 볼 수 있어요.")));
+    wrap.append(prev, ctrls); coverBody.appendChild(wrap); drawCoverPreview();
+  }
+  function loadCoverImage(file) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        const ar = 148 / 210; let sw = im.width, sh = im.height, sx = 0, sy = 0;
+        if (sw / sh > ar) { const nw = sh * ar; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / ar; sy = (sh - nh) / 2; sh = nh; }
+        let url = "";
+        for (const [w, q] of [[520, 0.78], [440, 0.66], [360, 0.55]]) {
+          const c = document.createElement("canvas"); c.width = w; c.height = Math.round(w / ar);
+          c.getContext("2d").drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height);
+          url = c.toDataURL("image/jpeg", q);
+          if (url.length <= 150000) break;
+        }
+        if (url.length > 150000) { toast(t("이미지가 너무 커요. 다른 사진을 골라 주세요")); return; }
+        state.cover.img = url; coverChanged();
+      };
+      im.onerror = () => toast(t("이미지를 읽을 수 없어요"));
+      im.src = String(rd.result);
+    };
+    rd.readAsDataURL(file);
+  }
+  function renderHead() {
+    const m = markAt(state.index), L = headLinesFor(m);
+    domHeadLines = L;
+    sheetEl.classList.toggle("headed", !!m);
+    pageHead.hidden = !m;
+    book.style.setProperty("--head-lines", String(L));
+    if (m) {
+      const st = structure();
+      phKind.textContent = labelOf(m.k, (st.marks[state.index] || { no: 1 }).no);
+      pageHead.dataset.k = m.k;
+      phTitle.placeholder = t("제목 없음");
+      if (document.activeElement !== phTitle) phTitle.value = m.t || "";
+    }
+  }
+  let delArmed = false, delTimer = 0;
+  function disarmDel() { delArmed = false; clearTimeout(delTimer); delHeadBtn.classList.remove("armed"); }
+  function applyChrome() {
+    const mode = state.opened ? "reading" : "cover";
+    book.dataset.size = state.size; book.dataset.state = mode; stage.dataset.state = mode;
+    book.style.setProperty("--edge", edgeFor(state.pages.length) + "px");
+    const pp = PAPER[state.size] || PAPER.A5;
+    book.style.setProperty("--pw", String(pp.w)); book.style.setProperty("--ph", String(pp.h));
+    const spec = applyPaper();
+    applyCover(coverEl, state.cover);
+    renderHead();
+    if (document.activeElement !== titleInput && titleText() !== shownTitle(state.title)) titleInput.textContent = shownTitle(state.title);
+    if (brandNote) brandNote.textContent = shownTitle(state.title) || t("검은 표지, 금박");
+    coverMeta.textContent = sizeName(state.size) + " · " + spec.p.w + "×" + spec.p.h + "mm · " + (state.mode === "non" ? t("비문학") : t("문학"));
+    coverSub.textContent = state.mode === "non" ? t("생각을 책으로") : t("혼자 쓰는 노트");
+    const tc = tocCount(), total = state.pages.length - tc, onToc = state.index < tc, st = structure();
+    if (onToc) pos.innerHTML = "<b>" + t("목차") + "</b>" + (tc > 1 ? " " + (state.index + 1) + "/" + tc : "");
+    else pos.innerHTML = "<b>" + (state.index - tc + 1) + "</b>" + (total > 1 ? " / " + total : "") + " " + t("쪽");
+    folio.textContent = onToc ? "— " + t("목차") + " —" : "— " + (state.index - tc + 1) + " —";
+    document.getElementById("tocPageBtn").textContent = state.hasToc ? t("목차 쪽으로 가기") : t("목차 쪽 만들기");
+    document.getElementById("tocPageDel").hidden = !state.hasToc;
+    document.querySelectorAll("[data-psize]").forEach(btn => btn.setAttribute("aria-pressed", String(btn.dataset.psize === state.size)));
+    document.querySelectorAll("[data-font]").forEach(btn => btn.setAttribute("aria-pressed", String(Number(btn.dataset.font) === state.font)));
+    document.querySelectorAll("[data-bmode]").forEach(btn => btn.setAttribute("aria-pressed", String(btn.dataset.bmode === state.mode)));
+    document.querySelectorAll("[data-lang]").forEach(btn => btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang)));
+    coverBtn.hidden = !state.opened; openBtn.hidden = state.opened;
+    structBar.hidden = !state.opened;
+    {
+      const at = st.at[state.index] || {}, bits = [];
+      if (onToc) bits.push(t("목차"));
+      else { if (at.part) bits.push(labelOf("p", at.part.no)); if (at.chapter) bits.push(labelOf("c", at.chapter.no)); bits.push(t("{0}쪽", state.index - tc + 1)); }
+      whereEl.textContent = bits.join(" · ");
+      whereEl.title = [at.part && at.part.title, at.chapter && at.chapter.title].filter(Boolean).join(" · ");
+      const u = unitStart(state.index);
+      if (!delArmed || u < 0) disarmDel();
+      delHeadBtn.disabled = u < 0;
+      if (!delArmed) delHeadBtn.textContent = u < 0 ? t("삭제") : t("{0} 삭제", labelOf(st.marks[u].k, st.marks[u].no));
+    }
+    const last = state.index >= state.pages.length - 1;
+    const onFirst = state.opened && state.index === 0;
+    prevBtn.disabled = !state.opened;
+    nextBtn.disabled = false;
+    prevBtn.classList.toggle("label", onFirst);
+    prevBtn.textContent = onFirst ? t("덮기") : "‹";
+    prevBtn.setAttribute("aria-label", onFirst ? t("표지 덮기") : t("이전 쪽"));
+    nextBtn.classList.toggle("label", !state.opened);
+    if (!state.opened) { nextBtn.textContent = t("열기"); nextBtn.setAttribute("aria-label", t("표지 넘기기")); }
+    else if (last) { nextBtn.textContent = "+"; nextBtn.setAttribute("aria-label", t("새 쪽")); }
+    else { nextBtn.textContent = "›"; nextBtn.setAttribute("aria-label", t("다음 쪽")); }
+    if (!state.opened) hint.textContent = t("오른쪽 열기, 또는 표지 모서리를 눌러 넘기세요");
+    else if (!state.hintSeen) hint.textContent = onFirst ? t("왼쪽 덮기로 표지를 다시 덮을 수 있어요") : t("한 쪽이 차면 다음 쪽으로 넘어갑니다");
+    else hint.textContent = "";
+    tocStats.textContent = t("{0}쪽 · 글이 있는 쪽 {1}", total, state.pages.slice(tc).filter(p => p.trim()).length) + (st.parts || st.chapters ? " · " + (st.parts ? t("{0}부", st.parts) + " " : "") + t("{0}장", st.chapters) : "") + (tc ? " · " + t("목차 {0}쪽", tc) : "");
+    renderSpecTable();
+    updateCount();
+  }
+  function showPage(focus) {
+    writing.value = state.pages[state.index] || "";
+    applyChrome();
+    if (focus && state.opened) writing.focus({ preventScroll: true });
+    if (toc.classList.contains("open")) renderToc();
+    if (shelf.classList.contains("open")) renderShelf();
+  }
+  function renderShelf() {
+    shelfList.innerHTML = "";
+    library.order.forEach(id => {
+      const b = library.books[id];
+      if (!b) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "toc-item" + (id === state.id ? " current" : "");
+      const filled = b.pages.filter(p => String(p).trim()).length;
+      const ex = excerpt(b.pages.find(p => String(p).trim()) || "");
+      btn.innerHTML = '<span class="num">' + escapeHtml(sizeName(b.size)) + '</span><span class="ex' + (ex ? "" : " empty") + '">' + escapeHtml(shownTitle(b.title) || t("블랙북")) + " · " + (b.mode === "non" ? t("비문학") : t("문학")) + " · " + t("{0}쪽", b.pages.length) + (filled ? " · " + t("글이 있는 쪽 {0}", filled) : "") + (ex ? " · " + escapeHtml(ex) : "") + "</span>";
+      btn.addEventListener("click", () => switchBook(id));
+      shelfList.appendChild(btn);
+    });
+    shelfStats.textContent = t("{0}권", library.order.length);
+  }
+  function renderToc() {
+    tocList.innerHTML = "";
+    const st = structure(), tc = tocCount(), structured = st.parts + st.chapters > 0;
+    state.pages.forEach((page, i) => {
+      const m = st.marks[i];
+      const btn = el("button", "toc-item" + (i === state.index ? " current" : "") + (m ? " head-" + m.k : (structured && i >= tc ? " sub" : "")));
+      btn.type = "button";
+      const ex = excerpt(page);
+      btn.appendChild(el("span", "num", m ? labelOf(m.k, m.no) : pageLabel(i)));
+      btn.appendChild(el("span", "ex" + (!m && !ex ? " empty" : ""), m ? ((m.title || t("제목 없음")) + (ex ? "  ·  " + ex : "")) : (ex || t("빈 쪽"))));
+      if (m) btn.appendChild(el("span", "pg", t("{0}쪽", i - tc + 1)));
+      btn.addEventListener("click", () => jump(i));
+      tocList.appendChild(btn);
+    });
+    const current = tocList.querySelector(".current");
+    if (current) current.scrollIntoView({ block: "nearest" });
+  }
+  function anyPanel() { return [toc, shelf, loreEl, goalsEl, coverPanel].some(pn => pn.classList.contains("open")); }
+  function setPanel(el2, open) { el2.classList.toggle("open", open); el2.setAttribute("aria-hidden", String(!open)); }
+  function openToc() { saveNow(); closeShelf(true); closeLore(true); closeGoals(true); closeCover(true); renderToc(); setPanel(toc, true); backdrop.classList.add("show"); }
+  function closeToc(keep) { setPanel(toc, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
+  function openShelf() { saveNow(); closeToc(true); closeLore(true); closeGoals(true); closeCover(true); renderShelf(); setPanel(shelf, true); backdrop.classList.add("show"); }
+  function closeShelf(keep) { document.getElementById("deleteConfirm").hidden = true; setPanel(shelf, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
+  function openLore(tab) { saveNow(); closeToc(true); closeShelf(true); closeGoals(true); closeCover(true); if (tab) loreTab = tab; ensureLoreTab(); renderLore(); setPanel(loreEl, true); backdrop.classList.add("show"); }
+  function closeLore(keep) { setPanel(loreEl, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
+  function openGoals() { saveNow(); closeToc(true); closeShelf(true); closeLore(true); closeCover(true); renderGoals(); setPanel(goalsEl, true); backdrop.classList.add("show"); }
+  function closeGoals(keep) { setPanel(goalsEl, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
+  function openCover() { saveNow(); closeToc(true); closeShelf(true); closeLore(true); closeGoals(true); renderCover(); setPanel(coverPanel, true); backdrop.classList.add("show"); }
+  function closeCover(keep) { setPanel(coverPanel, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
+  function closePanels() { closeCover(true); closeToc(true); closeShelf(true); closeLore(true); closeGoals(true); backdrop.classList.remove("show"); }
+  function ensureLoreTab() { const defs = loreDefs(); if (!defs.some(d => d.key === loreTab)) loreTab = defs[0].key; }
+  function adopt(book) {
+    state = book;
+    loreSel = {}; loreMode = "list"; loreQuery = ""; ensureLoreTab();
+    library.currentId = book.id;
+    toldJump = false;
+    invalidateCap();
+    showPage(false);
+    saveNow();
+  }
+  function newBook(mode) {
+    if (library.order.length >= BOOK_CAP) { toast(t("책이 너무 많아요")); return; }
+    saveNow();
+    const b = fresh(mode);
+    b.title = t("새 책");
+    library.books[b.id] = recordOf(b);
+    library.order.push(b.id);
+    adopt(b);
+    closePanels();
+    toast(t("새 책을 만들었어요. 표지에 제목을 적으세요"));
+  }
+  function switchBook(id) {
+    if (animating || !library.books[id]) return;
+    saveNow();
+    if (id === state.id) { closePanels(); return; }
+    adopt(library.books[id]);
+    closePanels();
+  }
+  function deleteCurrentBook() {
+    if (library.order.length <= 1 && !state.pages.some(p => String(p).trim()) && isDefaultTitle(state.title)) {
+      toast(t("지울 책이 없어요"));
+      return;
+    }
+    const box = document.getElementById("deleteConfirm");
+    if (box.hidden) { box.hidden = false; document.getElementById("deleteNo").focus(); return; }
+    box.hidden = true;
+    saveNow();
+    const id = state.id;
+    const i = library.order.indexOf(id);
+    delete library.books[id];
+    library.deleted = (library.deleted || []).filter(x => x !== id).concat(id).slice(-200);
+    cloudRemove(id);
+    library.order = library.order.filter(x => x !== id);
+    if (!library.order.length) {
+      const b = fresh();
+      library.books[b.id] = recordOf(b);
+      library.order = [b.id];
+      adopt(b);
+    } else {
+      adopt(library.books[library.order[Math.max(0, i - 1)] || library.order[0]]);
+    }
+    closePanels();
+    toast(t("책을 지웠어요"));
+  }
+  function afterSizeChange() { applyPaper(); invalidateCap(); if (!state.opened || !writing.clientHeight) { updateCount(); return; } reflowAll(absCursor()); }
+  function setSize(size) { if (state.size === size) return; state.pages[state.index] = writing.value; state.size = size; applyChrome(); scheduleSave(); setTimeout(afterSizeChange, 430); }
+  function setFont(px) { if (state.font === px) return; state.pages[state.index] = writing.value; state.font = px; applyChrome(); scheduleSave(); requestAnimationFrame(() => requestAnimationFrame(afterSizeChange)); }
+  function setTitle(value) { state.title = (String(value || "").trim() || t("블랙북")).slice(0, 24); titleInput.textContent = state.title; scheduleSave(); }
+  function addPageAndTurn() { if (state.pages.length >= PAGE_CAP) { toast(t("너무 길어 더 나눌 수 없어요")); return; } state.pages[state.index] = writing.value; state.pages.push(""); state.breaks.push(true); scheduleSave(); turn(1); }
+  function addHeading(k) {
+    if (animating) return;
+    if (state.pages.length >= PAGE_CAP) { toast(t("너무 길어 더 나눌 수 없어요")); return; }
+    state.pages[state.index] = writing.value;
+    const tc = tocCount();
+    const at = state.index < tc ? tc : spanEndFrom(state.index, k === "p" ? ["p"] : null) + 1;
+    state.pages.splice(at, 0, ""); state.breaks.splice(at, 0, { k, t: "" });
+    if (at + 1 < state.pages.length && !state.breaks[at + 1]) state.breaks[at + 1] = true;
+    state.index = at; state.hintSeen = true;
+    showPage(false); scheduleSave();
+    phTitle.focus({ preventScroll: true });
+    toast(k === "p" ? t("부를 추가했어요. 제목을 적으세요") : t("장을 추가했어요. 제목을 적으세요"));
+  }
+  function deleteHeading() {
+    const s0 = unitStart(state.index);
+    if (s0 < 0) return;
+    state.pages[state.index] = writing.value;
+    const m = state.breaks[s0], st = structure(), label = labelOf(m.k, st.marks[s0].no);
+    const e = spanEndFrom(s0, null);
+    state.pages.splice(s0, e - s0 + 1); state.breaks.splice(s0, e - s0 + 1);
+    if (!state.pages.length) { state.pages = [""]; state.breaks = [true]; }
+    state.breaks[0] = state.breaks[0] || true;
+    if (s0 < state.pages.length && !state.breaks[s0]) state.breaks[s0] = true;
+    state.index = Math.max(0, Math.min(s0, state.pages.length - 1));
+    showPage(state.opened); scheduleSave();
+    toast(t("{0}을(를) 지웠어요", label));
+  }
+  function fillTocFromStructure() {
+    if (animating) return;
+    const before = structure();
+    if (!before.parts && !before.chapters) { toast(t("먼저 부나 장을 추가하세요")); return; }
+    if (!state.hasToc) createTocPage();
+    const tc = tocCount(), st = structure(), lines = [];
+    st.marks.forEach((m, i) => {
+      if (!m) return;
+      const row = labelOf(m.k, m.no) + "  " + (m.title || t("제목 없음")) + "  " + (i - tc + 1);
+      if (m.k === "p") { if (lines.length) lines.push(""); lines.push(row); } else lines.push("  " + row);
+    });
+    state.pages.splice(0, tc, lines.join("\n")); state.breaks.splice(0, tc, true);
+    reflowFrom(0); state.index = 0; showPage(state.opened); scheduleSave(); closeToc();
+    toast(t("목차를 채웠어요. 쪽 번호는 본문 기준이에요"));
+  }
+  function setMode(m) {
+    if (state.mode === m) return;
+    state.mode = m; ensureLoreTab(); noteTouch(); applyChrome();
+    if (loreEl.classList.contains("open")) renderLore();
+    toast(m === "non" ? t("비문학 모드로 바꿨어요") : t("문학 모드로 바꿨어요"));
+  }
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+    document.documentElement.lang = l;
+    i18nDom(document.body);
+    window.dispatchEvent(new Event("bb-lang"));
+    invalidateCap(); applyChrome();
+    if (toc.classList.contains("open")) renderToc();
+    if (shelf.classList.contains("open")) renderShelf();
+    if (loreEl.classList.contains("open")) renderLore();
+    if (goalsEl.classList.contains("open")) renderGoals();
+    if (coverPanel.classList.contains("open")) renderCover();
+    if (state.opened) requestAnimationFrame(() => requestAnimationFrame(settlePaper));
+  }
+  function createTocPage() {
+    if (state.hasToc) { jump(0); return; }
+    if (animating) return;
+    if (state.pages.length >= PAGE_CAP) { toast(t("너무 길어 더 나눌 수 없어요")); return; }
+    state.pages[state.index] = writing.value;
+    state.pages.unshift(""); state.breaks.unshift(true); state.breaks[1] = state.breaks[1] || true;
+    state.hasToc = true; state.index = 0; state.hintSeen = true;
+    showPage(state.opened); scheduleSave(); closeToc();
+    toast(state.opened ? t("목차 쪽을 맨 앞에 만들었어요") : t("목차 쪽을 만들었어요. 책을 열면 맨 앞에 있어요"));
+  }
+  function removeTocPage() {
+    if (!state.hasToc) return;
+    state.pages[state.index] = writing.value;
+    const tc = tocCount();
+    state.pages.splice(0, tc); state.breaks.splice(0, tc);
+    if (!state.pages.length) { state.pages = [""]; state.breaks = [true]; }
+    state.breaks[0] = state.breaks[0] || true; state.hasToc = false;
+    state.index = Math.max(0, Math.min(state.index - tc, state.pages.length - 1));
+    showPage(state.opened); scheduleSave(); toast(t("목차 쪽을 없앴어요"));
+  }
+  function jump(i) { if (animating || i === state.index || i < 0 || i >= state.pages.length) { closeToc(); return; } state.pages[state.index] = writing.value; state.index = i; state.hintSeen = true; showPage(true); scheduleSave(); closeToc(); }
+  function playCover(opening) {
+    const cover = document.getElementById("cover");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
+    book.dataset.state = opening ? "opening" : "closing";
+    stage.dataset.state = book.dataset.state;
+    cover.classList.add("is-turning");
+    cover.style.transition = "none";
+    cover.style.transform = opening ? "rotateY(0deg)" : "rotateY(-180deg)";
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+    prevBtn.style.visibility = "hidden";
+    nextBtn.style.visibility = "hidden";
+    return new Promise(resolve => {
+      requestAnimationFrame(() => {
+        void cover.offsetWidth;
+        cover.style.transition = "transform 0.92s cubic-bezier(0.42, 0.04, 0.18, 1)";
+        cover.style.transform = opening ? "rotateY(-180deg)" : "rotateY(0deg)";
+        let done = false;
+        const finish = (ev) => {
+          if (done) return;
+          if (ev && ev.propertyName && ev.propertyName !== "transform") return;
+          done = true;
+          cover.removeEventListener("transitionend", finish);
+          book.dataset.state = opening ? "reading" : "cover";
+          stage.dataset.state = book.dataset.state;
+          cover.classList.remove("is-turning");
+          cover.style.transition = "none";
+          cover.style.transform = "";
+          prevBtn.style.visibility = "";
+          nextBtn.style.visibility = "";
+          resolve();
+        };
+        cover.addEventListener("transitionend", finish);
+        setTimeout(() => finish(), 1100);
+      });
+    });
+  }
+  function playTurn(dir, from, to) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
+    const faceText = (i) => { const m = markAt(i), L = headLinesFor(m); if (!m) return state.pages[i]; const st = structure(); const lines = [labelOf(m.k, st.marks[i].no), m.t || ""]; while (lines.length < L) lines.push(""); return lines.slice(0, L).join("\n") + "\n" + state.pages[i]; };
+    faceFront.textContent = dir > 0 ? faceText(from) : faceText(to);
+    faceBack.textContent = dir > 0 ? faceText(to) : faceText(from);
+    leaf.classList.add("show");
+    leaf.style.transition = "none";
+    leaf.style.transform = dir > 0 ? "rotateY(0deg)" : "rotateY(-180deg)";
+    void leaf.offsetWidth;
+    leaf.style.transition = "transform 0.7s cubic-bezier(0.4, 0.05, 0.2, 1)";
+    leaf.style.transform = dir > 0 ? "rotateY(-180deg)" : "rotateY(0deg)";
+    return new Promise(resolve => {
+      let done = false;
+      const finish = (ev) => {
+        if (done) return;
+        if (ev && ev.propertyName && ev.propertyName !== "transform") return;
+        done = true; leaf.removeEventListener("transitionend", finish);
+        leaf.classList.remove("show"); leaf.style.transition = "none"; leaf.style.transform = "";
+        resolve();
+      };
+      leaf.addEventListener("transitionend", finish);
+      setTimeout(finish, 820);
+    });
+  }
+  async function turn(dir) {
+    if (animating) return;
+    if (!state.opened) { if (dir > 0) openBook(); return; }
+    if (dir < 0 && state.index === 0) { showCover(); return; }
+    state.pages[state.index] = writing.value;
+    const from = state.index, to = from + dir;
+    if (to < 0 || to >= state.pages.length) { book.classList.remove("shake"); void book.offsetWidth; book.classList.add("shake"); return; }
+    const gen = ++turnGen; animating = true; writing.style.visibility = "hidden";
+    await playTurn(dir, from, to);
+    if (gen !== turnGen) return;
+    state.index = to; state.hintSeen = true; writing.style.visibility = ""; animating = false;
+    if (dir < 0) trimTrailingEmpty();
+    showPage(true); scheduleSave();
+  }
+  async function openBook() {
+    if (state.opened || animating) return;
+    animating = true;
+    openBtn.hidden = true;
+    writing.value = state.pages[state.index] || "";
+    await playCover(true);
+    state.opened = true; animating = false; scheduleSave(); showPage(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => { invalidateCap(); updateCount(); }));
+  }
+  async function showCover() {
+    if (!state.opened || animating) return;
+    state.pages[state.index] = writing.value;
+    trimTrailingEmpty(); closePanels(); animating = true; writing.blur();
+    await playCover(false);
+    state.opened = false; animating = false; scheduleSave(); applyChrome();
+  }
+  const downloadsReady = window.claude && window.claude.use ? window.claude.use("downloads").catch(() => null) : Promise.resolve(undefined);
+  async function download(filename, text, type, doneMsg) {
+    const dl = await downloadsReady;
+    if (dl) {
+      try { await dl.save({ filename, data: text }); toast(doneMsg); }
+      catch (err) {
+        const code = err && err.code;
+        if (code === "declined") toast(t("내려받기를 취소했어요"));
+        else if (code === "rate_limited") toast(t("잠시 뒤에 다시 눌러 주세요"));
+        else copyFallback(text);
+      }
+      return;
+    }
+    if (dl === null) { copyFallback(text); return; }
+    const blob = new Blob([text], { type }); const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast(doneMsg);
+  }
+  function copyFallback(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => toast(t("파일로 저장할 수 없어 클립보드에 복사했어요")), () => toast(t("여기서는 파일로 저장할 수 없어요")));
+    } else toast(t("여기서는 파일로 저장할 수 없어요"));
+  }
+  function safeName(name) { return (name || t("블랙북")).replace(/[\\/:*?"<>|]/g, "").trim() || t("블랙북"); }
+  function exportTxt() {
+    state.pages[state.index] = writing.value;
+    const tc = tocCount();
+    const st = structure();
+    const parts = [state.title, sizeName(state.size) + " · " + (state.mode === "non" ? t("비문학") : t("문학")) + " · " + t("{0}쪽", state.pages.length - tc), ""];
+    state.pages.forEach((page, i) => {
+      const m = st.marks[i];
+      if (m) parts.push("", "════════════════", labelOf(m.k, m.no) + (m.title ? "  " + m.title : ""), "════════════════", "");
+      else parts.push("────────────────", i < tc ? t("목차") : t("{0}쪽", i - tc + 1), "────────────────");
+      parts.push(page.trim() ? page.replace(/\s+$/g, "") : t("(빈 쪽)"), "");
+    });
+    if (state.mode === "non") {
+      const fl = state.notes.foot.filter(e => e.f.text).map(e => { const sr = e.f.src ? state.notes.sources.find(x => x.id === e.f.src) : null; return "[^" + e.no + "] " + e.f.text.trim().replace(/\n/g, " ") + (sr ? " (" + (sr.title || "") + ")" : ""); }).join("\n");
+      if (fl) parts.push("════════════════", t("각주"), "════════════════", fl, "");
+      const rt = refsText(); if (rt) parts.push("════════════════", t("참고문헌"), "════════════════", rt, "");
+    }
+    const nt = notesText(); if (nt) parts.push("════════════════", t("주장집"), "════════════════", nt);
+    download(safeName(state.title) + ".txt", parts.join("\n"), "text/plain;charset=utf-8", t("원고를 내려받았어요"));
+  }
+  function exportJson() {
+    state.pages[state.index] = writing.value;
+    download(safeName(state.title) + "-backup.json", JSON.stringify({ app: "blackbook", title: state.title, size: state.size, font: state.font, pages: state.pages, breaks: state.breaks, hasToc: state.hasToc, mode: state.mode, notes: state.notes }, null, 2), "application/json", t("백업을 내려받았어요"));
+  }
+  function importJson(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(String(reader.result || ""));
+        if (!data || !Array.isArray(data.pages) || !data.pages.length) throw new Error("bad");
+        if (library.order.length >= BOOK_CAP) { toast(t("책이 너무 많아요")); return; }
+        saveNow();
+        const b = parseBook(data, uid());
+        b.opened = true;
+        library.books[b.id] = recordOf(b);
+        library.order.push(b.id);
+        adopt(b);
+        requestAnimationFrame(() => requestAnimationFrame(() => reflowAll(0)));
+        closePanels(); toast(t("새 책으로 불러왔어요"));
+      } catch (e) { toast(t("이 파일은 백업이 아니에요")); }
+    };
+    reader.readAsText(file);
+  }
+  document.querySelectorAll("[data-psize]").forEach(btn => btn.addEventListener("click", () => setSize(btn.dataset.psize)));
+  document.querySelectorAll("[data-theme-pref]").forEach(btn => btn.addEventListener("click", () => { themePref = btn.dataset.themePref; try { localStorage.setItem(THEME_KEY, themePref); } catch (e) {} applyTheme(); }));
+  document.getElementById("loreBtn").addEventListener("click", () => openLore());
+  document.getElementById("goalsBtn").addEventListener("click", openGoals);
+  saveBtn.addEventListener("click", () => saveToAccount(false));
+  document.getElementById("cfOverwrite").addEventListener("click", () => saveToAccount(true));
+  document.getElementById("cfTake").addEventListener("click", takeRemote);
+  document.getElementById("coverEditBtn").addEventListener("click", openCover);
+  document.getElementById("coverClose").addEventListener("click", () => closeCover());
+  document.getElementById("goalsClose").addEventListener("click", () => closeGoals());
+  document.getElementById("tocFillBtn").addEventListener("click", fillTocFromStructure);
+  document.getElementById("addPartBtn").addEventListener("click", () => addHeading("p"));
+  document.getElementById("addChapterBtn").addEventListener("click", () => addHeading("c"));
+  addFootBtn.addEventListener("click", addFootnote);
+  delHeadBtn.addEventListener("click", () => {
+    const u = unitStart(state.index); if (u < 0) return;
+    if (!delArmed) {
+      const m = state.breaks[u], st = structure(), label = labelOf(m.k, st.marks[u].no), n = spanEndFrom(u, null) - u + 1;
+      delArmed = true; delHeadBtn.classList.add("armed");
+      delHeadBtn.textContent = m.k === "p" ? t("한 번 더 누르면 {0}의 표지가 지워져요. 장은 남아요", label) : t("한 번 더 누르면 {0}({1}쪽)이 지워져요", label, n);
+      delTimer = setTimeout(() => { disarmDel(); applyChrome(); }, 4000);
+      return;
+    }
+    disarmDel(); deleteHeading();
+  });
+  phTitle.addEventListener("input", () => { const m = markAt(state.index); if (!m) return; m.t = phTitle.value.slice(0, 120); scheduleSave(); if (toc.classList.contains("open")) renderToc(); whereEl.title = phTitle.value; });
+  phTitle.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); writing.focus({ preventScroll: true }); } });
+  document.querySelectorAll("[data-bmode]").forEach(b => b.addEventListener("click", () => setMode(b.dataset.bmode)));
+  document.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  document.getElementById("loreClose").addEventListener("click", () => closeLore());
+  document.getElementById("tocPageBtn").addEventListener("click", createTocPage);
+  armConfirm(document.getElementById("tocPageDel"), () => t("한 번 더 누르면 목차 쪽이 사라져요"), removeTocPage);
+  document.querySelectorAll("[data-font]").forEach(btn => btn.addEventListener("click", () => setFont(Number(btn.dataset.font))));
+  document.getElementById("tocBtn").addEventListener("click", openToc);
+  document.getElementById("tocClose").addEventListener("click", () => closeToc());
+  document.getElementById("shelfBtn").addEventListener("click", openShelf);
+  document.getElementById("shelfClose").addEventListener("click", () => closeShelf());
+  document.getElementById("newLitBtn").addEventListener("click", () => newBook("lit"));
+  document.getElementById("newNonBtn").addEventListener("click", () => newBook("non"));
+  document.getElementById("deleteBookBtn").addEventListener("click", () => { document.getElementById("deleteConfirm").hidden = false; document.getElementById("deleteNo").focus(); });
+  document.getElementById("deleteYes").addEventListener("click", deleteCurrentBook);
+  document.getElementById("deleteNo").addEventListener("click", () => { document.getElementById("deleteConfirm").hidden = true; });
+  coverBtn.addEventListener("click", showCover);
+  openBtn.addEventListener("click", openBook);
+  document.getElementById("cover").addEventListener("click", (e) => { if (e.target === titleInput) return; openBook(); });
+  titleInput.addEventListener("click", (e) => e.stopPropagation());
+  titleInput.addEventListener("input", () => { if (titleText().length > 24) titleInput.textContent = titleText().slice(0, 24); state.title = titleText() || t("블랙북"); scheduleSave(); });
+  titleInput.addEventListener("blur", () => setTitle(titleText()));
+  titleInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); titleInput.blur(); openBook(); } });
+  prevBtn.addEventListener("click", () => turn(-1));
+  nextBtn.addEventListener("click", () => { if (!state.opened) { openBook(); return; } if (state.index >= state.pages.length - 1) addPageAndTurn(); else turn(1); });
+  document.getElementById("hotPrev").addEventListener("click", () => turn(-1));
+  document.getElementById("hotNext").addEventListener("click", () => {
+    if (!state.opened) { openBook(); return; }
+    if (state.index >= state.pages.length - 1) { book.classList.remove("shake"); void book.offsetWidth; book.classList.add("shake"); hint.textContent = t("마지막 쪽이에요. 오른쪽 + 로 새 쪽을 더하세요."); return; }
+    turn(1);
+  });
+  writing.addEventListener("compositionstart", () => { composing = true; });
+  writing.addEventListener("compositionend", () => { composing = false; onEdit(); });
+  writing.addEventListener("input", () => {
+    state.hintSeen = true; if (hint.textContent) hint.textContent = "";
+    if (composing) { state.pages[state.index] = writing.value; scheduleSave(); updateCount(); return; }
+    onEdit();
+  });
+  writing.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !composing && writing.selectionStart === 0 && writing.selectionEnd === 0 && state.index > 0) {
+      e.preventDefault(); backspaceAtStart();
+    }
+  });
+  document.getElementById("exportTxt").addEventListener("click", exportTxt);
+  document.getElementById("exportJson").addEventListener("click", exportJson);
+  document.getElementById("importBtn").addEventListener("click", () => document.getElementById("filePick").click());
+  document.getElementById("filePick").addEventListener("change", (e) => { const file = e.target.files && e.target.files[0]; e.target.value = ""; if (file) importJson(file); });
+  backdrop.addEventListener("click", closePanels);
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "s") { e.preventDefault(); saveToAccount(false); return; }
+    if (e.key === "Escape") { closePanels(); return; }
+    if (e.altKey && e.key === "ArrowLeft") { e.preventDefault(); turn(-1); }
+    if (e.altKey && e.key === "ArrowRight") { e.preventDefault(); turn(1); }
+  });
+  let touch = null;
+  book.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0], rect = book.getBoundingClientRect();
+    touch = { x: t.clientX, y: t.clientY, ratio: (t.clientX - rect.left) / rect.width };
+  }, { passive: true });
+  book.addEventListener("touchend", (e) => {
+    if (!touch) return;
+    const t = e.changedTouches[0], dx = t.clientX - touch.x, dy = t.clientY - touch.y, ratio = touch.ratio;
+    touch = null;
+    if (ratio > 0.22 && ratio < 0.78) return;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+    turn(dx < 0 ? 1 : -1);
+  }, { passive: true });
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { applyPaper(); if (!state.opened) { invalidateCap(); updateCount(); return; } state.pages[state.index] = writing.value; afterSizeChange(); }, 220); });
+  window.addEventListener("pagehide", () => { saveNow(); });
+  window.addEventListener("beforeunload", (e) => { saveNow(); if (cloud && (unsaved.size || removed.size)) { e.preventDefault(); e.returnValue = ""; } });
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") saveNow(); });
+  // ---- 주장집
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function noteTouch() { scheduleSave(); if (typeof renderFootStrip === "function") renderFootStrip(); }
+  function armConfirm(btn, armedText, action) {
+    let armed = false, timer = 0, orig = "";
+    btn.addEventListener("click", () => {
+      if (!armed) { armed = true; orig = btn.textContent; btn.textContent = typeof armedText === "function" ? armedText() : armedText; btn.classList.add("armed"); timer = setTimeout(() => { armed = false; btn.textContent = orig; btn.classList.remove("armed"); }, 3000); return; }
+      clearTimeout(timer); armed = false; btn.textContent = orig; btn.classList.remove("armed"); action();
+    });
+  }
+  function nextFootNo() { return state.notes.foot.reduce((m, e) => Math.max(m, e.no || 0), 0) + 1; }
+  function refsText() {
+    return state.notes.sources.filter(e => e.title || e.f.author).map(e => {
+      const a = (e.f.author || "").trim(), y = (e.f.year || "").trim(), w = (e.f.where || "").trim();
+      return "- " + [a ? a + (y ? " (" + y + ")" : "") : (y ? "(" + y + ")" : ""), e.title || t("이름 없음"), w].filter(Boolean).join(". ");
+    }).join("\n");
+  }
+  function addFootnote() {
+    if (!state.opened || animating || state.mode !== "non") return;
+    if (state.index < tocCount()) { toast(t("목차 쪽에는 각주를 달 수 없어요")); return; }
+    if (state.notes.foot.length >= ENTRY_CAP) { toast(t("항목이 너무 많아요")); return; }
+    const n = nextFootNo(), entry = { id: uid(), title: "", f: {}, updated: Date.now(), no: n };
+    const pos = writing.selectionEnd == null ? writing.value.length : writing.selectionEnd;
+    writing.focus({ preventScroll: true }); writing.setSelectionRange(pos, pos);
+    writing.setRangeText("[^" + n + "]", pos, pos, "end");
+    writing.dispatchEvent(new Event("input", { bubbles: true }));
+    state.notes.foot.push(entry); loreSel.foot = entry.id; loreMode = "edit";
+    noteTouch(); openLore("foot");
+    toast(t("각주 {0}을 만들었어요. 내용을 적으세요", n));
+    setTimeout(() => { const ta = loreBody.querySelector(".f-long"); if (ta) ta.focus(); }, 420);
+  }
+  function renderFootStrip() {
+    const nonOpen = state.mode === "non" && state.opened;
+    addFootBtn.hidden = !nonOpen;
+    footStrip.hidden = true; footStrip.textContent = "";
+    if (!nonOpen || state.index < tocCount()) return;
+    const nums = [], re = /\[\^(\d+)\]/g; let m;
+    while ((m = re.exec(writing.value))) { const n = Number(m[1]); if (!nums.includes(n)) nums.push(n); }
+    if (!nums.length) return;
+    footStrip.hidden = false;
+    footStrip.appendChild(el("div", "fs-title", t("이 쪽의 각주")));
+    nums.slice(0, 6).forEach(n => {
+      const e = state.notes.foot.find(x => x.no === n), src = e && e.f.src ? state.notes.sources.find(x => x.id === e.f.src) : null;
+      const b = el("button", "fs-line", "[^" + n + "] " + (e && e.f.text ? e.f.text : t("내용이 비어 있어요")) + (src ? " — " + (src.title || t("이름 없음")) : ""));
+      b.type = "button";
+      b.addEventListener("click", () => {
+        let en = e;
+        if (!en) { en = { id: uid(), title: "", f: {}, updated: Date.now(), no: n }; state.notes.foot.push(en); noteTouch(); }
+        loreSel.foot = en.id; loreMode = "edit"; openLore("foot");
+      });
+      footStrip.appendChild(b);
+    });
+    if (nums.length > 6) footStrip.appendChild(el("div", "fs-title", "+" + (nums.length - 6)));
+  }
+  function notesText() {
+    const out = [];
+    loreDefs().forEach(def => {
+      const arr = state.notes[def.key];
+      if (!arr.length) return;
+      out.push("[" + t(def.name) + "]", "");
+      arr.forEach((e, i) => {
+        out.push((def.key === "plot" ? (i + 1) + ". " : "■ ") + (def.key === "foot" ? "[^" + e.no + "]" : (e.title || t("이름 없음"))));
+        def.fields.forEach(fd => { let v = (e.f[fd.k] || "").trim(); if (fd.type === "source") { const sr = state.notes.sources.find(x => x.id === v); v = sr ? (sr.title || t("이름 없음")) : ""; } if (v) out.push("  " + t(fd.label) + ": " + v.replace(/\n/g, "\n    ")); });
+        out.push("");
+      });
+    });
+    const g = state.notes.goals;
+    if (g.total || g.daily || g.items.length) {
+      out.push("[" + t("목표") + "]", "");
+      if (g.total) out.push("  " + t("총 목표") + ": " + t("{0}자", g.total));
+      if (g.daily) out.push("  " + t("하루 목표") + ": " + t("{0}자", g.daily));
+      g.items.forEach(m => out.push("  [" + (m.done ? "x" : " ") + "] " + m.text));
+      out.push("");
+    }
+    return out.join("\n");
+  }
+  function renderLoreTabs() {
+    loreTabsEl.innerHTML = "";
+    loreDefs().forEach(d => {
+      const b = el("button", "lore-tab", t(d.name) + " " + state.notes[d.key].length);
+      b.type = "button"; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(d.key === loreTab));
+      b.addEventListener("click", () => { loreTab = d.key; loreMode = "list"; loreQuery = ""; renderLore(); });
+      loreTabsEl.appendChild(b);
+    });
+    const c = loreDefs().reduce((n, d) => n + state.notes[d.key].length, 0);
+    loreStatsEl.textContent = t("{0} · 항목 {1}개", shownTitle(state.title), c) + " · " + (state.mode === "non" ? t("비문학") : t("문학"));
+  }
+  function renderLore() { renderLoreTabs(); renderLoreBody(); }
+  function renderLoreBody() {
+    loreBody.innerHTML = ""; loreBody.dataset.mode = loreMode; loreRefs = null;
+    const def = LORE.find(d => d.key === loreTab);
+    const list = el("div", "lore-list"), edit = el("div", "lore-edit"), head = el("div", "lore-list-head"), items = el("div", "lore-items");
+    const search = el("input", "f-input"); search.type = "search"; search.id = "loreSearch"; search.placeholder = t("{0} 찾기", t(def.name)); search.value = loreQuery; search.setAttribute("aria-label", t("{0} 찾기", t(def.name)));
+    search.addEventListener("input", () => { loreQuery = search.value; renderLoreItems(); });
+    const add = el("button", "lore-add", t("+ 새 {0}", t(def.single))); add.type = "button"; add.addEventListener("click", addEntry);
+    head.append(search, add); list.append(head, items); loreBody.append(list, edit);
+    loreRefs = { items, edit, def };
+    renderLoreItems(); renderLoreEditor();
+  }
+  function renderLoreItems() {
+    const { items, def } = loreRefs; items.innerHTML = "";
+    const arr = state.notes[def.key], q = loreQuery.trim().toLowerCase();
+    const shown = arr.filter(e => !q || (e.title + " " + Object.values(e.f).join(" ")).toLowerCase().includes(q));
+    if (!shown.length) { items.appendChild(el("div", "lore-empty", arr.length ? t("찾는 항목이 없어요") : t(def.empty))); return; }
+    shown.forEach(e => {
+      const b = el("button", "lore-item" + (e.id === loreSel[def.key] ? " current" : "")); b.type = "button";
+      if (def.key === "plot") b.appendChild(el("span", "li-no", String(arr.indexOf(e) + 1)));
+      b.appendChild(el("span", "li-title", def.key === "foot" ? "[^" + e.no + "] " + (excerpt(e.f.text) || t("내용이 비어 있어요")) : (e.title || t("이름 없음"))));
+      const sub = def.key === "plott(t(" ? (e.f.status || /*nt*/'구상') : (e.f[def.fields[0].k] || "))");
+      if (sub) { const sp = el("span", "li-sub" + (def.key === "plot" ? " chip" : ""), def.key === "plot" ? t(sub) : sub); if (def.key === "plot") sp.dataset.s = sub; b.appendChild(sp); }
+      b.addEventListener("click", () => { loreSel[def.key] = e.id; loreMode = "edit"; loreBody.dataset.mode = "edit"; renderLoreItems(); renderLoreEditor(); });
+      items.appendChild(b);
+    });
+  }
+  function renderLoreEditor() {
+    const { edit, def } = loreRefs; edit.innerHTML = "";
+    const arr = state.notes[def.key], idx = arr.findIndex(x => x.id === loreSel[def.key]), e = arr[idx];
+    if (!e) { edit.appendChild(el("div", "lore-empty", t(def.hint))); if (arr.length === 0 && loreMode === "edit") { loreMode = "list"; loreBody.dataset.mode = "list"; } return; }
+    const bar = el("div", "lore-bar");
+    const back = el("button", "lore-btn lore-back", t("‹ 목록")); back.type = "button";
+    back.addEventListener("click", () => { loreMode = "list"; loreBody.dataset.mode = "list"; });
+    const grow = el("span", "grow");
+    const up = el("button", "lore-btn", t("위로")), down = el("button", "lore-btn", t("아래로")), del = el("button", "lore-btn", t("지우기"));
+    [up, down, del].forEach(b => { b.type = "button"; });
+    up.disabled = idx === 0; down.disabled = idx === arr.length - 1;
+    const move = (d) => { const j = idx + d; if (j < 0 || j >= arr.length) return; [arr[idx], arr[j]] = [arr[j], arr[idx]]; noteTouch(); renderLoreItems(); renderLoreEditor(); };
+    up.addEventListener("click", () => move(-1)); down.addEventListener("click", () => move(1));
+    armConfirm(del, () => t("한 번 더 누르면 지워요"), () => {
+      arr.splice(idx, 1); loreSel[def.key] = arr.length ? arr[Math.min(idx, arr.length - 1)].id : null;
+      if (!arr.length) { loreMode = "list"; loreBody.dataset.mode = "list"; }
+      noteTouch(); renderLoreTabs(); renderLoreItems(); renderLoreEditor();
+    });
+    bar.append(back, grow, up, down, del); edit.appendChild(bar);
+    if (def.key === "foot") edit.appendChild(el("div", "lore-title", "[^" + e.no + "]"));
+    else {
+      const ti = el("input", "lore-title"); ti.type = "text"; ti.maxLength = 80; ti.placeholder = t("{0} 이름", t(def.single)); ti.value = e.title; ti.setAttribute("aria-label", t("{0} 이름", t(def.single)));
+      ti.addEventListener("input", () => { e.title = ti.value; e.updated = Date.now(); noteTouch(); renderLoreItems(); });
+      edit.appendChild(ti);
+    }
+    def.fields.forEach(fd => {
+      const row = el("label", "f-row"); row.appendChild(el("span", "f-label", t(fd.label)));
+      let c;
+      if (fd.type === "source") {
+        c = document.createElement("select"); c.className = "f-input";
+        const none = el("option", null, t("(없음)")); none.value = ""; c.appendChild(none);
+        state.notes.sources.forEach(sr => { const op = el("option", null, sr.title || t("이름 없음")); op.value = sr.id; c.appendChild(op); });
+        c.value = e.f[fd.k] || "";
+      } else if (fd.type === "select") { c = document.createElement("select"); c.className = "f-input"; fd.options.forEach(o => { const op = el("option", null, t(o)); op.value = o; c.appendChild(op); }); c.value = e.f[fd.k] || fd.options[0]; }
+      else if (fd.type === "long") { c = el("textarea", "f-input f-long"); c.rows = 2; c.maxLength = 20000; c.value = e.f[fd.k] || ""; c.placeholder = fd.ph ? t(fd.ph) : ""; }
+      else { c = el("input", "f-input"); c.type = "text"; c.maxLength = 200; c.value = e.f[fd.k] || ""; c.placeholder = fd.ph ? t(fd.ph) : ""; }
+      const fit = () => { if (fd.type === "long") { c.style.height = "auto"; c.style.height = Math.min(c.scrollHeight + 2, 640) + "px"; } };
+      c.addEventListener("input", () => { e.f[fd.k] = c.value; e.updated = Date.now(); fit(); noteTouch(); if (fd.k === def.fields[0].k) renderLoreItems(); });
+      row.appendChild(c); edit.appendChild(row); setTimeout(fit, 0);
+    });
+  }
+  function addEntry() {
+    const def = loreRefs.def, arr = state.notes[def.key];
+    if (arr.length >= ENTRY_CAP) { toast(t("항목이 너무 많아요")); return; }
+    const e = { id: uid(), title: "", f: {}, updated: Date.now(), no: def.key === "foot" ? nextFootNo() : 0 };
+    if (def.key === "plot") e.f.status = /*nt*/'구상';
+    arr.push(e); loreSel[def.key] = e.id; loreMode = "edit"; loreBody.dataset.mode = "edit"; loreQuery = "";
+    noteTouch(); renderLoreTabs(); renderLoreBody();
+    const ti = loreBody.querySelector(def.key === "foot" ? ".f-long" : ".lore-title"); if (ti) ti.focus();
+  }
+  function streakDays() {
+    const g = state.notes.goals; if (!g.daily) return 0;
+    const key = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    const d = new Date(); let n = 0;
+    if ((g.history[key(d)] || 0) < g.daily) d.setDate(d.getDate() - 1);
+    while ((g.history[key(d)] || 0) >= g.daily && n < 400) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function renderGoals() {
+    state.pages[state.index] = writing.value; goalsTick();
+    const g = state.notes.goals, wrap = el("div", "lore-goals");
+    const live = {};
+    const card = (title, key, step, ph) => {
+      const c = el("div", "goal-card"), lab = el("label", "f-row"); lab.appendChild(el("span", "f-label", title));
+      const inp = el("input", "f-input"); inp.type = "number"; inp.min = "0"; inp.step = String(step); inp.inputMode = "numeric"; inp.placeholder = ph; inp.value = g[key] ? String(g[key]) : "";
+      inp.addEventListener("input", () => { g[key] = clampInt(inp.value); noteTouch(); refresh(); });
+      lab.appendChild(inp);
+      const num = el("div", "goal-num"), b = el("b", null, "0"), sp = el("span", null, ""); num.append(b, sp);
+      const bar = el("div", "bar"), fill = el("i"); bar.appendChild(fill);
+      c.append(lab, num, bar); live[key] = { b, sp, fill }; return c;
+    };
+    const h1 = el("h3", null, t("집필 목표"));
+    const grid = el("div", "goal-grid"); grid.append(card(t("책 전체 목표 글자 수"), "total", 1000, t("예: 100000")), card(t("하루 목표 글자 수"), "daily", 100, t("예: 2000")));
+    const stats = el("div", "goal-stats");
+    const refresh = () => {
+      state.pages[state.index] = writing.value;
+      const total = bodyChars(), today = Math.max(0, total - g.dayStart), spec = paperSpec();
+      const set = (k, v, goal) => { live[k].b.textContent = nf(v); live[k].sp.textContent = goal ? "/ " + t("{0}자", nf(goal)) + " · " + Math.min(100, Math.round(v / goal * 100)) + "%" : t("목표를 정하면 진행률이 보여요"); live[k].fill.style.width = goal ? Math.min(100, v / goal * 100) + "%" : "0"; };
+      set("total", total, g.total); set("daily", today, g.daily);
+      const st = streakDays();
+      stats.textContent = "";
+      [[t("본문"), t("{0}자", nf(total))], [t("현재 판형 기준"), t("약 {0}쪽", nf(Math.ceil(total / spec.chars)))], [t("오늘"), "+" + t("{0}자", nf(today))], [t("연속 달성"), g.daily ? t("{0}일", st) : "-"]].forEach(([k, v]) => { const s2 = el("span"); s2.append(k + " ", el("b", null, v)); stats.appendChild(s2); });
+    };
+    const h2 = el("h3", null, t("마일스톤"));
+    const ms = el("div", "lore-ms"); ms.style.cssText = "display:flex;flex-direction:column;gap:8px";
+    const drawMs = () => {
+      ms.innerHTML = "";
+      g.items.forEach((m, i) => {
+        const row = el("div", "ms-row"), cb = el("input"); cb.type = "checkbox"; cb.checked = m.done; cb.setAttribute("aria-label", t("완료"));
+        const tx = el("input", "f-input" + (m.done ? " done" : "")); tx.type = "text"; tx.maxLength = 200; tx.value = m.text; tx.setAttribute("aria-label", t("마일스톤"));
+        const x = el("button", "lore-btn", "×"); x.type = "button"; x.setAttribute("aria-label", t("지우기"));
+        cb.addEventListener("change", () => { m.done = cb.checked; tx.classList.toggle("done", m.done); noteTouch(); });
+        tx.addEventListener("input", () => { m.text = tx.value; noteTouch(); });
+        x.addEventListener("click", () => { g.items.splice(i, 1); noteTouch(); drawMs(); });
+        row.append(cb, tx, x); ms.appendChild(row);
+      });
+      const addRow = el("div", "ms-row"), ni = el("input", "f-input"); ni.type = "text"; ni.maxLength = 200; ni.placeholder = t("예: 1부 초고 끝내기"); ni.setAttribute("aria-label", t("새 마일스톤"));
+      const ab = el("button", "lore-btn", t("추가")); ab.type = "button";
+      const go = () => { const txt = ni.value.trim(); if (!txt) return; if (g.items.length >= 100) { toast(t("마일스톤이 너무 많아요")); return; } g.items.push({ id: uid(), text: txt, done: false }); noteTouch(); drawMs(); };
+      ab.addEventListener("click", go); ni.addEventListener("keydown", ev => { if (ev.key === "Enter" && !ev.isComposing) { ev.preventDefault(); go(); } });
+      addRow.append(ni, ab); ms.appendChild(addRow);
+    };
+    wrap.append(h1, grid, stats, h2, ms); goalsBody.innerHTML = ""; goalsBody.appendChild(wrap);
+    goalsStatsEl.textContent = shownTitle(state.title);
+    drawMs(); refresh();
+  }
+  // ---- theme
+  const THEME_KEY = "blackbook.theme";
+  const hostTheme = document.documentElement.getAttribute("data-theme");
+  let themePref = "auto";
+  try { const v = localStorage.getItem(THEME_KEY); if (v === "light" || v === "dark") themePref = v; } catch (e) {}
+  function applyTheme() {
+    const r = document.documentElement;
+    if (themePref === "auto") { if (hostTheme) r.setAttribute("data-theme", hostTheme); else r.removeAttribute("data-theme"); }
+    else r.setAttribute("data-theme", themePref);
+    document.querySelectorAll("[data-theme-pref]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themePref === themePref)));
+  }
+  // ---- account sync: every book is split into small documents under data/users/<id>/ (only this person can read them)
+  //   b-<book>: info · p-<book>-<n>: 25 pages each · n-<book>-<part>: notes · _shelf: order
+  const CH = 25;
+  let cloud = null;
+  const dirty = new Set(), removed = new Set(), chains = {}, sent = new Map(), chunkCount = new Map();
+  let flushTimer = 0, lastMeta = "", warnedBig = false, cloudNote = false;
+  const saveNoteEl = document.getElementById("saveNote");
+  // Manual save: edits stay in this browser as a draft; the account is written only by the Save button.
+  let readOnly = false;
+  const unsaved = new Set(), remoteAhead = new Set(), cloudSig = new Map(), cloudBase = new Map();
+  let saving = false, saveFailed = false, conflict = null;
+  function trackUnsaved(id, sig) {
+    if (!cloud) return;
+    const blankNew = !cloudSig.has(id) && library.books[id] && isBlankBook(library.books[id]);
+    if (sig !== cloudSig.get(id) && !blankNew) unsaved.add(id); else unsaved.delete(id);
+    updateSaveStatus();
+  }
+  function cloudRemove(id) { unsaved.delete(id); dirty.delete(id); if (!cloud) return; removed.add(id); updateSaveStatus(); }
+  function setReadOnly(on) {
+    readOnly = !!on;
+    writing.readOnly = readOnly; phTitle.readOnly = readOnly; titleInput.contentEditable = readOnly ? "false" : "true";
+    document.body.toggleAttribute("data-ro", readOnly);
+    ["addPartBtn", "addChapterBtn", "addFootBtn", "delHeadBtn", "newLitBtn", "newNonBtn", "deleteBookBtn", "importBtn", "tocPageBtn", "tocPageDel", "tocFillBtn"].forEach(id => { const b = document.getElementById(id); if (b) b.disabled = readOnly; });
+    if (!readOnly) applyChrome();
+  }
+  window.BB_APP = { setReadOnly, hasUnsaved: () => [...unsaved].some(id => library.books[id]) || removed.size > 0, toast: (m) => toast(m), lang: () => lang };
+  function updateSaveStatus() {
+    const n = [...unsaved].filter(id => library.books[id]).length + removed.size;
+    let msg = !cloud ? t("이 브라우저에만 저장돼요") : saving ? t("저장 중…") : n ? t("저장 안 된 변경이 있어요") : t("저장됨");
+    if (cloud && remoteAhead.size && !saving) msg += " · " + t("다른 기기에 더 새로운 저장본이 있어요");
+    saveState.textContent = msg;
+    saveBtn.dataset.dirty = cloud && n ? "1" : "0"; saveBtn.disabled = saving;
+    saveConflict.hidden = !conflict;
+  }
+  async function saveToAccount(force) {
+    saveNow();
+    if (readOnly) { toast(t("체험이 끝나서 새로 저장할 수 없어요. 구독하면 계속 쓸 수 있어요")); return; }
+    if (!cloud) { toast(t("계정에 연결되지 않아서 이 브라우저에만 저장돼요")); return; }
+    if (saving) return;
+    if (![...unsaved].some(id => library.books[id]) && !removed.size) { toast(t("이미 저장돼 있어요")); return; }
+    saving = true; saveFailed = false; updateSaveStatus();
+    try {
+      const parsed = parseRemote(await cloud.col.get());
+      const clash = [...unsaved].filter(id => parsed.remote[id] && parsed.remote[id].updated > (cloudBase.get(id) || 0));
+      if (clash.length && !force) { conflict = { ids: clash, parsed }; saving = false; updateSaveStatus(); return; }
+      conflict = null;
+      const ids = [...unsaved];
+      ids.forEach(id => dirty.add(id));
+      cloudFlush();
+      await Promise.all(Object.values(chains));
+      if (saveFailed) toast(t("저장하지 못했어요. 이 브라우저에는 남아 있어요"));
+      else {
+        ids.forEach(id => { const b = library.books[id]; if (b) { cloudSig.set(id, sigOf(b)); cloudBase.set(id, b.updated); } unsaved.delete(id); remoteAhead.delete(id); });
+        toast(t("저장했어요"));
+      }
+    } catch (e) { toast(t("저장하지 못했어요. 이 브라우저에는 남아 있어요")); }
+    saving = false; updateSaveStatus();
+  }
+  function takeRemote() {
+    if (!conflict) return;
+    const { ids, parsed } = conflict; conflict = null;
+    saveNow();
+    ids.forEach(id => { const b = library.books[id]; if (b) { cloudSig.set(id, sigOf(b)); b.updated = 1; } unsaved.delete(id); if (id === state.id) state.updated = 1; });
+    applyRemote(parsed, false); updateSaveStatus();
+    toast(t("다른 기기의 저장본을 불러왔어요"));
+  }
+  function queue(key, job) {
+    chains[key] = (chains[key] || Promise.resolve()).then(job).catch(err => {
+      saveFailed = true;
+      const code = err && err.code;
+      if ((code === "invalid_argument" || code === "quota_exceeded") && !warnedBig) { warnedBig = true; toast(t("계정에 다 저장하지 못했어요. 이 브라우저에는 남아 있어요")); }
+    });
+  }
+  function docsOf(b) {
+    const docs = {}, n = Math.max(1, Math.ceil(b.pages.length / CH));
+    for (let k = 0; k < n; k++) docs["p-" + b.id + "-" + k] = { pages: b.pages.slice(k * CH, (k + 1) * CH), breaks: b.breaks.slice(k * CH, (k + 1) * CH) };
+    NOTE_KEYS.forEach(k => { docs["n-" + b.id + "-" + k] = { v: b.notes[k] }; });
+    docs["b-" + b.id] = { id: b.id, title: b.title, size: b.size, font: b.font, index: b.index, opened: b.opened, hintSeen: b.hintSeen, updated: b.updated, hasToc: !!b.hasToc, mode: b.mode, cover: { bg: b.cover.bg, foil: b.cover.foil, font: b.cover.font, tex: b.cover.tex, corner: b.cover.corner }, nchunks: n };
+    docs["v-" + b.id] = { v: b.cover.img || "" };
+    return { docs, n };
+  }
+  function cloudFlush() {
+    if (!cloud) return;
+    clearTimeout(flushTimer);
+    dirty.forEach(id => {
+      const b = library.books[id]; if (!b) return;
+      const { docs, n } = docsOf(recordOf(b));
+      Object.keys(docs).forEach(name => {
+        const str = JSON.stringify(docs[name]);
+        if (sent.get(name) === str) return;
+        sent.set(name, str);
+        queue(id, () => cloud.col.doc(name).set(docs[name]).catch(err => { sent.delete(name); throw err; }));
+      });
+      const old = chunkCount.get(id) || 0;
+      for (let k = n; k < old; k++) { const nm = "p-" + id + "-" + k; sent.delete(nm); queue(id, () => cloud.col.doc(nm).delete()); }
+      chunkCount.set(id, n);
+    });
+    dirty.clear();
+    removed.forEach(id => {
+      const names = ["b-" + id, id];
+      for (let k = 0, n = Math.max(chunkCount.get(id) || 0, 1); k < n; k++) names.push("p-" + id + "-" + k);
+      NOTE_KEYS.forEach(k => names.push("n-" + id + "-" + k));
+      names.push("v-" + id);
+      chunkCount.delete(id);
+      names.forEach(nm => { sent.delete(nm); queue(id, () => cloud.col.doc(nm).delete()); });
+    });
+    removed.clear();
+    const meta = { order: library.order.slice(), currentId: library.currentId, deleted: (library.deleted || []).slice(-200) };
+    const key = JSON.stringify(meta);
+    if (key !== lastMeta) { lastMeta = key; queue("_shelf", () => cloud.col.doc("_shelf").set(meta)); }
+  }
+  function parseRemote(snap) {
+    let meta = null;
+    const metas = {}, chunks = {}, notesRaw = {}, legacy = {}, coverImg = {};
+    const noteRe = new RegExp("^n-(.+)-(" + NOTE_KEYS.join("|") + ")$");
+    snap.docs.forEach(d => {
+      const data = d.data(), id = d.id;
+      if (!data) return;
+      let m;
+      if (id === "_shelf") meta = data;
+      else if (id.startsWith("b-")) metas[id.slice(2)] = data;
+      else if ((m = /^p-(.+)-(\d+)$/.exec(id))) (chunks[m[1]] = chunks[m[1]] || {})[Number(m[2])] = data;
+      else if ((m = noteRe.exec(id))) (notesRaw[m[1]] = notesRaw[m[1]] || {})[m[2]] = data.v;
+      else if ((m = /^v-(.+)$/.exec(id))) coverImg[m[1]] = data.v;
+      else if (Array.isArray(data.pages)) legacy[id] = data;
+    });
+    const remote = {};
+    Object.keys(metas).forEach(id => {
+      const mt = metas[id], n = Number(mt.nchunks) | 0, cs = chunks[id] || {};
+      let pages = [], breaks = [], ok = n > 0;
+      for (let k = 0; k < n && ok; k++) {
+        const c = cs[k];
+        if (!c || !Array.isArray(c.pages)) { ok = false; break; }
+        pages = pages.concat(c.pages); breaks = breaks.concat(Array.isArray(c.breaks) ? c.breaks : c.pages.map(() => false));
+      }
+      if (!ok) return;
+      remote[id] = parseBook(Object.assign({}, mt, { pages, breaks, notes: notesRaw[id], cover: Object.assign({}, mt.cover, { img: coverImg[id] || "" }) }), id);
+      chunkCount.set(id, n);
+    });
+    const migrate = [];
+    Object.keys(legacy).forEach(id => { if (!remote[id]) { remote[id] = parseBook(legacy[id], id); migrate.push(id); } });
+    return { meta, remote, migrate };
+  }
+  function isBlankBook(b) {
+    const g = b.notes.goals;
+    return isDefaultTitle(b.title) && !b.hasToc && b.pages.length <= 1 && b.pages.every(x => !String(x).trim()) && !b.breaks.some(isMark)
+      && LIST_KEYS.every(k => b.notes[k].length === 0) && !g.total && !g.daily && g.items.length === 0;
+  }
+  function reflowSoon() {
+    requestAnimationFrame(() => requestAnimationFrame(() => { const had = document.activeElement === writing; settlePaper(); if (!had) writing.blur(); }));
+  }
+  function applyRemote(parsed, first) {
+    const { meta, remote, migrate } = parsed;
+    saveNow();
+    const goneRemote = new Set(meta && Array.isArray(meta.deleted) ? meta.deleted.map(String) : []);
+    const goneLocal = new Set(library.deleted || []);
+    const curId = state.id, push = [];
+    let changed = false, curReplaced = false, preferId = null;
+    // A device that has only its untouched starter book joins the account's shelf instead of adding a blank book beside it.
+    if (first && library.order.length === 1 && isBlankBook(library.books[curId])) {
+      const ids = Object.keys(remote).filter(id => !goneLocal.has(id) && !goneRemote.has(id));
+      if (ids.length) {
+        delete library.books[curId]; library.order = []; changed = true; unsaved.delete(curId);
+        preferId = meta && ids.includes(String(meta.currentId)) ? String(meta.currentId) : ids.sort((a, b) => remote[b].updated - remote[a].updated)[0];
+      }
+    }
+    library.order.slice().forEach(id => {
+      const lb = library.books[id];
+      if (goneRemote.has(id)) { delete library.books[id]; library.order = library.order.filter(x => x !== id); changed = true; }
+      ;
+    });
+    const order = (meta && Array.isArray(meta.order) ? meta.order.map(String) : []).concat(Object.keys(remote));
+    order.forEach(id => {
+      const rb = remote[id];
+      if (!rb || goneLocal.has(id) || goneRemote.has(id)) return;
+      const lb = library.books[id];
+      if (!lb) { library.books[id] = rb; lastSig.set(id, sigOf(rb)); cloudSig.set(id, sigOf(rb)); cloudBase.set(id, rb.updated); if (!library.order.includes(id)) library.order.push(id); changed = true; }
+      else if (rb.updated > lb.updated && unsaved.has(id)) remoteAhead.add(id);
+      else if (rb.updated > lb.updated) {
+        const base = id === curId ? state : lb;
+        // page size, font and reading position belong to this device; the text and notes come from the newer copy
+        rb.size = base.size; rb.font = base.font; rb.opened = base.opened; rb.hintSeen = base.hintSeen;
+        rb.index = clamp(base.index, 0, rb.pages.length - 1);
+        if (id === curId) curReplaced = true;
+        library.books[id] = rb; lastSig.set(id, sigOf(rb)); cloudSig.set(id, sigOf(rb)); cloudBase.set(id, rb.updated); unsaved.delete(id); remoteAhead.delete(id); changed = true;
+      }
+    });
+    library.deleted = Array.from(new Set([...goneLocal, ...goneRemote])).slice(-200);
+    if (!library.order.length) { const b = fresh(); library.books[b.id] = recordOf(b); library.order = [b.id]; push.push(b.id); changed = true; }
+    if (first) {
+      goneLocal.forEach(id => { if (remote[id]) removed.add(id); });
+    }
+    Object.keys(library.books).forEach(id => {
+      const rb = remote[id], lb = library.books[id];
+      if (!rb) { if (!isBlankBook(lb)) unsaved.add(id); return; }
+      if (first || !cloudBase.has(id)) cloudBase.set(id, rb.updated);
+      if (sigOf(lb) === sigOf(rb)) { cloudSig.set(id, sigOf(lb)); cloudBase.set(id, rb.updated); unsaved.delete(id); remoteAhead.delete(id); }
+      else if (lb.updated > rb.updated || unsaved.has(id)) unsaved.add(id);
+    });
+    if (!library.books[curId]) {
+      adopt(library.books[preferId && library.books[preferId] ? preferId : library.order[0]]);
+      if (state.opened) reflowSoon();
+    } else if (curReplaced) {
+      const sel = writing.selectionStart || 0;
+      state = library.books[curId];
+      showPage(false);
+      try { const c = Math.min(sel, writing.value.length); writing.setSelectionRange(c, c); } catch (e) {}
+      if (state.opened) reflowSoon();
+    }
+    saveNow();
+    if (changed) {
+      if (shelf.classList.contains("open")) renderShelf();
+      if (toc.classList.contains("open")) renderToc();
+      if (loreEl.classList.contains("open")) renderLore();
+      if (goalsEl.classList.contains("open")) renderGoals();
+      toast(first ? t("계정에 저장된 서가를 불러왔어요") : t("다른 기기의 변경을 불러왔어요"));
+    }
+    updateSaveStatus();
+  }
+  let pullBusy = false, snapTimer = 0;
+  async function cloudPull() {
+    if (!cloud || pullBusy) return;
+    pullBusy = true;
+    try { const snap = await cloud.col.get(); applyRemote(parseRemote(snap), false); } catch (e) {}
+    pullBusy = false;
+  }
+  function scheduleApply(snap) {
+    clearTimeout(snapTimer);
+    const run = () => { if (animating || composing) { snapTimer = setTimeout(run, 800); return; } try { applyRemote(parseRemote(snap), false); } catch (e) {} };
+    snapTimer = setTimeout(run, 700);
+  }
+  async function cloudInit() {
+    try {
+      let col = null;
+      if (window.BB_PROVIDER) col = await window.BB_PROVIDER.connect();
+      else {
+        if (!window.claude || !window.claude.use) return;
+        const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+        if (!db || !user) return;
+        const uidv = await user.id();
+        if (!uidv) return;
+        col = db.collection("data/users/" + uidv);
+      }
+      if (!col) return;
+      const snap = await Promise.race([col.get(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 10000))]);
+      cloud = { col };
+      applyRemote(parseRemote(snap), true);
+      if (saveNoteEl) { cloudNote = true; saveNoteEl.textContent = t("글은 이 브라우저에 임시로 남고, 저장 버튼(Ctrl+S)을 눌러야 내 계정과 다른 기기에 올라가요."); }
+      document.querySelectorAll(".shelf .keys").forEach(el2 => { el2.textContent = t("저장 버튼을 누르면 내 계정에 올라가요 · 나만 볼 수 있어요 · 새 책은 표지부터 시작합니다"); });
+      try { col.onSnapshot(sn => { if (sn.metadata && (sn.metadata.hasPendingWrites || sn.metadata.fromCache)) return; scheduleApply(sn); }, () => {}); } catch (e) {}
+      document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") cloudPull(); });
+      window.addEventListener("focus", cloudPull);
+    } catch (e) { cloud = null; }
+  }
+  function settlePaper() {
+    applyPaper();
+    invalidateCap();
+    if (state.pages.join("").length) reflowAll(absCursor());
+    else updateCount();
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(settlePaper);
+  else requestAnimationFrame(settlePaper);
+  applyTheme();
+  document.documentElement.lang = lang;
+  i18nDom(document.body);
+  showPage(false);
+  saveNow();
+  updateSaveStatus();
+  cloudInit();
+  window.dispatchEvent(new Event("bb-app-ready"));
+})();
+</script>
+
+</body>
+</html>
