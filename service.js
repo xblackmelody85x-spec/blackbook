@@ -1,4 +1,4 @@
-/* 블랙북 서비스 계층: 로그인(구글·이메일), 계정 저장소(Supabase), 체험·구독 상태, 읽기 전용 전환.
+/* 블랙북 서비스 계층: 로그인(구글·이메일), 계정 저장소(Supabase), 체험·이용권 상태, 이용권 결제(토스페이먼츠: 카카오페이·토스페이), 읽기 전용 전환.
    앱 본체(index.html)는 이 파일이 만든 window.BB_PROVIDER 와 window.BB_APP 만 사용합니다. */
 (function () {
   "use strict";
@@ -15,18 +15,22 @@
       title: "블랙북", sub: "나만의 책을 쓰는 곳", google: "Google로 계속하기", or: "또는", email: "이메일 주소", send: "로그인 링크 받기",
       sent: "메일을 보냈어요. 메일의 링크를 누르면 로그인돼요.", bad: "이메일 주소를 확인해 주세요.", err: "문제가 생겼어요. 잠시 뒤에 다시 해 주세요.",
       agree: "계속하면 이용약관과 개인정보처리방침에 동의한 것으로 봅니다.", terms: "이용약관", privacy: "개인정보처리방침", refund: "환불 안내",
-      trial: "무료 체험 {0}일 남았어요", trialLast: "무료 체험이 오늘 끝나요", expired: "무료 체험이 끝났어요. 읽기와 내려받기는 계속 돼요.", active: "구독 중", activeEnd: "구독 중 · {0}까지",
-      activeCancel: "해지 예정 · {0}까지 쓸 수 있어요", subscribe: "구독하기", manage: "구독 관리", logout: "로그아웃", del: "계정 삭제", delSure: "한 번 더 누르면 계정과 모든 책이 지워져요",
-      price: "{0}", unsavedLogout: "저장 안 된 변경이 있어요. 한 번 더 누르면 로그아웃하고 이 기기의 임시 글이 지워져요", loading: "불러오는 중…", paid: "결제해 주셔서 고마워요. 반영 중이에요…",
+      trial: "무료 체험 {0}일 남았어요", trialLast: "무료 체험이 오늘 끝나요", expired: "무료 체험이 끝났어요. 읽기와 내려받기는 계속 돼요.", activeEnd: "이용 중 · {0}까지",
+      buy: "이용권 구매", extend: "기간 연장", payTitle: "결제 방법을 고르세요", payNote: "자동 결제 없이 한 번만 결제돼요. 남은 기간이 있으면 그 뒤로 이어져요.",
+      kakao: "카카오페이로 결제", toss: "토스페이로 결제", cancel: "닫기", payNotReady: "결제 준비 중이에요. 잠시 뒤에 다시 해 주세요.",
+      payCanceled: "결제를 취소했어요.", payFailed: "결제하지 못했어요: {0}", paidOk: "결제가 완료됐어요. {0}까지 쓸 수 있어요.", logout: "로그아웃", del: "계정 삭제", delSure: "한 번 더 누르면 계정과 모든 책이 지워져요",
+      unsavedLogout: "저장 안 된 변경이 있어요. 한 번 더 누르면 로그아웃하고 이 기기의 임시 글이 지워져요", loading: "불러오는 중…", paid: "결제를 확인하고 있어요…",
       deleted: "계정을 삭제했어요.", failed: "요청에 실패했어요. 잠시 뒤에 다시 해 주세요."
     },
     en: {
       title: "Blackbook", sub: "A place to write your own book", google: "Continue with Google", or: "or", email: "Email address", send: "Email me a sign-in link",
       sent: "We sent an email. Open the link in it to sign in.", bad: "Please check the email address.", err: "Something went wrong. Please try again in a moment.",
       agree: "By continuing you agree to the Terms of Service and the Privacy Policy.", terms: "Terms", privacy: "Privacy", refund: "Refunds",
-      trial: "{0} days left in your free trial", trialLast: "Your free trial ends today", expired: "Your free trial has ended. Reading and downloading still work.", active: "Subscribed", activeEnd: "Subscribed · until {0}",
-      activeCancel: "Cancels on {0} · you can write until then", subscribe: "Subscribe", manage: "Manage subscription", logout: "Log out", del: "Delete account", delSure: "Press again to delete your account and all books",
-      price: "{0}", unsavedLogout: "You have unsaved changes. Press again to log out and erase this device's draft", loading: "Loading…", paid: "Thank you. Applying your payment…",
+      trial: "{0} days left in your free trial", trialLast: "Your free trial ends today", expired: "Your free trial has ended. Reading and downloading still work.", activeEnd: "Active · until {0}",
+      buy: "Buy a pass", extend: "Extend", payTitle: "Choose how to pay", payNote: "One-time payment, no auto-renewal. Any remaining days carry over.",
+      kakao: "Pay with KakaoPay", toss: "Pay with TossPay", cancel: "Close", payNotReady: "Payments are not ready yet. Please try again later.",
+      payCanceled: "Payment canceled.", payFailed: "Payment failed: {0}", paidOk: "Payment complete. You can write until {0}.", logout: "Log out", del: "Delete account", delSure: "Press again to delete your account and all books",
+      unsavedLogout: "You have unsaved changes. Press again to log out and erase this device's draft", loading: "Loading…", paid: "Confirming your payment…",
       deleted: "Your account was deleted.", failed: "The request failed. Please try again in a moment."
     }
   };
@@ -60,6 +64,11 @@
     "#bbBar{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;align-items:center;padding:8px 14px;font-size:13px;background:var(--chip-bg,rgba(0,0,0,.25));border-bottom:1px solid var(--chip-border,rgba(230,197,106,.3));color:var(--desk-text,#f3eadf);font-family:var(--sans,sans-serif)}",
     "#bbBar button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--chip-border,rgba(230,197,106,.3));background:transparent;border-radius:999px;padding:4px 12px;min-height:30px}",
     "#bbBar button.bb-main{background:var(--accent,#e6c56a);color:var(--on-accent,#1a140c);border-color:transparent;font-weight:600}",
+    "#bbPay{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.55)}",
+    "#bbPay .bb-card{width:min(360px,100%);display:flex;flex-direction:column;gap:10px;padding:24px 20px;border-radius:16px;background:#1d1812;color:#f3eadf;border:1px solid rgba(230,197,106,.3);font-family:var(--sans,sans-serif);text-align:center}",
+    "#bbPay h2{margin:0;font-size:17px}#bbPay p{margin:0 0 4px;font-size:13px;opacity:.75;line-height:1.6}",
+    "#bbPay button{font:inherit;min-height:46px;border-radius:10px;cursor:pointer;border:1px solid rgba(230,197,106,.3);background:transparent;color:inherit}",
+    "#bbPay .bb-kakao{background:#fee500;color:#191919;border-color:transparent;font-weight:600}#bbPay .bb-toss{background:#0064ff;color:#fff;border-color:transparent;font-weight:600}",
     "#bbBar button.armed{border-color:var(--danger,#ff9d88);color:var(--danger,#ff9d88)}#bbBar .bb-mail{opacity:.7}#bbBar[data-plan=expired]{border-bottom-color:var(--danger,#ff9d88)}"
   ].join("\n");
   document.head.appendChild(css);
@@ -92,38 +101,86 @@
   }
   function hideAuth() { if (authEl) { authEl.remove(); authEl = null; } }
 
-  // ---------- entitlement (trial / subscription) ----------
-  function compute(profile, sub) {
+  // ---------- entitlement (trial / pass) ----------
+  function compute(profile) {
     var now = Date.now(), trialEnd = profile && profile.trial_ends_at ? new Date(profile.trial_ends_at).getTime() : 0;
-    var subEnd = sub && sub.current_period_end ? new Date(sub.current_period_end).getTime() : 0;
-    var subOk = !!sub && (sub.status === "active" || sub.status === "trialing") && subEnd + 86400000 > now;
-    if (subOk) return { plan: "active", canWrite: true, periodEnd: sub.current_period_end, cancelAtEnd: !!sub.cancel_at_period_end };
+    var paidEnd = profile && profile.paid_until ? new Date(profile.paid_until).getTime() : 0;
+    if (paidEnd > now && paidEnd > trialEnd) return { plan: "active", canWrite: true, periodEnd: profile.paid_until };
     if (trialEnd > now) return { plan: "trial", canWrite: true, daysLeft: Math.max(1, Math.ceil((trialEnd - now) / 86400000)) };
     return { plan: "expired", canWrite: false };
   }
   function loadEnt() {
-    var uid = state.session.user.id;
-    return Promise.all([
-      sb.from("profiles").select("trial_ends_at").eq("user_id", uid).maybeSingle(),
-      sb.from("subscriptions").select("status,current_period_end,cancel_at_period_end").eq("user_id", uid).maybeSingle()
-    ]).then(function (r) { state.ent = compute(r[0].data, r[1].data); applyEnt(); return state.ent; }).catch(function () { return state.ent; });
+    return sb.from("profiles").select("trial_ends_at,paid_until").eq("user_id", state.session.user.id).maybeSingle()
+      .then(function (r) { state.ent = compute(r.data); applyEnt(); return state.ent; }).catch(function () { return state.ent; });
   }
   var barEl = null, armedDel = false, armedOut = false, armTimer = 0;
-  function call(fn) {
+  function call(fn, body) {
     return sb.auth.getSession().then(function (r) {
       var tok = r.data.session && r.data.session.access_token;
-      return fetch(C.SUPABASE_URL + "/functions/v1/" + fn, { method: "POST", headers: { Authorization: "Bearer " + tok, apikey: C.SUPABASE_ANON_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ lang: lang(), returnTo: location.origin + location.pathname }) });
-    }).then(function (res) { return res.json().then(function (j) { if (!res.ok) throw new Error(j && j.error || "fail"); return j; }); });
+      return fetch(C.SUPABASE_URL + "/functions/v1/" + fn, { method: "POST", headers: { Authorization: "Bearer " + tok, apikey: C.SUPABASE_ANON_KEY, "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+    }).then(function (res) { return res.json().then(function (j) { if (!res.ok) { var e = new Error(j && j.error || "fail"); e.detail = j; throw e; } return j; }); });
   }
+
+  // ---------- pass purchase (Toss Payments: KakaoPay / TossPay, one-time) ----------
+  var TOSS_SDK = "https://js.tosspayments.com/v2/standard";
+  var tossReady = null;
+  function loadToss() {
+    if (window.TossPayments) return Promise.resolve(window.TossPayments);
+    if (!tossReady) tossReady = new Promise(function (res, rej) { var s = document.createElement("script"); s.src = TOSS_SDK; s.onload = function () { res(window.TossPayments); }; s.onerror = function () { tossReady = null; rej(new Error("sdk")); }; document.head.appendChild(s); });
+    return tossReady;
+  }
+  var payEl = null;
+  function closePay() { if (payEl) { payEl.remove(); payEl = null; } }
+  function openPay() {
+    if (!C.TOSS_CLIENT_KEY || /YOUR_/.test(C.TOSS_CLIENT_KEY)) { toast(T("payNotReady")); return; }
+    closePay();
+    payEl = el("div"); payEl.id = "bbPay"; payEl.setAttribute("role", "dialog"); payEl.setAttribute("aria-modal", "true");
+    var card = el("div", "bb-card");
+    card.append(el("h2", null, T("payTitle") + " · " + priceLabel()), el("p", null, T("payNote")));
+    [["KAKAOPAY", "bb-kakao", "kakao"], ["TOSSPAY", "bb-toss", "toss"]].forEach(function (x) {
+      var b = el("button", x[1], T(x[2])); b.type = "button";
+      b.addEventListener("click", function () { startPay(x[0], card); });
+      card.appendChild(b);
+    });
+    var c = el("button", null, T("cancel")); c.type = "button"; c.addEventListener("click", closePay); card.appendChild(c);
+    payEl.appendChild(card); document.body.appendChild(payEl);
+    payEl.addEventListener("click", function (ev) { if (ev.target === payEl) closePay(); });
+  }
+  function startPay(easyPay, card) {
+    Array.prototype.forEach.call(card.querySelectorAll("button"), function (b) { b.disabled = true; });
+    var back = location.origin + location.pathname;
+    Promise.all([call("create-order", { plan: "month" }), loadToss()]).then(function (r) {
+      var o = r[0], payment = r[1](C.TOSS_CLIENT_KEY).payment({ customerKey: o.customerKey });
+      return payment.requestPayment({
+        method: "CARD", amount: { currency: "KRW", value: o.amount }, orderId: o.orderId, orderName: o.orderName,
+        customerEmail: o.email || undefined, successUrl: back + "?pay=ok", failUrl: back + "?pay=fail",
+        card: { flowMode: "DIRECT", easyPay: easyPay }
+      });
+    }).catch(function (e) {
+      closePay();
+      toast(e && /CANCEL/.test(e.code || "") ? T("payCanceled") : T("payFailed", (e && e.message) || ""));
+    });
+  }
+  // 결제창에서 돌아왔을 때: 성공이면 서버에 승인을 요청하고, 실패면 이유를 알려줘요.
+  function handlePayReturn() {
+    var q = new URLSearchParams(location.search), pay = q.get("pay");
+    if (!pay) return;
+    history.replaceState(null, "", location.pathname);
+    if (pay === "fail") { toast(/CANCEL/.test(q.get("code") || "") ? T("payCanceled") : T("payFailed", q.get("message") || "")); return; }
+    toast(T("paid"));
+    call("confirm-payment", { paymentKey: q.get("paymentKey"), orderId: q.get("orderId"), amount: Number(q.get("amount")) })
+      .then(function (j) { loadEnt(); toast(T("paidOk", fmtDate(j.paidUntil))); })
+      .catch(function (e) { loadEnt(); toast(T("payFailed", (e.detail && e.detail.message) || T("failed"))); });
+  }
+  function priceLabel() { return lang() === "en" ? C.PRICE_LABEL_EN : C.PRICE_LABEL_KO; }
   function toast(m) { if (window.BB_APP) window.BB_APP.toast(m); }
   function renderBar() {
     if (!state.session) return;
     if (!barEl) { barEl = el("div"); barEl.id = "bbBar"; document.body.insertBefore(barEl, document.body.firstChild); }
     var e = state.ent; barEl.textContent = ""; barEl.dataset.plan = e ? e.plan : "";
-    var label = !e ? T("loading") : e.plan === "trial" ? (e.daysLeft <= 1 ? T("trialLast") : T("trial", e.daysLeft)) : e.plan === "expired" ? T("expired") : (e.cancelAtEnd ? T("activeCancel", fmtDate(e.periodEnd)) : T("activeEnd", fmtDate(e.periodEnd)));
+    var label = !e ? T("loading") : e.plan === "trial" ? (e.daysLeft <= 1 ? T("trialLast") : T("trial", e.daysLeft)) : e.plan === "expired" ? T("expired") : T("activeEnd", fmtDate(e.periodEnd));
     barEl.appendChild(el("span", null, label));
-    if (e && e.plan !== "active") { var s = el("button", "bb-main", T("subscribe") + " · " + (lang() === "en" ? C.PRICE_LABEL_EN : C.PRICE_LABEL_KO)); s.type = "button"; s.addEventListener("click", function () { s.disabled = true; call("create-checkout").then(function (j) { location.href = j.url; }).catch(function () { s.disabled = false; toast(T("failed")); }); }); barEl.appendChild(s); }
-    if (e && e.plan === "active") { var m = el("button", null, T("manage")); m.type = "button"; m.addEventListener("click", function () { call("create-portal").then(function (j) { location.href = j.url; }).catch(function () { toast(T("failed")); }); }); barEl.appendChild(m); }
+    if (e) { var s = el("button", e.plan === "active" ? null : "bb-main", (e.plan === "active" ? T("extend") : T("buy")) + " · " + priceLabel()); s.type = "button"; s.addEventListener("click", openPay); barEl.appendChild(s); }
     barEl.appendChild(el("span", "bb-mail", state.session.user.email || ""));
     var out = el("button", null, T("logout")); out.type = "button"; out.addEventListener("click", function () {
       if (window.BB_APP && window.BB_APP.hasUnsaved() && !armedOut) { armedOut = true; out.textContent = T("unsavedLogout"); out.classList.add("armed"); clearTimeout(armTimer); armTimer = setTimeout(renderBar, 5000); return; }
@@ -139,7 +196,7 @@
   function logout() { clearLocal(); sb.auth.signOut().then(function () { location.reload(); }); }
   function applyEnt() { renderBar(); if (window.BB_APP && state.ent) window.BB_APP.setReadOnly(!state.ent.canWrite); }
   window.addEventListener("bb-app-ready", function () { if (state.ent) applyEnt(); });
-  window.addEventListener("bb-lang", function () { if (authEl) { authEl.remove(); authEl = null; showAuth(); } renderBar(); });
+  window.addEventListener("bb-lang", function () { if (authEl) { authEl.remove(); authEl = null; showAuth(); } closePay(); renderBar(); });
 
   // ---------- storage provider: same shape the app expects ----------
   var docsApi = {
@@ -175,9 +232,7 @@
     if (!had) {
       if (window.BB_SUFFIX !== session.user.id) { window.BB_SUFFIX = session.user.id; location.reload(); return; } // 앱을 이 사용자의 보관함으로 다시 시작
       connectResolvers.splice(0).forEach(function (r) { r(docsApi.col()); });
-      loadEnt().then(function () {
-        if (/[?&]paid=1/.test(location.search)) { toast(T("paid")); var n = 0, iv = setInterval(function () { loadEnt().then(function (e) { if ((e && e.plan === "active") || ++n > 10) { clearInterval(iv); history.replaceState(null, "", location.pathname); } }); }, 2500); }
-      });
+      loadEnt().then(handlePayReturn);
       setInterval(loadEnt, 5 * 60 * 1000);
       window.addEventListener("focus", loadEnt);
     }

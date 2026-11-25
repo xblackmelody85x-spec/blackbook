@@ -91,12 +91,11 @@
   .brand { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 14px; }
   .theme-seg button { padding: 4px 10px; font-size: 12px; }
   .brand-mark { font-family: var(--serif); font-size: 18px; letter-spacing: 0.14em; margin: 0; font-weight: 700; color: var(--accent); }
-  .brand-note { font-size: 12px; letter-spacing: 0.08em; opacity: 0.62; }
   .toolbar { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 8px 10px; }
   .control { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .control-label { font-size: 10px; letter-spacing: 0.16em; opacity: 0.72; }
   .seg { display: flex; border: 1px solid var(--chip-border); border-radius: 999px; padding: 3px; background: var(--chip-bg); }
-  .seg button, .tool-btn, .turn, .open-btn, .text-btn, .toc-item, .close-x { border: 0; background: transparent; color: inherit; }
+  .seg button, .tool-btn, .turn, .toc-item, .close-x { border: 0; background: transparent; color: inherit; }
   .seg button { color: var(--desk-text); border-radius: 999px; padding: 6px 11px; font-size: 13px; line-height: 1.15; }
   .seg button small { display: block; font-size: 9px; letter-spacing: 0.12em; opacity: 0.66; font-weight: 400; }
   .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
@@ -104,11 +103,10 @@
   .font-seg button { font-family: var(--serif); width: 34px; height: 32px; padding: 0; display: grid; place-items: center; }
   .tool-btn, .limit-pill { border: 1px solid var(--chip-border); background: var(--chip-bg); color: var(--desk-text); border-radius: 999px; padding: 7px 13px; font-size: 13px; min-height: 36px; }
   .limit-pill { font-variant-numeric: tabular-nums; letter-spacing: 0.03em; color: var(--accent); }
-  .tool-btn:hover, .seg button:hover, .open-btn:hover, .turn:hover:not(:disabled) { background: var(--hover); }
+  .tool-btn:hover, .seg button:hover, .turn:hover:not(:disabled) { background: var(--hover); }
   .seg button[aria-pressed="true"]:hover { background: var(--accent); }
   .pos { font-variant-numeric: tabular-nums; font-size: 14px; letter-spacing: 0.06em; padding: 6px 2px; min-width: 52px; text-align: center; }
   .pos b { font-weight: 600; }
-  .text-btn { color: var(--gold); opacity: 0.85; font-size: 13px; padding: 6px 4px; letter-spacing: 0.06em; text-decoration: underline; text-underline-offset: 3px; }
   .stage { flex: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
   .book-wrap { position: relative; display: flex; align-items: center; justify-content: center; perspective: 1600px; }
   .book-wrap::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: -30px; height: 46px; background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.6), transparent 70%); filter: blur(7px); pointer-events: none; z-index: 0; }
@@ -274,8 +272,6 @@
   .under-hint, .save-note, .spec-note { font-size: 12px; letter-spacing: 0.02em; opacity: 0.68; text-align: center; min-height: 16px; }
   .spec-note { font-size: 11px; letter-spacing: 0.03em; opacity: 0.55; font-variant-numeric: tabular-nums; }
   .save-note { opacity: 0.5; }
-  .open-btn { border: 1px solid var(--turn-border); color: var(--accent); border-radius: 999px; padding: 10px 22px; letter-spacing: 0.18em; font-size: 13px; background: var(--chip-bg); }
-  .open-btn[hidden] { display: none; }
   #measure { position: absolute; left: -10000px; top: 0; visibility: hidden; overflow: hidden; pointer-events: none; }
   .backdrop { position: fixed; inset: 0; background: rgba(8, 7, 6, 0.5); z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
   .backdrop.show { opacity: 1; pointer-events: auto; }
@@ -427,7 +423,6 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   @media (max-width: 640px) {
     .app { padding: 8px 8px 8px; }
-    .brand-note { display: none; }
     .toolbar { gap: 6px 8px; }
     .turn { width: 34px; height: 34px; margin-top: -17px; }
     .turn.prev { right: calc(100% + 4px); }
@@ -695,7 +690,6 @@
   const FONTS = [13, 16, 19, 22, 26];
   const PAGE_CAP = 2000;
   const BOOK_CAP = 40;
-  const SAMPLE = "";
   const PX_PER_MM = 96 / 25.4;
   const PAPER = {
     A6: { w: 105, h: 148, textW: 77, textH: 113, top: 16, bottom: 19 },
@@ -1058,7 +1052,6 @@
     book.style.setProperty("--rows", String(spec.rows));
     return spec;
   }
-  function capacity() { return paperSpec().chars; }
   function capFor(L) { const sp = paperSpec(); return Math.max(1, sp.cols * Math.max(1, sp.rows - (L || 0))); }
   function isMark(v) { return !!v && typeof v === "object"; }
   function markAt(i) { return i >= tocCount() && isMark(state.breaks[i]) ? state.breaks[i] : null; }
@@ -1938,7 +1931,7 @@
       const b = el("button", "lore-item" + (e.id === loreSel[def.key] ? " current" : "")); b.type = "button";
       if (def.key === "plot") b.appendChild(el("span", "li-no", String(arr.indexOf(e) + 1)));
       b.appendChild(el("span", "li-title", def.key === "foot" ? "[^" + e.no + "] " + (excerpt(e.f.text) || t("내용이 비어 있어요")) : (e.title || t("이름 없음"))));
-      const sub = def.key === "plott(t(" ? (e.f.status || /*nt*/'구상') : (e.f[def.fields[0].k] || "))");
+      const sub = def.key === "plot" ? (e.f.status || /*nt*/'구상') : (e.f[def.fields[0].k] || "");
       if (sub) { const sp = el("span", "li-sub" + (def.key === "plot" ? " chip" : ""), def.key === "plot" ? t(sub) : sub); if (def.key === "plot") sp.dataset.s = sub; b.appendChild(sp); }
       b.addEventListener("click", () => { loreSel[def.key] = e.id; loreMode = "edit"; loreBody.dataset.mode = "edit"; renderLoreItems(); renderLoreEditor(); });
       items.appendChild(b);
