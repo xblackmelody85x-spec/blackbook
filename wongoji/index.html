@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>원고지 매수 계산기 (200자) · 블랙북</title>
+<meta name="description" content="글을 붙여 넣으면 200자 원고지 몇 매인지 바로 계산해요. 문단 들여쓰기와 줄바꿈까지 반영한 원고지 매수와 공백 포함·제외 글자 수. 공모전·과제 분량 확인용, 무료, 글은 저장되지 않아요." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="원고지 매수 계산기 (200자) · 블랙북" />
+<meta property="og:description" content="붙여 넣으면 바로 원고지 몇 매인지 알려 줘요. 무료, 글은 브라우저 밖으로 나가지 않아요." />
+<meta name="theme-color" content="#0f0c09" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315110d'/%3E%3Cpath d='M32 20c-5-4-13-5-21-3v30c8-2 16-1 21 3 5-4 13-5 21-3V17c-8-2-16-1-21 3z' fill='none' stroke='%23e6c56a' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M32 20v30' stroke='%23e6c56a' stroke-width='3'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"원고지 매수는 어떻게 세나요?","acceptedAnswer":{"@type":"Answer","text":"200자 원고지는 한 줄 20칸, 한 장 10줄입니다. 문단 첫 칸은 비우고, 글자·띄어쓰기·문장부호가 각각 한 칸을 차지하며, 숫자와 영문 소문자는 한 칸에 두 자씩 씁니다. 문단이 끝나면 남은 칸은 비우고 다음 줄에서 시작하므로, 글자 수를 200으로 나눈 값보다 매수가 많아집니다."}},
+ {"@type":"Question","name":"글자 수를 200으로 나누면 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"대략은 맞지만 문단이 많을수록 실제 원고지 매수가 더 많아집니다. 문단마다 들여쓰기 한 칸과 줄 끝의 빈칸이 생기기 때문입니다. 공모전은 요강의 기준을 먼저 확인하세요."}},
+ {"@type":"Question","name":"붙여 넣은 글이 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 계산은 이 브라우저 안에서만 이뤄지고, 글은 어디에도 전송되거나 저장되지 않습니다."}}
+]}
+</script>
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #15110d; --ink-card: #211b15; --paper: #f3eee4; --paper-card: #fbf8f1;
+    --gold: #e6c56a; --gold-deep: #7a5619; --gold-title: #f3d78a;
+    --on-dark: #f3eadf; --on-dark-muted: rgba(243, 234, 223, 0.72);
+    --on-paper: #2a241c; --on-paper-muted: rgba(42, 36, 28, 0.74);
+    --line-dark: rgba(230, 197, 106, 0.28); --line-paper: rgba(42, 36, 28, 0.16);
+    --serif: "Noto Serif KR", "Nanum Myeongjo", "Apple Myungjo", serif;
+    --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--ink); color: var(--on-dark); font-family: var(--sans); font-size: 16px; line-height: 1.7; }
+  a { color: inherit; }
+  .wrap { width: min(980px, 100%); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  h1, h2 { font-family: var(--serif); font-weight: 700; margin: 0; word-break: keep-all; text-wrap: balance; }
+  p { margin: 0; text-wrap: pretty; }
+  .nav { border-bottom: 1px solid rgba(230, 197, 106, 0.18); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; }
+  .logo { font-family: var(--serif); font-weight: 700; letter-spacing: 0.14em; color: var(--gold); text-decoration: none; font-size: 18px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px; border-radius: 999px; font: 600 15px/1 var(--sans); text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+  .btn-gold { background: var(--gold); color: #1a140c; }
+  .btn-line { border-color: var(--line-dark); color: var(--on-dark); background: transparent; }
+  .head { padding: 44px 0 22px; display: grid; gap: 12px; }
+  .head h1 { font-size: clamp(30px, 6vw, 46px); line-height: 1.3; color: var(--gold-title); }
+  .head p { color: var(--on-dark-muted); max-width: 62ch; }
+  .tool { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 18px; padding-bottom: 40px; }
+  textarea { width: 100%; min-height: 340px; resize: vertical; font: 16px/1.8 var(--serif); color: var(--on-paper); background: var(--paper-card); border: 0; border-radius: 14px; padding: 18px 18px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35); }
+  textarea:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .res { display: grid; gap: 10px; align-content: start; }
+  .big { background: var(--ink-card); border: 1px solid var(--line-dark); border-radius: 14px; padding: 18px 18px 16px; }
+  .big .lab { font-size: 13px; color: var(--on-dark-muted); }
+  .big .num { font-family: var(--serif); font-size: clamp(40px, 8vw, 56px); line-height: 1.15; color: var(--gold-title); font-variant-numeric: tabular-nums; }
+  .big .num small { font-size: 0.42em; margin-left: 4px; color: var(--on-dark-muted); font-family: var(--sans); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cell { background: var(--ink-card); border: 1px solid rgba(230, 197, 106, 0.16); border-radius: 12px; padding: 12px 14px; }
+  .cell .lab { font-size: 12px; color: var(--on-dark-muted); }
+  .cell .val { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .note { font-size: 12.5px; color: var(--on-dark-muted); }
+  .paper { background: var(--paper); color: var(--on-paper); padding: 48px 0; }
+  .paper h2 { font-size: clamp(24px, 4vw, 32px); line-height: 1.4; margin-bottom: 16px; }
+  .paper ol, .paper ul { margin: 0 0 18px; padding-left: 1.3em; display: grid; gap: 6px; color: var(--on-paper-muted); }
+  .paper p { color: var(--on-paper-muted); margin-bottom: 14px; max-width: 70ch; }
+  .paper b { color: var(--on-paper); }
+  .cta { margin-top: 26px; background: var(--ink); color: var(--on-dark); border-radius: 18px; padding: 26px 22px; display: grid; gap: 12px; }
+  .cta h2 { color: var(--gold-title); margin: 0; }
+  .cta p { color: var(--on-dark-muted); margin: 0; }
+  footer { padding: 26px 0 40px; font-size: 13px; color: var(--on-dark-muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; }
+  @media (max-width: 760px) {
+    .tool { grid-template-columns: minmax(0, 1fr); }
+    textarea { min-height: 240px; }
+  }
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a class="logo" href="../">블랙북</a>
+  <a class="btn btn-gold" href="../app/">책 모양으로 쓰기</a>
+</div></header>
+
+<main>
+  <section class="wrap head">
+    <h1>원고지 매수 계산기</h1>
+    <p>글을 붙여 넣으면 200자 원고지 몇 매인지 바로 알려 드려요. 문단 들여쓰기와 줄바꿈까지 반영해서 셉니다. 붙여 넣은 글은 이 브라우저 밖으로 나가지 않아요.</p>
+  </section>
+
+  <section class="wrap tool" aria-label="계산기">
+    <div>
+      <label for="src" class="note">여기에 글을 붙여 넣거나 바로 쓰세요</label>
+      <textarea id="src" spellcheck="false" placeholder="여기에 글을 붙여 넣으세요"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button type="button" class="btn btn-line" id="clear">지우기</button>
+      </div>
+    </div>
+    <div class="res" aria-live="polite">
+      <div class="big">
+        <div class="lab">200자 원고지</div>
+        <div class="num"><span id="sheets">0</span><small>매</small></div>
+        <div class="note" id="linesNote">원고지 0줄</div>
+      </div>
+      <div class="grid">
+        <div class="cell"><div class="lab">공백 포함</div><div class="val" id="withSp">0자</div></div>
+        <div class="cell"><div class="lab">공백 제외</div><div class="val" id="noSp">0자</div></div>
+        <div class="cell"><div class="lab">단순 계산 (글자 ÷ 200)</div><div class="val" id="simple">0매</div></div>
+        <div class="cell"><div class="lab">문단</div><div class="val" id="paras">0개</div></div>
+      </div>
+      <p class="note">공모전·과제마다 세는 기준이 조금씩 달라요. 제출 전에 요강의 기준을 꼭 확인하세요.</p>
+    </div>
+  </section>
+
+  <section class="paper">
+    <div class="wrap">
+      <h2>원고지 매수는 어떻게 세나요?</h2>
+      <p>200자 원고지는 <b>한 줄 20칸, 한 장 10줄</b>이에요. 이 계산기는 원고지 쓰기의 기본 규칙을 따라 줄 단위로 셉니다.</p>
+      <ol>
+        <li>문단의 첫 칸은 비워요(들여쓰기 한 칸).</li>
+        <li>글자, 띄어쓰기, 문장부호는 각각 한 칸이에요. 줄 첫 칸에 오는 띄어쓰기는 쓰지 않아요.</li>
+        <li>아라비아 숫자와 영문 소문자는 한 칸에 두 자씩 써요.</li>
+        <li>줄 끝에 온 마침표·쉼표는 다음 줄로 넘기지 않고 마지막 칸에 함께 써요.</li>
+        <li>문단이 끝나면 남은 칸은 비우고 다음 줄에서 시작해요.</li>
+      </ol>
+      <p>그래서 <b>글자 수를 200으로 나눈 값보다 실제 매수가 더 많아요.</b> 대화가 많은 소설처럼 짧은 문단이 많을수록 차이가 커집니다. 두 값을 함께 보여 드리는 이유예요.</p>
+      <p>대사의 따옴표 처리나 제목 줄을 세는 방식은 기관마다 다를 수 있어요. 이 계산기의 값은 어림값으로 쓰세요.</p>
+
+      <div class="cta">
+        <h2>매수를 쓰면서 바로 보고 싶다면</h2>
+        <p>블랙북은 표지·부·장·목차가 있는 책 모양으로 글을 쓰는 공간이에요. 쓰는 동안 원고지 매수와 글자 수를 늘 보여 주고, 다 쓰면 책 모양 PDF로 내려받을 수 있어요. AI가 대신 쓰지 않아요.</p>
+        <div class="row"><a class="btn btn-gold" href="../app/">무료로 써 보기</a><a class="btn btn-line" href="../">블랙북 알아보기</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 블랙북</span>
+  <span><a href="../">홈</a> · <a href="../app/">글쓰기 앱</a></span>
+</div></footer>
+
+<script>
+(function () {
+  "use strict";
+  // 앱(블랙북)과 같은 규칙: 문단 첫 칸 들여쓰기, 줄 첫머리 띄어쓰기 생략, 숫자·영문 소문자는 한 칸에 두 자, 줄 끝 문장부호는 마지막 칸에 붙임
+  function wongoji(text) {
+    var lines = 0, paras = 0;
+    String(text || "").replace(/\r/g, "").split("\n").forEach(function (par) {
+      var u = Array.from(par.trim());
+      if (!u.length) return;
+      paras++;
+      var col = 1, ln = 1;
+      for (var k = 0; k < u.length; k++) {
+        var c = u[k];
+        if (/[0-9a-z]/.test(c) && /[0-9a-z]/.test(u[k + 1] || "")) k++;
+        if (col >= 20) {
+          if (/[.,!?…'"”’)\]」』〉》]/.test(c)) continue;
+          ln++; col = 0;
+          if (c === " ") continue;
+        }
+        col++;
+      }
+      lines += ln;
+    });
+    return { lines: lines, sheets: Math.ceil(lines / 10), paras: paras };
+  }
+  var src = document.getElementById("src"), $ = function (id) { return document.getElementById(id); };
+  function nf(n) { return Number(n).toLocaleString("ko-KR"); }
+  function update() {
+    var v = src.value, r = wongoji(v);
+    var withSp = Array.from(v.replace(/\r?\n/g, "")).length, noSp = Array.from(v.replace(/\s/g, "")).length;
+    $("sheets").textContent = nf(r.sheets);
+    $("linesNote").textContent = "원고지 " + nf(r.lines) + "줄 · 마지막 장 " + (r.lines ? (r.lines % 10 || 10) : 0) + "줄";
+    $("withSp").textContent = nf(withSp) + "자";
+    $("noSp").textContent = nf(noSp) + "자";
+    $("simple").textContent = nf(Math.ceil(withSp / 200)) + "매";
+    $("paras").textContent = nf(r.paras) + "개";
+  }
+  src.addEventListener("input", update);
+  $("clear").addEventListener("click", function () { src.value = ""; update(); src.focus(); });
+  update();
+})();
+</script>
+</body>
+</html>

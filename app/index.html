@@ -91,9 +91,7 @@
   .brand { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 14px; }
   .theme-seg button { padding: 4px 10px; font-size: 12px; }
   .brand-mark { font-family: var(--serif); font-size: 18px; letter-spacing: 0.14em; margin: 0; font-weight: 700; color: var(--accent); }
-  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 8px 10px; }
-  .control { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .control-label { font-size: 10px; letter-spacing: 0.16em; opacity: 0.72; }
+  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 8px; }
   .seg { display: flex; border: 1px solid var(--chip-border); border-radius: 999px; padding: 3px; background: var(--chip-bg); }
   .seg button, .tool-btn, .turn, .toc-item, .close-x { border: 0; background: transparent; color: inherit; }
   .seg button { color: var(--desk-text); border-radius: 999px; padding: 6px 11px; font-size: 13px; line-height: 1.15; }
@@ -427,11 +425,55 @@
     .turn { width: 34px; height: 34px; margin-top: -17px; }
     .turn.prev { right: calc(100% + 4px); }
     .turn.next { left: calc(100% + 4px); }
-    .control-label, .seg button small { display: none; }
+    .seg button small { display: none; }
     .turn.label { min-width: 40px; padding: 0 8px; font-size: 11px; letter-spacing: 0; }
     .seg button { padding: 7px 11px; }
     .book[data-fit="screen"] { width: min(560px, calc(100vw - 104px)) !important; height: min(820px, calc(100dvh - 190px)) !important; max-height: calc(100dvh - 190px); }
     .under-hint, .save-note { font-size: 11px; }
+  }
+  .find-bar { width: min(920px, 100%); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 8px; padding: 8px 10px; border: 1px solid var(--chip-border); border-radius: 14px; background: var(--chip-bg); z-index: 2; position: relative; }
+  .find-bar[hidden] { display: none; }
+  .find-bar input { font: inherit; font-size: 14px; color: var(--desk-text); background: transparent; border: 1px solid var(--chip-border); border-radius: 999px; padding: 7px 12px; min-height: 36px; width: min(190px, 42vw); }
+  .find-bar input::placeholder { color: var(--desk-text); opacity: 0.55; }
+  .find-count { font-size: 12px; min-width: 54px; text-align: center; opacity: 0.85; font-variant-numeric: tabular-nums; }
+  .find-bar .find-x { color: var(--desk-text); }
+  .find-hi { position: absolute; z-index: 0; pointer-events: none; overflow: hidden; color: transparent; margin: 0; border: 0; }
+  .find-hi[hidden] { display: none; }
+  .find-hi mark { color: transparent; background: rgba(230, 168, 60, 0.42); border-radius: 2px; box-shadow: 0 0 0 2px rgba(230, 168, 60, 0.42); }
+  .ph-title.find-on { outline: 2px solid rgba(230, 168, 60, 0.75); outline-offset: 2px; border-radius: 4px; }
+  .count-note { font-size: 12px; letter-spacing: 0.04em; opacity: 0.8; text-align: center; font-variant-numeric: tabular-nums; min-height: 1em; }
+  .pn-body { padding: 6px 20px 26px; gap: 22px; }
+  .pn-sec { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+  .pn-sec h3 { margin: 0; font-size: 12px; letter-spacing: 0.16em; font-weight: 600; color: rgba(var(--panel-rgb), 0.62); }
+  .pn-sec p { margin: 0; font-size: 12.5px; line-height: 1.65; color: rgba(var(--panel-rgb), 0.7); }
+  .pn-sec .seg { background: rgba(var(--panel-rgb), 0.05); border-color: rgba(var(--panel-rgb), 0.18); flex-wrap: wrap; }
+  .pn-sec .seg button { color: var(--panel-ink); }
+  .pn-sec .seg button[aria-pressed="true"] { background: var(--panel-accent); color: var(--panel-bg); }
+  .pn-sec .seg button small { display: block; }
+  .pn-sec .limit-pill { color: var(--panel-accent); background: transparent; border-color: rgba(var(--panel-rgb), 0.22); }
+  .pn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pn-btn { font: inherit; font-size: 13.5px; color: var(--panel-ink); background: rgba(var(--panel-rgb), 0.05); border: 1px solid rgba(var(--panel-rgb), 0.22); border-radius: 10px; padding: 9px 14px; min-height: 40px; }
+  .pn-btn:hover:not(:disabled) { background: rgba(var(--panel-rgb), 0.12); }
+  .pn-btn:disabled { opacity: 0.45; }
+  .pn-btn.main { background: var(--panel-accent); color: var(--panel-bg); border-color: transparent; font-weight: 600; padding: 11px 18px; }
+  .pn-btn.armed { color: var(--danger); border-color: var(--danger); }
+  .pn-progress { font-size: 12.5px; color: var(--panel-accent); font-variant-numeric: tabular-nums; }
+  .ver-list { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+  .ver-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 10px; border-radius: 10px; background: rgba(var(--panel-rgb), 0.04); border: 1px solid rgba(var(--panel-rgb), 0.1); }
+  .ver-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ver-info b { font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ver-info span { font-size: 12px; color: rgba(var(--panel-rgb), 0.65); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ver-empty { font-size: 12.5px; color: rgba(var(--panel-rgb), 0.6); }
+  .toc-row { display: flex; align-items: stretch; gap: 4px; }
+  .toc-row .toc-item { flex: 1 1 auto; }
+  .toc-move { display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 2px 2px 2px 0; }
+  .toc-mv { width: 30px; height: 24px; border: 1px solid rgba(var(--panel-rgb), 0.2); border-radius: 6px; background: transparent; color: var(--panel-ink); font-size: 12px; line-height: 1; }
+  .toc-mv:hover:not(:disabled) { background: rgba(var(--panel-rgb), 0.1); }
+  .toc-mv:disabled { opacity: 0.22; }
+  body[data-ro] .toc-move { display: none; }
+  @media (max-width: 640px) {
+    .find-bar input { width: calc(50vw - 40px); }
+    .pn-sec .seg button small { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .book, .toc, .shelf, .backdrop, .toast, .leaf, .cover { transition: none !important; animation: none !important; }
@@ -445,71 +487,30 @@
         <h1 class="brand-mark">블랙북</h1>
         <button type="button" class="tool-btn save-btn" id="saveBtn" data-dirty="0" title="저장 (Ctrl+S)">저장</button>
         <span class="save-state" id="saveState" aria-live="polite"></span>
-        <div class="seg theme-seg" role="group" aria-label="언어">
-          <button type="button" data-lang="ko" aria-pressed="true">한국어</button>
-          <button type="button" data-lang="en" aria-pressed="false" data-i18n-skip>English</button>
-        </div>
-        <div class="seg theme-seg" role="group" aria-label="화면 테마">
-          <button type="button" data-theme-pref="auto" aria-pressed="true">자동</button>
-          <button type="button" data-theme-pref="light" aria-pressed="false">밝게</button>
-          <button type="button" data-theme-pref="dark" aria-pressed="false">어둡게</button>
-        </div>
       </div>
       <div class="toolbar">
-        <div class="control">
-          <span class="control-label">크기</span>
-          <div class="seg" role="group" aria-label="책 크기">
-            <button type="button" data-psize="A6" aria-pressed="false">A6<small>105×148</small></button>
-            <button type="button" data-psize="B6" aria-pressed="false">B6<small>128×182</small></button>
-            <button type="button" data-psize="A5" aria-pressed="true">A5<small>148×210</small></button>
-            <button type="button" data-psize="SK" aria-pressed="false"><span>신국판</span><small>152×225</small></button>
-          </div>
-        </div>
-        <div class="control">
-          <span class="control-label">글자</span>
-          <div class="seg font-seg" role="group" aria-label="글자 크기">
-            <button type="button" data-font="13" aria-pressed="false" aria-label="글자 더 작게, 9.75pt" title="9.75pt" style="font-size:12px">가</button>
-            <button type="button" data-font="16" aria-pressed="false" aria-label="글자 작게, 12pt" title="12pt" style="font-size:15px">가</button>
-            <button type="button" data-font="19" aria-pressed="true" aria-label="글자 보통, 14.25pt" title="14.25pt" style="font-size:18px">가</button>
-            <button type="button" data-font="22" aria-pressed="false" aria-label="글자 크게, 16.5pt" title="16.5pt" style="font-size:21px">가</button>
-            <button type="button" data-font="26" aria-pressed="false" aria-label="글자 아주 크게, 19.5pt" title="19.5pt" style="font-size:24px">가</button>
-          </div>
-        </div>
-        <div class="control">
-          <span class="control-label">한 쪽</span>
-          <div class="limit-pill" id="limitLabel" aria-live="polite">크기별</div>
-        </div>
-        <div class="control">
-          <span class="control-label">서가</span>
-          <button type="button" class="tool-btn" id="shelfBtn">서가</button>
-        </div>
-        <div class="control">
-          <span class="control-label">목차</span>
-          <button type="button" class="tool-btn" id="tocBtn">목차</button>
-        </div>
-        <div class="control">
-          <span class="control-label">목표</span>
-          <button type="button" class="tool-btn" id="goalsBtn">목표</button>
-        </div>
-        <div class="control">
-          <span class="control-label" id="loreLabel">설정집</span>
-          <button type="button" class="tool-btn" id="loreBtn">설정집</button>
-        </div>
-        <div class="control">
-          <span class="control-label">표지</span>
-          <button type="button" class="tool-btn" id="coverEditBtn">표지</button>
-        </div>
-        <div class="control">
-          <span class="control-label">모드</span>
-          <div class="seg mode-seg" role="group" aria-label="글쓰기 모드">
-            <button type="button" data-bmode="lit" aria-pressed="true">문학</button>
-            <button type="button" data-bmode="non" aria-pressed="false">비문학</button>
-          </div>
-        </div>
+        <button type="button" class="tool-btn" id="shelfBtn">서가</button>
+        <button type="button" class="tool-btn" id="tocBtn">목차</button>
+        <button type="button" class="tool-btn" id="loreBtn">설정집</button>
+        <button type="button" class="tool-btn" id="goalsBtn">목표</button>
+        <button type="button" class="tool-btn" id="findBtn" title="찾기 (Ctrl+F)">찾기</button>
+        <button type="button" class="tool-btn" id="coverEditBtn">표지</button>
+        <button type="button" class="tool-btn" id="fileBtn">내보내기</button>
+        <button type="button" class="tool-btn" id="settingsBtn" data-i18n-skip>설정</button>
         <div class="pos" id="pos" aria-live="polite"><b>1</b> 쪽</div>
         <button type="button" class="tool-btn" id="coverBtn" hidden>덮기</button>
       </div>
     </header>
+    <div class="find-bar" id="findBar" role="search" hidden>
+      <input id="findInput" type="search" placeholder="찾을 말" aria-label="찾을 말" autocomplete="off" />
+      <span class="find-count" id="findCount" aria-live="polite"></span>
+      <button type="button" class="tool-btn" id="findPrev" aria-label="이전 찾기">↑</button>
+      <button type="button" class="tool-btn" id="findNext" aria-label="다음 찾기">↓</button>
+      <input id="replaceInput" type="text" placeholder="바꿀 말" aria-label="바꿀 말" autocomplete="off" />
+      <button type="button" class="tool-btn" id="replaceOne">바꾸기</button>
+      <button type="button" class="tool-btn" id="replaceAll">모두 바꾸기</button>
+      <button type="button" class="close-x find-x" id="findClose" aria-label="찾기 닫기">×</button>
+    </div>
     <div class="save-conflict" id="saveConflict" hidden>
       <span>다른 기기에서 먼저 저장한 내용이 있어요. 어떻게 할까요?</span>
       <button type="button" class="tool-btn" id="cfOverwrite">내 것으로 덮어쓰기</button>
@@ -580,6 +581,7 @@
         <div class="foot-strip" id="footStrip" hidden></div>
         <div class="under-hint" id="hint">오른쪽 열기로 표지를 넘기세요</div>
         <div class="spec-note" id="specNote"></div>
+        <div class="count-note" id="countNote"></div>
         <div class="save-note" id="saveNote">글은 이 브라우저에 임시로 남아요. 저장 버튼(Ctrl+S)을 눌러야 내 계정에 올라가요.</div>
       </div>
     </div>
@@ -611,15 +613,10 @@
     </div>
     <div class="toc-list" id="tocList"></div>
     <div class="toc-foot">
-      <table class="spec-table" id="specTable" aria-label="용지별 한 쪽 분량"></table>
-      <div class="spec-cap" id="specCap"></div>
       <button type="button" id="tocFillBtn">부·장으로 목차 채우기</button>
       <button type="button" id="tocPageBtn">목차 쪽 만들기</button>
       <button type="button" id="tocPageDel" hidden>목차 쪽 없애기</button>
-      <button type="button" id="exportTxt">원고 내려받기</button>
-      <button type="button" id="exportJson">백업</button>
-      <button type="button" id="importBtn">불러오기</button>
-      <div class="keys">표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →</div>
+      <div class="keys">↑ ↓ 로 부·장 순서를 바꿔요 · 표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →</div>
     </div>
   </aside>
   <aside class="lore" id="lore" aria-hidden="true" aria-label="설정집">
@@ -644,6 +641,90 @@
     </div>
     <div class="goals-body" id="coverBody"></div>
   </aside>
+  <aside class="lore goals-panel" id="settingsPanel" aria-hidden="true" aria-label="설정">
+    <div class="toc-head">
+      <div><h2 id="settingsTitle" data-i18n-skip>설정</h2><div class="toc-stats" id="settingsStats"></div></div>
+      <button type="button" class="close-x" id="settingsClose" aria-label="설정 닫기">×</button>
+    </div>
+    <div class="goals-body pn-body">
+      <section class="pn-sec">
+        <h3>책 크기</h3>
+        <div class="seg" role="group" aria-label="책 크기">
+          <button type="button" data-psize="A6" aria-pressed="false">A6<small>105×148</small></button>
+          <button type="button" data-psize="B6" aria-pressed="false">B6<small>128×182</small></button>
+          <button type="button" data-psize="A5" aria-pressed="true">A5<small>148×210</small></button>
+          <button type="button" data-psize="SK" aria-pressed="false"><span>신국판</span><small>152×225</small></button>
+        </div>
+      </section>
+      <section class="pn-sec">
+        <h3>글자 크기</h3>
+        <div class="seg font-seg" role="group" aria-label="글자 크기">
+          <button type="button" data-font="13" aria-pressed="false" aria-label="글자 더 작게, 9.75pt" title="9.75pt" style="font-size:12px">가</button>
+          <button type="button" data-font="16" aria-pressed="false" aria-label="글자 작게, 12pt" title="12pt" style="font-size:15px">가</button>
+          <button type="button" data-font="19" aria-pressed="true" aria-label="글자 보통, 14.25pt" title="14.25pt" style="font-size:18px">가</button>
+          <button type="button" data-font="22" aria-pressed="false" aria-label="글자 크게, 16.5pt" title="16.5pt" style="font-size:21px">가</button>
+          <button type="button" data-font="26" aria-pressed="false" aria-label="글자 아주 크게, 19.5pt" title="19.5pt" style="font-size:24px">가</button>
+        </div>
+      </section>
+      <section class="pn-sec">
+        <h3>한 쪽 분량</h3>
+        <div class="limit-pill" id="limitLabel" aria-live="polite">크기별</div>
+        <table class="spec-table" id="specTable" aria-label="용지별 한 쪽 분량"></table>
+        <div class="spec-cap" id="specCap"></div>
+      </section>
+      <section class="pn-sec">
+        <h3>글쓰기 모드</h3>
+        <div class="seg mode-seg" role="group" aria-label="글쓰기 모드">
+          <button type="button" data-bmode="lit" aria-pressed="true">문학</button>
+          <button type="button" data-bmode="non" aria-pressed="false">비문학</button>
+        </div>
+        <p>문학은 설정집, 비문학은 주장집과 각주를 써요. 바꿔도 반대쪽 자료는 지워지지 않아요.</p>
+      </section>
+      <section class="pn-sec">
+        <h3>언어</h3>
+        <div class="seg" role="group" aria-label="언어">
+          <button type="button" data-lang="ko" aria-pressed="true">한국어</button>
+          <button type="button" data-lang="en" aria-pressed="false" data-i18n-skip>English</button>
+        </div>
+      </section>
+      <section class="pn-sec">
+        <h3>화면 테마</h3>
+        <div class="seg" role="group" aria-label="화면 테마">
+          <button type="button" data-theme-pref="auto" aria-pressed="true">자동</button>
+          <button type="button" data-theme-pref="light" aria-pressed="false">밝게</button>
+          <button type="button" data-theme-pref="dark" aria-pressed="false">어둡게</button>
+        </div>
+      </section>
+    </div>
+  </aside>
+  <aside class="lore goals-panel" id="filePanel" aria-hidden="true" aria-label="내보내기">
+    <div class="toc-head">
+      <div><h2>내보내기</h2><div class="toc-stats" id="fileStats"></div></div>
+      <button type="button" class="close-x" id="fileClose" aria-label="내보내기 닫기">×</button>
+    </div>
+    <div class="goals-body pn-body">
+      <section class="pn-sec">
+        <h3>책으로 내려받기</h3>
+        <p>표지, 목차, 부·장 제목, 쪽 번호가 들어간 책 모양 PDF예요. 판형과 글자 크기는 지금 설정을 따라요.</p>
+        <button type="button" class="pn-btn main" id="exportPdf">책 모양 PDF 내려받기</button>
+        <div class="pn-progress" id="pdfProgress" aria-live="polite" hidden></div>
+      </section>
+      <section class="pn-sec">
+        <h3>원고와 백업</h3>
+        <div class="pn-row">
+          <button type="button" class="pn-btn" id="exportTxt">원고 (.txt)</button>
+          <button type="button" class="pn-btn" id="exportJson">백업 (.json)</button>
+          <button type="button" class="pn-btn" id="importBtn">백업 불러오기</button>
+        </div>
+        <p>원고는 다른 프로그램에 붙여 넣을 글, 백업은 블랙북으로 다시 불러올 파일이에요.</p>
+      </section>
+      <section class="pn-sec">
+        <h3>이전 버전</h3>
+        <p>저장할 때, 모두 바꾸기·되돌리기 전에, 그리고 쓰는 동안 15분마다 이 기기에 보관해요. 책마다 최근 20개까지 남아요.</p>
+        <div class="ver-list" id="verList"></div>
+      </section>
+    </div>
+  </aside>
   <div class="toast" id="toast" role="status"></div>
   <input type="file" id="filePick" accept="application/json,.json" hidden />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -652,7 +733,7 @@
 <script>
 (function () {
   const KEY = "blackbook.v1";
-  const EN = {"신국판": "Trade", "블랙북": "Blackbook", "목차": "Contents", "{0} 한 쪽이 차서 다음 쪽으로 넘어갔어요": "That page is full ({0}), so writing moved on to the next page", "화면 글씨 · 한 쪽은 인쇄 기준": "screen text · page size follows print", "인쇄 비율": "print scale", "{0} {1}×{2}mm · {3}자×{4}줄 · {5}자 · {6}": "{0} {1}×{2}mm · {3} cols × {4} rows · {5} chars · {6}", "더 작게": "XS", "작게": "S", "보통": "M", "크게": "L", "아주 크게": "XL", "{0}자 × {1}줄": "{0} cols × {1} rows", "지금 {0} · {1}pt · {2}자 × {3}줄 · {4}자. 휴대폰에서는 글씨를 줄이지 않고, 한 쪽 분량만 이 규격을 씁니다.": "Now {0} · {1}pt · {2} cols × {3} rows · {4} chars. English text fits about 1.9× the characters of Korean per line. On phones the text is not shrunk; only the page capacity follows this spec.", "{0}자": "{0} chars", "공백 포함, 줄바꿈 제외": "spaces included, line breaks excluded", "{0}부": "Part {0}", "{0}장": "Chapter {0}", "제목 없음": "Untitled", "검은 표지, 금박": "Black cover, gold foil", "비문학": "Non-fiction", "문학": "Fiction", "생각을 책으로": "Ideas into a book", "혼자 쓰는 노트": "A notebook of your own", "쪽": "p.", "목차 쪽으로 가기": "Go to contents page", "목차 쪽 만들기": "Create contents page", "{0}쪽": "p. {0}", "삭제": "Delete", "{0} 삭제": "Delete {0}", "덮기": "Close", "표지 덮기": "Close the cover", "이전 쪽": "Previous page", "열기": "Open", "표지 넘기기": "Open the cover", "새 쪽": "New page", "다음 쪽": "Next page", "오른쪽 열기, 또는 표지 모서리를 눌러 넘기세요": "Press Open on the right, or the corner of the cover", "왼쪽 덮기로 표지를 다시 덮을 수 있어요": "Press Close on the left to shut the cover again", "한 쪽이 차면 다음 쪽으로 넘어갑니다": "When a page fills up, writing moves on to the next", "{0}쪽 · 글이 있는 쪽 {1}": "{0} pages · {1} with writing", "목차 {0}쪽": "{0} contents pp.", "글이 있는 쪽 {0}": "{0} with writing", "{0}권": "{0} books", "빈 쪽": "Blank page", "새 책": "New book", "새 책을 만들었어요. 표지에 제목을 적으세요": "New book created. Write a title on the cover.", "부를 추가했어요. 제목을 적으세요": "Part added. Write its title.", "장을 추가했어요. 제목을 적으세요": "Chapter added. Write its title.", "{0}을(를) 지웠어요": "Deleted {0}", "비문학 모드로 바꿨어요": "Switched to non-fiction mode", "문학 모드로 바꿨어요": "Switched to fiction mode", "목차 쪽을 맨 앞에 만들었어요": "Contents page created at the front", "목차 쪽을 만들었어요. 책을 열면 맨 앞에 있어요": "Contents page created. It is at the front when you open the book.", "(빈 쪽)": "(blank page)", "주장집": "Notes", "설정집": "Lore", "삭제한 책 {0}권": "{0} deleted book(s)", "설정집 닫기": "Close lore", "설정집 분류": "Lore categories", "원고를 내려받았어요": "Manuscript downloaded", "백업을 내려받았어요": "Backup downloaded", "한 번 더 누르면 {0}의 표지가 지워져요. 장은 남아요": "Press again to delete the cover page of {0}. Its chapters stay.", "한 번 더 누르면 {0}({1}쪽)이 지워져요": "Press again to delete {0} ({1} pages)", "한 번 더 누르면 목차 쪽이 사라져요": "Press again to remove the contents page", "마지막 쪽이에요. 오른쪽 + 로 새 쪽을 더하세요.": "This is the last page. Use + on the right to add one.", "이름 없음": "Unnamed", "목표": "Goals", "총 목표": "Total goal", "하루 목표": "Daily goal", "{0} · 항목 {1}개": "{0} · entries: {1}", "{0} 찾기": "Search {0}", "+ 새 {0}": "+ New {0}", "찾는 항목이 없어요": "Nothing matches", "‹ 목록": "‹ List", "위로": "Up", "아래로": "Down", "지우기": "Delete", "한 번 더 누르면 지워요": "Press again to delete", "{0} 이름": "{0} name", "집필 목표": "Writing goals", "책 전체 목표 글자 수": "Total characters for the book", "예: 100000": "e.g. 100000", "하루 목표 글자 수": "Characters per day", "예: 2000": "e.g. 2000", "목표를 정하면 진행률이 보여요": "Set a goal to see progress", "본문": "Body text", "현재 판형 기준": "At current page size", "약 {0}쪽": "about {0} pages", "오늘": "Today", "연속 달성": "Streak", "{0}일": "{0} days", "마일스톤": "Milestones", "완료": "Done", "예: 1부 초고 끝내기": "e.g. Finish the Part 1 draft", "새 마일스톤": "New milestone", "추가": "Add", "계정에 저장된 서가를 불러왔어요": "Loaded the shelf saved in your account", "세계관": "Worldbuilding", "설정": "setting", "아직 설정이 없어요. 마법, 역사, 종교, 규칙처럼 세계를 이루는 것을 하나씩 적어 보세요.": "No settings yet. Add the things that make up your world, one at a time: magic, history, religion, rules.", "왼쪽에서 설정을 고르거나 새로 만드세요.": "Pick a setting on the left or create a new one.", "분류": "Category", "역사 · 종교 · 마법 · 사회 · 기술": "History · religion · magic · society · technology", "설명": "Description", "이 설정이 무엇인지 적어 두세요": "Describe what this is", "규칙과 한계": "Rules and limits", "반드시 지켜야 하는 규칙, 할 수 없는 일": "Rules that must hold, things it cannot do", "이야기에서 쓰이는 곳": "Where it appears in the story", "어느 장면, 어느 인물과 이어지나요": "Which scenes and characters does it touch?", "아틀라스": "Atlas", "장소": "place", "아직 장소가 없어요. 도시, 국가, 산맥, 방 하나도 좋아요.": "No places yet. A city, a country, a mountain range, even a single room.", "왼쪽에서 장소를 고르거나 새로 만드세요.": "Pick a place on the left or create a new one.", "종류": "Type", "도시 · 국가 · 산맥 · 건물": "City · country · mountains · building", "지형과 기후": "Terrain and climate", "사람과 문화": "People and culture", "이어진 장소와 이동": "Connected places and travel", "어디에서 얼마나 걸리나요": "From where, and how long does it take?", "여기서 벌어지는 일": "What happens here", "캐릭터": "Characters", "인물": "character", "아직 인물이 없어요. 이름만 먼저 적어도 됩니다.": "No characters yet. A name alone is enough to start.", "왼쪽에서 인물을 고르거나 새로 만드세요.": "Pick a character on the left or create a new one.", "역할": "Role", "주인공 · 조력자 · 적대자": "Protagonist · ally · antagonist", "나이와 생일": "Age and birthday", "외모": "Appearance", "성격과 말투": "Personality and voice", "원하는 것": "What they want", "겉으로 드러나는 목표": "The outward goal", "진짜 필요한 것과 결핍": "What they truly need, and what is missing", "비밀": "Secret", "관계": "Relationships", "누구와 어떤 사이인가요": "Who are they to each other?", "변화": "Change", "이야기 끝에서 어떻게 달라지나요": "How are they different by the end?", "플롯": "Plot", "장면": "scene", "아직 장면이 없어요. 위에서 아래로 순서대로 쌓으면 줄거리가 됩니다.": "No scenes yet. Stack them from top to bottom and they become your plot.", "왼쪽에서 장면을 고르거나 새로 만드세요.": "Pick a scene on the left or create a new one.", "상태": "Status", "구상": "Idea", "초안": "Draft", "연결된 장": "Linked chapter", "예: 12~14장": "e.g. chapters 12-14", "장면 요약": "Scene summary", "무슨 일이 일어나나요": "What happens?", "갈등과 장애물": "Conflict and obstacles", "복선과 회수": "Setups and payoffs", "깔아 둘 것, 거둘 것": "What to plant, what to pay off", "핵심 주장": "Core claims", "주장": "claim", "아직 주장이 없어요. 책이 말하려는 것을 한 문장씩 적어 보세요.": "No claims yet. Write what the book argues, one sentence at a time.", "왼쪽에서 주장을 고르거나 새로 만드세요.": "Pick a claim on the left or create a new one.", "유형": "Kind", "핵심 주장 · 근거 · 반론 · 결론": "Core claim · support · objection · conclusion", "한 문장 주장": "One-sentence claim", "독자가 기억해야 할 문장": "The sentence the reader should remember", "근거": "Evidence", "자료·사례·논리": "Sources, cases, logic", "예상 반론과 답": "Likely objection and reply", "독자에게 의미": "What it means for the reader", "그래서 무엇이 달라지나요": "So what changes?", "쓸 장": "Chapter to write it in", "예: 3장": "e.g. chapter 3", "참고자료": "References", "자료": "reference", "아직 참고자료가 없어요. 읽은 책, 논문, 기사, 인터뷰를 모아 두세요. 이름 칸에는 제목을 적으면 참고문헌이 됩니다.": "No references yet. Collect the books, papers, articles and interviews you read. The name you give each one becomes its title in the bibliography.", "왼쪽에서 참고자료를 고르거나 새로 만드세요.": "Pick a reference on the left or create a new one.", "책 · 논문 · 기사 · 인터뷰 · 웹": "Book · paper · article · interview · web", "저자·기관": "Author or organization", "연도·날짜": "Year or date", "위치·링크·쪽": "Location, link or page", "핵심 내용": "Key points", "인용할 문장": "Quote to use", "신뢰도와 한계": "Reliability and limits", "쓰는 곳": "Where it is used", "예: 2장 첫 문단": "e.g. first paragraph of chapter 2", "용어집": "Glossary", "용어": "term", "아직 용어가 없어요. 책에서 반복해 쓸 말을 정의해 두세요.": "No terms yet. Define the words you will use again and again.", "왼쪽에서 용어를 고르거나 새로 만드세요.": "Pick a term on the left or create a new one.", "분야": "Field", "정의": "Definition", "이 책에서 이 말이 뜻하는 것": "What this word means in this book", "예시": "Example", "헷갈리는 말": "Easily confused with", "비슷하지만 다른 말": "Similar but different words", "처음 나오는 곳": "First appears in", "사례": "Cases", "아직 사례가 없어요. 주장을 받쳐 줄 이야기를 모아 두세요.": "No cases yet. Collect the stories that support your claims.", "왼쪽에서 사례를 고르거나 새로 만드세요.": "Pick a case on the left or create a new one.", "실제 사례 · 가상 사례 · 비교": "Real case · hypothetical · comparison", "배경": "Background", "무슨 일이 있었나": "What happened", "시사점": "Takeaway", "한국어": "한국어", "자동": "Auto", "밝게": "Light", "어둡게": "Dark", "크기": "Size", "글자": "Text", "가": "A", "한 쪽": "Per page", "크기별": "by size", "서가": "Shelf", "모드": "Mode", "A5 · 저널": "A5 · journal", "속표지": "Title page", "표지를 덮으면 다시 닫혀요": "Close the cover to shut the book", "+ 부 추가": "+ Add part", "+ 장 추가": "+ Add chapter", "오른쪽 열기로 표지를 넘기세요": "Press Open on the right to turn the cover", "책을 열다": "Open the book", "1권": "1 book", "새 책 · 문학": "New book · Fiction", "새 책 · 비문학": "New book · Non-fiction", "이 책 지우기": "Delete this book", "이 책을 지울까요? 되돌릴 수 없어요.": "Delete this book? This cannot be undone.", "취소": "Cancel", "1장": "1 ch.", "부·장으로 목차 채우기": "Fill contents from parts and chapters", "목차 쪽 없애기": "Remove contents page", "원고 내려받기": "Download manuscript", "백업": "Backup", "불러오기": "Import", "표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →": "Open turns the cover, Close shuts it · Alt + ← →", "언어": "Language", "화면 테마": "Theme", "책 크기": "Book size", "글자 크기": "Text size", "글자 더 작게, 9.75pt": "Text extra small, 9.75pt", "글자 작게, 12pt": "Text small, 12pt", "글자 보통, 14.25pt": "Text medium, 14.25pt", "글자 크게, 16.5pt": "Text large, 16.5pt", "글자 아주 크게, 19.5pt": "Text extra large, 19.5pt", "글쓰기 모드": "Writing mode", "책 제목": "Book title", "제목": "Title", "첫 문장을 적어 보세요": "Write your first sentence", "이 쪽의 글": "Text of this page", "서가 닫기": "Close shelf", "목차 닫기": "Close contents", "용지별 한 쪽 분량": "Capacity per page by paper size", "주장집 닫기": "Close notes", "주장집 분류": "Note categories", "목표 닫기": "Close goals", "저장 공간이 부족해요": "Not enough storage space", "책이 너무 많아요": "Too many books", "지울 책이 없어요": "There is no book to delete", "책을 지웠어요": "Book deleted", "너무 길어 더 나눌 수 없어요": "This book is too long to add more pages", "목차와 본문은 이어 붙일 수 없어요": "Contents and body cannot be joined", "제목이 있는 쪽은 앞 쪽과 이어 붙일 수 없어요. 아래 삭제 버튼을 쓰세요": "A page with a heading cannot be joined to the one before it. Use the delete button below.", "목차를 채웠어요. 쪽 번호는 본문 기준이에요": "Contents filled in. Page numbers count body pages only.", "먼저 부나 장을 추가하세요": "Add a part or chapter first", "내려받기를 취소했어요": "Download cancelled", "잠시 뒤에 다시 눌러 주세요": "Please try again in a moment", "파일로 저장할 수 없어 클립보드에 복사했어요": "Could not save a file, so it was copied to the clipboard", "여기서는 파일로 저장할 수 없어요": "Saving files is not available here", "새 책으로 불러왔어요": "Imported as a new book", "이 파일은 백업이 아니에요": "This file is not a backup", "항목이 너무 많아요": "Too many entries", "마일스톤이 너무 많아요": "Too many milestones", "계정에 다 저장하지 못했어요. 이 브라우저에는 남아 있어요": "Could not save everything to your account. It is still in this browser.", "책": "book", "목차 쪽을 없앴어요": "Contents page removed", "다른 기기의 변경을 불러왔어요": "Loaded changes from another device", "+ 각주": "+ Footnote", "각주": "Footnotes", "각주 내용": "Footnote text", "쪽 아래에 달 설명이나 출처": "A note or source to show at the foot of the page", "연결된 참고자료": "Linked reference", "(없음)": "None", "내용이 비어 있어요": "No text yet", "이 쪽의 각주": "FOOTNOTES ON THIS PAGE", "각주 {0}을 만들었어요. 내용을 적으세요": "Footnote {0} created. Write its text.", "목차 쪽에는 각주를 달 수 없어요": "Footnotes cannot be added on the contents page", "참고문헌": "Bibliography", "아직 각주가 없어요. 비문학 모드에서 책 아래의 '+ 각주'를 누르면 본문에 [^1] 같은 표시가 들어가고, 여기에 내용을 적어요.": "No footnotes yet. In non-fiction mode, press '+ Footnote' under the book to drop a marker like [^1] into the text, then write its content here.", "왼쪽에서 각주를 고르세요.": "Pick a footnote on the left.", "표지": "Cover", "표지 꾸미기": "Customize cover", "표지 닫기": "Close cover settings", "표지 색": "Cover color", "금박·글자 색": "Foil and text color", "제목 글꼴": "Title font", "질감": "Texture", "테두리 장식": "Border style", "표지 이미지": "Cover picture", "이미지 올리기": "Upload picture", "이미지 지우기": "Remove picture", "프리미엄": "Premium", "프리미엄 표시 항목은 나중에 유료가 될 수 있어요. 지금은 모두 써 볼 수 있어요.": "Items marked Premium may become paid later. For now you can try them all.", "가나다 Abc": "Aa Abc", "검정": "Black", "남색": "Navy", "와인": "Wine", "숲 초록": "Forest", "아이보리": "Ivory", "자두": "Plum", "청회색": "Slate", "금박": "Gold foil", "은박": "Silver foil", "로즈골드": "Rose gold", "구리": "Copper", "흰색": "White", "잉크": "Ink", "명조": "Serif", "고딕": "Sans", "손글씨": "Handwriting", "굵은 제목": "Heavy", "질감 없음": "No texture", "가죽": "Leather", "천": "Cloth", "종이": "Paper", "기본 장식": "Standard", "이중 테두리": "Double frame", "장식 없음": "Plain", "프리미엄 기능이에요": "This is a premium feature", "이미지가 너무 커요. 다른 사진을 골라 주세요": "The picture is too large. Please pick another.", "이미지를 읽을 수 없어요": "Could not read the picture", "저장": "Save", "저장 (Ctrl+S)": "Save (Ctrl+S)", "저장됨": "Saved", "저장 중…": "Saving…", "저장 안 된 변경이 있어요": "Unsaved changes", "이 브라우저에만 저장돼요": "Saved in this browser only", "다른 기기에 더 새로운 저장본이 있어요": "A newer save exists on another device", "저장했어요": "Saved", "이미 저장돼 있어요": "Already saved", "계정에 연결되지 않아서 이 브라우저에만 저장돼요": "Not connected to an account, so it is saved in this browser only", "저장하지 못했어요. 이 브라우저에는 남아 있어요": "Could not save. Your text is still in this browser.", "다른 기기에서 먼저 저장한 내용이 있어요. 어떻게 할까요?": "Another device saved something first. What would you like to do?", "내 것으로 덮어쓰기": "Overwrite with mine", "다른 기기 것 불러오기": "Load the other device's version", "다른 기기의 저장본을 불러왔어요": "Loaded the other device's saved version", "글은 이 브라우저에 임시로 남고, 저장 버튼(Ctrl+S)을 눌러야 내 계정과 다른 기기에 올라가요.": "Your writing is kept in this browser as a draft. Press Save (Ctrl+S) to put it in your account and on other devices.", "저장 버튼을 누르면 내 계정에 올라가요 · 나만 볼 수 있어요 · 새 책은 표지부터 시작합니다": "Press Save to put it in your account · only you can see it · a new book starts at the cover", "글은 이 브라우저에 임시로 남아요. 저장 버튼(Ctrl+S)을 눌러야 내 계정에 올라가요.": "Your writing is kept in this browser as a draft. Press Save (Ctrl+S) to put it in your account.", "글은 이 브라우저에 임시로 남아요 · 새 책은 표지부터 시작합니다": "Kept in this browser as a draft · a new book starts at the cover", "체험이 끝나서 새로 저장할 수 없어요. 구독하면 계속 쓸 수 있어요": "Your trial has ended, so new changes cannot be saved. Subscribe to keep writing."};
+  const EN = {"신국판": "Trade", "블랙북": "Blackbook", "목차": "Contents", "{0} 한 쪽이 차서 다음 쪽으로 넘어갔어요": "That page is full ({0}), so writing moved on to the next page", "화면 글씨 · 한 쪽은 인쇄 기준": "screen text · page size follows print", "인쇄 비율": "print scale", "{0} {1}×{2}mm · {3}자×{4}줄 · {5}자 · {6}": "{0} {1}×{2}mm · {3} cols × {4} rows · {5} chars · {6}", "더 작게": "XS", "작게": "S", "보통": "M", "크게": "L", "아주 크게": "XL", "{0}자 × {1}줄": "{0} cols × {1} rows", "지금 {0} · {1}pt · {2}자 × {3}줄 · {4}자. 휴대폰에서는 글씨를 줄이지 않고, 한 쪽 분량만 이 규격을 씁니다.": "Now {0} · {1}pt · {2} cols × {3} rows · {4} chars. English text fits about 1.9× the characters of Korean per line. On phones the text is not shrunk; only the page capacity follows this spec.", "{0}자": "{0} chars", "공백 포함, 줄바꿈 제외": "spaces included, line breaks excluded", "{0}부": "Part {0}", "{0}장": "Chapter {0}", "제목 없음": "Untitled", "검은 표지, 금박": "Black cover, gold foil", "비문학": "Non-fiction", "문학": "Fiction", "생각을 책으로": "Ideas into a book", "혼자 쓰는 노트": "A notebook of your own", "쪽": "p.", "목차 쪽으로 가기": "Go to contents page", "목차 쪽 만들기": "Create contents page", "{0}쪽": "p. {0}", "삭제": "Delete", "{0} 삭제": "Delete {0}", "덮기": "Close", "표지 덮기": "Close the cover", "이전 쪽": "Previous page", "열기": "Open", "표지 넘기기": "Open the cover", "새 쪽": "New page", "다음 쪽": "Next page", "오른쪽 열기, 또는 표지 모서리를 눌러 넘기세요": "Press Open on the right, or the corner of the cover", "왼쪽 덮기로 표지를 다시 덮을 수 있어요": "Press Close on the left to shut the cover again", "한 쪽이 차면 다음 쪽으로 넘어갑니다": "When a page fills up, writing moves on to the next", "{0}쪽 · 글이 있는 쪽 {1}": "{0} pages · {1} with writing", "목차 {0}쪽": "{0} contents pp.", "글이 있는 쪽 {0}": "{0} with writing", "{0}권": "{0} books", "빈 쪽": "Blank page", "새 책": "New book", "새 책을 만들었어요. 표지에 제목을 적으세요": "New book created. Write a title on the cover.", "부를 추가했어요. 제목을 적으세요": "Part added. Write its title.", "장을 추가했어요. 제목을 적으세요": "Chapter added. Write its title.", "{0}을(를) 지웠어요": "Deleted {0}", "비문학 모드로 바꿨어요": "Switched to non-fiction mode", "문학 모드로 바꿨어요": "Switched to fiction mode", "목차 쪽을 맨 앞에 만들었어요": "Contents page created at the front", "목차 쪽을 만들었어요. 책을 열면 맨 앞에 있어요": "Contents page created. It is at the front when you open the book.", "(빈 쪽)": "(blank page)", "주장집": "Notes", "설정집": "Lore", "삭제한 책 {0}권": "{0} deleted book(s)", "설정집 닫기": "Close lore", "설정집 분류": "Lore categories", "원고를 내려받았어요": "Manuscript downloaded", "백업을 내려받았어요": "Backup downloaded", "한 번 더 누르면 {0}의 표지가 지워져요. 장은 남아요": "Press again to delete the cover page of {0}. Its chapters stay.", "한 번 더 누르면 {0}({1}쪽)이 지워져요": "Press again to delete {0} ({1} pages)", "한 번 더 누르면 목차 쪽이 사라져요": "Press again to remove the contents page", "마지막 쪽이에요. 오른쪽 + 로 새 쪽을 더하세요.": "This is the last page. Use + on the right to add one.", "이름 없음": "Unnamed", "목표": "Goals", "총 목표": "Total goal", "하루 목표": "Daily goal", "{0} · 항목 {1}개": "{0} · entries: {1}", "{0} 찾기": "Search {0}", "+ 새 {0}": "+ New {0}", "찾는 항목이 없어요": "Nothing matches", "‹ 목록": "‹ List", "위로": "Up", "아래로": "Down", "지우기": "Delete", "한 번 더 누르면 지워요": "Press again to delete", "{0} 이름": "{0} name", "집필 목표": "Writing goals", "책 전체 목표 글자 수": "Total characters for the book", "예: 100000": "e.g. 100000", "하루 목표 글자 수": "Characters per day", "예: 2000": "e.g. 2000", "목표를 정하면 진행률이 보여요": "Set a goal to see progress", "본문": "Body text", "현재 판형 기준": "At current page size", "약 {0}쪽": "about {0} pages", "오늘": "Today", "연속 달성": "Streak", "{0}일": "{0} days", "마일스톤": "Milestones", "완료": "Done", "예: 1부 초고 끝내기": "e.g. Finish the Part 1 draft", "새 마일스톤": "New milestone", "추가": "Add", "계정에 저장된 서가를 불러왔어요": "Loaded the shelf saved in your account", "세계관": "Worldbuilding", "설정": "setting", "아직 설정이 없어요. 마법, 역사, 종교, 규칙처럼 세계를 이루는 것을 하나씩 적어 보세요.": "No settings yet. Add the things that make up your world, one at a time: magic, history, religion, rules.", "왼쪽에서 설정을 고르거나 새로 만드세요.": "Pick a setting on the left or create a new one.", "분류": "Category", "역사 · 종교 · 마법 · 사회 · 기술": "History · religion · magic · society · technology", "설명": "Description", "이 설정이 무엇인지 적어 두세요": "Describe what this is", "규칙과 한계": "Rules and limits", "반드시 지켜야 하는 규칙, 할 수 없는 일": "Rules that must hold, things it cannot do", "이야기에서 쓰이는 곳": "Where it appears in the story", "어느 장면, 어느 인물과 이어지나요": "Which scenes and characters does it touch?", "아틀라스": "Atlas", "장소": "place", "아직 장소가 없어요. 도시, 국가, 산맥, 방 하나도 좋아요.": "No places yet. A city, a country, a mountain range, even a single room.", "왼쪽에서 장소를 고르거나 새로 만드세요.": "Pick a place on the left or create a new one.", "종류": "Type", "도시 · 국가 · 산맥 · 건물": "City · country · mountains · building", "지형과 기후": "Terrain and climate", "사람과 문화": "People and culture", "이어진 장소와 이동": "Connected places and travel", "어디에서 얼마나 걸리나요": "From where, and how long does it take?", "여기서 벌어지는 일": "What happens here", "캐릭터": "Characters", "인물": "character", "아직 인물이 없어요. 이름만 먼저 적어도 됩니다.": "No characters yet. A name alone is enough to start.", "왼쪽에서 인물을 고르거나 새로 만드세요.": "Pick a character on the left or create a new one.", "역할": "Role", "주인공 · 조력자 · 적대자": "Protagonist · ally · antagonist", "나이와 생일": "Age and birthday", "외모": "Appearance", "성격과 말투": "Personality and voice", "원하는 것": "What they want", "겉으로 드러나는 목표": "The outward goal", "진짜 필요한 것과 결핍": "What they truly need, and what is missing", "비밀": "Secret", "관계": "Relationships", "누구와 어떤 사이인가요": "Who are they to each other?", "변화": "Change", "이야기 끝에서 어떻게 달라지나요": "How are they different by the end?", "플롯": "Plot", "장면": "scene", "아직 장면이 없어요. 위에서 아래로 순서대로 쌓으면 줄거리가 됩니다.": "No scenes yet. Stack them from top to bottom and they become your plot.", "왼쪽에서 장면을 고르거나 새로 만드세요.": "Pick a scene on the left or create a new one.", "상태": "Status", "구상": "Idea", "초안": "Draft", "연결된 장": "Linked chapter", "예: 12~14장": "e.g. chapters 12-14", "장면 요약": "Scene summary", "무슨 일이 일어나나요": "What happens?", "갈등과 장애물": "Conflict and obstacles", "복선과 회수": "Setups and payoffs", "깔아 둘 것, 거둘 것": "What to plant, what to pay off", "핵심 주장": "Core claims", "주장": "claim", "아직 주장이 없어요. 책이 말하려는 것을 한 문장씩 적어 보세요.": "No claims yet. Write what the book argues, one sentence at a time.", "왼쪽에서 주장을 고르거나 새로 만드세요.": "Pick a claim on the left or create a new one.", "유형": "Kind", "핵심 주장 · 근거 · 반론 · 결론": "Core claim · support · objection · conclusion", "한 문장 주장": "One-sentence claim", "독자가 기억해야 할 문장": "The sentence the reader should remember", "근거": "Evidence", "자료·사례·논리": "Sources, cases, logic", "예상 반론과 답": "Likely objection and reply", "독자에게 의미": "What it means for the reader", "그래서 무엇이 달라지나요": "So what changes?", "쓸 장": "Chapter to write it in", "예: 3장": "e.g. chapter 3", "참고자료": "References", "자료": "reference", "아직 참고자료가 없어요. 읽은 책, 논문, 기사, 인터뷰를 모아 두세요. 이름 칸에는 제목을 적으면 참고문헌이 됩니다.": "No references yet. Collect the books, papers, articles and interviews you read. The name you give each one becomes its title in the bibliography.", "왼쪽에서 참고자료를 고르거나 새로 만드세요.": "Pick a reference on the left or create a new one.", "책 · 논문 · 기사 · 인터뷰 · 웹": "Book · paper · article · interview · web", "저자·기관": "Author or organization", "연도·날짜": "Year or date", "위치·링크·쪽": "Location, link or page", "핵심 내용": "Key points", "인용할 문장": "Quote to use", "신뢰도와 한계": "Reliability and limits", "쓰는 곳": "Where it is used", "예: 2장 첫 문단": "e.g. first paragraph of chapter 2", "용어집": "Glossary", "용어": "term", "아직 용어가 없어요. 책에서 반복해 쓸 말을 정의해 두세요.": "No terms yet. Define the words you will use again and again.", "왼쪽에서 용어를 고르거나 새로 만드세요.": "Pick a term on the left or create a new one.", "분야": "Field", "정의": "Definition", "이 책에서 이 말이 뜻하는 것": "What this word means in this book", "예시": "Example", "헷갈리는 말": "Easily confused with", "비슷하지만 다른 말": "Similar but different words", "처음 나오는 곳": "First appears in", "사례": "Cases", "아직 사례가 없어요. 주장을 받쳐 줄 이야기를 모아 두세요.": "No cases yet. Collect the stories that support your claims.", "왼쪽에서 사례를 고르거나 새로 만드세요.": "Pick a case on the left or create a new one.", "실제 사례 · 가상 사례 · 비교": "Real case · hypothetical · comparison", "배경": "Background", "무슨 일이 있었나": "What happened", "시사점": "Takeaway", "한국어": "한국어", "자동": "Auto", "밝게": "Light", "어둡게": "Dark", "크기": "Size", "글자": "Text", "가": "A", "한 쪽": "Per page", "크기별": "by size", "서가": "Shelf", "모드": "Mode", "A5 · 저널": "A5 · journal", "속표지": "Title page", "표지를 덮으면 다시 닫혀요": "Close the cover to shut the book", "+ 부 추가": "+ Add part", "+ 장 추가": "+ Add chapter", "오른쪽 열기로 표지를 넘기세요": "Press Open on the right to turn the cover", "책을 열다": "Open the book", "1권": "1 book", "새 책 · 문학": "New book · Fiction", "새 책 · 비문학": "New book · Non-fiction", "이 책 지우기": "Delete this book", "이 책을 지울까요? 되돌릴 수 없어요.": "Delete this book? This cannot be undone.", "취소": "Cancel", "1장": "1 ch.", "부·장으로 목차 채우기": "Fill contents from parts and chapters", "목차 쪽 없애기": "Remove contents page", "원고 내려받기": "Download manuscript", "백업": "Backup", "불러오기": "Import", "표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →": "Open turns the cover, Close shuts it · Alt + ← →", "언어": "Language", "화면 테마": "Theme", "책 크기": "Book size", "글자 크기": "Text size", "글자 더 작게, 9.75pt": "Text extra small, 9.75pt", "글자 작게, 12pt": "Text small, 12pt", "글자 보통, 14.25pt": "Text medium, 14.25pt", "글자 크게, 16.5pt": "Text large, 16.5pt", "글자 아주 크게, 19.5pt": "Text extra large, 19.5pt", "글쓰기 모드": "Writing mode", "책 제목": "Book title", "제목": "Title", "첫 문장을 적어 보세요": "Write your first sentence", "이 쪽의 글": "Text of this page", "서가 닫기": "Close shelf", "목차 닫기": "Close contents", "용지별 한 쪽 분량": "Capacity per page by paper size", "주장집 닫기": "Close notes", "주장집 분류": "Note categories", "목표 닫기": "Close goals", "저장 공간이 부족해요": "Not enough storage space", "책이 너무 많아요": "Too many books", "지울 책이 없어요": "There is no book to delete", "책을 지웠어요": "Book deleted", "너무 길어 더 나눌 수 없어요": "This book is too long to add more pages", "목차와 본문은 이어 붙일 수 없어요": "Contents and body cannot be joined", "제목이 있는 쪽은 앞 쪽과 이어 붙일 수 없어요. 아래 삭제 버튼을 쓰세요": "A page with a heading cannot be joined to the one before it. Use the delete button below.", "목차를 채웠어요. 쪽 번호는 본문 기준이에요": "Contents filled in. Page numbers count body pages only.", "먼저 부나 장을 추가하세요": "Add a part or chapter first", "내려받기를 취소했어요": "Download cancelled", "잠시 뒤에 다시 눌러 주세요": "Please try again in a moment", "파일로 저장할 수 없어 클립보드에 복사했어요": "Could not save a file, so it was copied to the clipboard", "여기서는 파일로 저장할 수 없어요": "Saving files is not available here", "새 책으로 불러왔어요": "Imported as a new book", "이 파일은 백업이 아니에요": "This file is not a backup", "항목이 너무 많아요": "Too many entries", "마일스톤이 너무 많아요": "Too many milestones", "계정에 다 저장하지 못했어요. 이 브라우저에는 남아 있어요": "Could not save everything to your account. It is still in this browser.", "책": "book", "목차 쪽을 없앴어요": "Contents page removed", "다른 기기의 변경을 불러왔어요": "Loaded changes from another device", "+ 각주": "+ Footnote", "각주": "Footnotes", "각주 내용": "Footnote text", "쪽 아래에 달 설명이나 출처": "A note or source to show at the foot of the page", "연결된 참고자료": "Linked reference", "(없음)": "None", "내용이 비어 있어요": "No text yet", "이 쪽의 각주": "FOOTNOTES ON THIS PAGE", "각주 {0}을 만들었어요. 내용을 적으세요": "Footnote {0} created. Write its text.", "목차 쪽에는 각주를 달 수 없어요": "Footnotes cannot be added on the contents page", "참고문헌": "Bibliography", "아직 각주가 없어요. 비문학 모드에서 책 아래의 '+ 각주'를 누르면 본문에 [^1] 같은 표시가 들어가고, 여기에 내용을 적어요.": "No footnotes yet. In non-fiction mode, press '+ Footnote' under the book to drop a marker like [^1] into the text, then write its content here.", "왼쪽에서 각주를 고르세요.": "Pick a footnote on the left.", "표지": "Cover", "표지 꾸미기": "Customize cover", "표지 닫기": "Close cover settings", "표지 색": "Cover color", "금박·글자 색": "Foil and text color", "제목 글꼴": "Title font", "질감": "Texture", "테두리 장식": "Border style", "표지 이미지": "Cover picture", "이미지 올리기": "Upload picture", "이미지 지우기": "Remove picture", "프리미엄": "Premium", "프리미엄 표시 항목은 나중에 유료가 될 수 있어요. 지금은 모두 써 볼 수 있어요.": "Items marked Premium may become paid later. For now you can try them all.", "가나다 Abc": "Aa Abc", "검정": "Black", "남색": "Navy", "와인": "Wine", "숲 초록": "Forest", "아이보리": "Ivory", "자두": "Plum", "청회색": "Slate", "금박": "Gold foil", "은박": "Silver foil", "로즈골드": "Rose gold", "구리": "Copper", "흰색": "White", "잉크": "Ink", "명조": "Serif", "고딕": "Sans", "손글씨": "Handwriting", "굵은 제목": "Heavy", "질감 없음": "No texture", "가죽": "Leather", "천": "Cloth", "종이": "Paper", "기본 장식": "Standard", "이중 테두리": "Double frame", "장식 없음": "Plain", "프리미엄 기능이에요": "This is a premium feature", "이미지가 너무 커요. 다른 사진을 골라 주세요": "The picture is too large. Please pick another.", "이미지를 읽을 수 없어요": "Could not read the picture", "저장": "Save", "저장 (Ctrl+S)": "Save (Ctrl+S)", "저장됨": "Saved", "저장 중…": "Saving…", "저장 안 된 변경이 있어요": "Unsaved changes", "이 브라우저에만 저장돼요": "Saved in this browser only", "다른 기기에 더 새로운 저장본이 있어요": "A newer save exists on another device", "저장했어요": "Saved", "이미 저장돼 있어요": "Already saved", "계정에 연결되지 않아서 이 브라우저에만 저장돼요": "Not connected to an account, so it is saved in this browser only", "저장하지 못했어요. 이 브라우저에는 남아 있어요": "Could not save. Your text is still in this browser.", "다른 기기에서 먼저 저장한 내용이 있어요. 어떻게 할까요?": "Another device saved something first. What would you like to do?", "내 것으로 덮어쓰기": "Overwrite with mine", "다른 기기 것 불러오기": "Load the other device's version", "다른 기기의 저장본을 불러왔어요": "Loaded the other device's saved version", "글은 이 브라우저에 임시로 남고, 저장 버튼(Ctrl+S)을 눌러야 내 계정과 다른 기기에 올라가요.": "Your writing is kept in this browser as a draft. Press Save (Ctrl+S) to put it in your account and on other devices.", "저장 버튼을 누르면 내 계정에 올라가요 · 나만 볼 수 있어요 · 새 책은 표지부터 시작합니다": "Press Save to put it in your account · only you can see it · a new book starts at the cover", "글은 이 브라우저에 임시로 남아요. 저장 버튼(Ctrl+S)을 눌러야 내 계정에 올라가요.": "Your writing is kept in this browser as a draft. Press Save (Ctrl+S) to put it in your account.", "글은 이 브라우저에 임시로 남아요 · 새 책은 표지부터 시작합니다": "Kept in this browser as a draft · a new book starts at the cover", "{0} 앞으로 옮기기": "Move {0} earlier", "{0} 뒤로 옮기기": "Move {0} later", "파일이 너무 커서 저장하지 못했어요": "The file is too large to save", "원고지 약 {0}매 · 공백 포함 {1}자": "About {0} manuscript sheets · {1} characters with spaces", "200자 원고지 기준 어림값이에요. 문단 첫 칸 들여쓰기, 숫자·영문 소문자는 한 칸에 두 자로 셌어요.": "An estimate for Korean 200-square manuscript paper: one indent square per paragraph, two digits or lowercase letters per square.", "없음": "None", "{0}곳을 바꿨어요. 내보내기의 이전 버전에서 되돌릴 수 있어요": "Replaced {0}. You can undo it from Previous versions under Export", "{0}을(를) 앞으로 옮겼어요": "Moved {0} earlier", "{0}을(를) 뒤로 옮겼어요": "Moved {0} later", "저장할 때": "On save", "쓰는 동안 자동": "Automatic while writing", "모두 바꾸기 전": "Before replace all", "되돌리기 전": "Before restoring", "다른 기기 것 불러오기 전": "Before loading the other device's copy", "보관": "Kept", "아직 보관된 버전이 없어요. 저장을 누르면 여기에 쌓여요.": "No versions kept yet. They collect here when you press Save.", "되돌리기": "Restore", "한 번 더 누르면 이 버전으로 바뀌어요": "Press again to switch to this version", "이전 버전으로 되돌렸어요. 저장을 누르면 계정에도 반영돼요": "Restored the earlier version. Press Save to update your account too", "이전 버전으로 되돌렸어요": "Restored the earlier version", "PDF를 만드는 중…": "Making the PDF…", "PDF를 만드는 중… {0} / {1}쪽": "Making the PDF… page {0} of {1}", "아직 쓴 글이 없어요. 본문을 쓰거나 부·장을 추가해 보세요": "Nothing written yet. Write some text or add a part or chapter", "PDF를 내려받았어요 ({0}쪽)": "PDF downloaded ({0} pages)", "PDF를 만들지 못했어요. 잠시 뒤에 다시 해 주세요": "Couldn't make the PDF. Please try again in a moment", "원고지": "Manuscript sheets", "약 {0}매": "about {0}", "체험이 끝나서 새로 저장할 수 없어요. 이용권을 사면 계속 쓸 수 있어요": "Your trial has ended, so new changes cannot be saved. Buy a pass to keep writing.", "찾기": "Find", "내보내기": "Export", "바꾸기": "Replace", "모두 바꾸기": "Replace all", "↑ ↓ 로 부·장 순서를 바꿔요 · 표지는 열기로 넘기고, 덮기로 닫아요 · Alt + ← →": "Reorder parts and chapters with ↑ ↓ · Open turns the cover, Close shuts it · Alt + ← →", "한 쪽 분량": "Per page", "문학은 설정집, 비문학은 주장집과 각주를 써요. 바꿔도 반대쪽 자료는 지워지지 않아요.": "Fiction uses Lore; nonfiction uses Notes and footnotes. Switching keeps the other side's material.", "책으로 내려받기": "Download as a book", "표지, 목차, 부·장 제목, 쪽 번호가 들어간 책 모양 PDF예요. 판형과 글자 크기는 지금 설정을 따라요.": "A book-shaped PDF with the cover, contents, part and chapter titles, and page numbers. It follows your current book size and text size.", "책 모양 PDF 내려받기": "Download book PDF", "원고와 백업": "Manuscript and backup", "원고 (.txt)": "Manuscript (.txt)", "백업 (.json)": "Backup (.json)", "백업 불러오기": "Import backup", "원고는 다른 프로그램에 붙여 넣을 글, 백업은 블랙북으로 다시 불러올 파일이에요.": "The manuscript is plain text for other programs; the backup is a file you can load back into Blackbook.", "이전 버전": "Previous versions", "저장할 때, 모두 바꾸기·되돌리기 전에, 그리고 쓰는 동안 15분마다 이 기기에 보관해요. 책마다 최근 20개까지 남아요.": "Kept on this device when you save, before Replace all or Restore, and every 15 minutes while you write. The latest 20 per book.", "찾기 (Ctrl+F)": "Find (Ctrl+F)", "찾을 말": "Find", "이전 찾기": "Previous match", "다음 찾기": "Next match", "바꿀 말": "Replace with", "찾기 닫기": "Close find", "설정 닫기": "Close settings", "내보내기 닫기": "Close export"};
   const LANG_KEY = "blackbook.lang";
   let lang = "ko";
   try { if (localStorage.getItem(LANG_KEY) === "en") lang = "en"; } catch (e) {}
@@ -856,7 +937,6 @@
   const backdrop = document.getElementById("backdrop");
   const toastEl = document.getElementById("toast");
   const specNote = document.getElementById("specNote");
-  const brandNote = document.getElementById("brandNote");
   const shelf = document.getElementById("shelf");
   const shelfList = document.getElementById("shelfList");
   const shelfStats = document.getElementById("shelfStats");
@@ -1200,7 +1280,8 @@
     limitLabel.title = specLine(spec) + " · " + spec.pt + "pt · " + t("공백 포함, 줄바꿈 제외");
     if (specNote) specNote.textContent = specLine(spec);
     renderFootStrip();
-    if (!state.opened || !writing.clientHeight) { folioCount.textContent = t("{0}자 × {1}줄", spec.cols, spec.rows); folioCount.classList.remove("full"); return; }
+    if (!state.opened || !writing.clientHeight) { updateCountNote(); folioCount.textContent = t("{0}자 × {1}줄", spec.cols, spec.rows); folioCount.classList.remove("full"); return; }
+    updateCountNote();
     folioCount.textContent = used + " / " + chars + " · " + spec.cols + "×" + Math.max(1, spec.rows - L);
     folioCount.classList.toggle("full", used >= chars || (writing.value.length > 0 && !fits(writing.value + /*nt*/"가", L)));
   }
@@ -1318,16 +1399,18 @@
   let delArmed = false, delTimer = 0;
   function disarmDel() { delArmed = false; clearTimeout(delTimer); delHeadBtn.classList.remove("armed"); }
   // 문학은 "설정집", 비문학은 "주장집"
-  function loreName() { return t(state.mode === "non" ? t("주장집") : t("설정집")); }
+  function loreName() { return state.mode === "non" ? t("주장집") : t("설정집"); }
   function applyLoreNames() {
     const n = loreName();
-    document.getElementById("loreLabel").textContent = n; document.getElementById("loreBtn").textContent = n;
+    document.getElementById("loreBtn").textContent = n;
     document.getElementById("loreTitle").textContent = n; document.getElementById("lore").setAttribute("aria-label", n);
-    document.getElementById("loreClose").setAttribute("aria-label", t(state.mode === "non" ? t("주장집 닫기") : t("설정집 닫기")));
-    document.getElementById("loreTabs").setAttribute("aria-label", t(state.mode === "non" ? t("주장집 분류") : t("설정집 분류")));
+    document.getElementById("loreClose").setAttribute("aria-label", state.mode === "non" ? t("주장집 닫기") : t("설정집 닫기"));
+    document.getElementById("loreTabs").setAttribute("aria-label", state.mode === "non" ? t("주장집 분류") : t("설정집 분류"));
   }
   function applyChrome() {
     applyLoreNames();
+    { const sn = lang === "en" ? "Settings" : /*nt*/"설정"; document.getElementById("settingsBtn").textContent = sn; document.getElementById("settingsTitle").textContent = sn; }
+    titleInput.setAttribute("aria-label", t("책 제목"));
     const mode = state.opened ? "reading" : "cover";
     book.dataset.size = state.size; book.dataset.state = mode; stage.dataset.state = mode;
     book.style.setProperty("--edge", edgeFor(state.pages.length) + "px");
@@ -1337,7 +1420,6 @@
     applyCover(coverEl, state.cover);
     renderHead();
     if (document.activeElement !== titleInput && titleText() !== shownTitle(state.title)) titleInput.textContent = shownTitle(state.title);
-    if (brandNote) brandNote.textContent = shownTitle(state.title) || t("검은 표지, 금박");
     coverMeta.textContent = sizeName(state.size) + " · " + spec.p.w + "×" + spec.p.h + "mm · " + (state.mode === "non" ? t("비문학") : t("문학"));
     coverSub.textContent = state.mode === "non" ? t("생각을 책으로") : t("혼자 쓰는 노트");
     const tc = tocCount(), total = state.pages.length - tc, onToc = state.index < tc, st = structure();
@@ -1382,6 +1464,7 @@
     updateCount();
   }
   function showPage(focus) {
+    clearFindMark();
     writing.value = state.pages[state.index] || "";
     applyChrome();
     if (focus && state.opened) writing.focus({ preventScroll: true });
@@ -1416,28 +1499,39 @@
       btn.appendChild(el("span", "ex" + (!m && !ex ? " empty" : ""), m ? ((m.title || t("제목 없음")) + (ex ? "  ·  " + ex : "")) : (ex || t("빈 쪽"))));
       if (m) btn.appendChild(el("span", "pg", t("{0}쪽", i - tc + 1)));
       btn.addEventListener("click", () => jump(i));
-      tocList.appendChild(btn);
+      if (!m || readOnly) { tocList.appendChild(btn); return; }
+      const row = el("div", "toc-row"), mv = el("div", "toc-move"), name = labelOf(m.k, m.no);
+      [[-1, "↑", t("{0} 앞으로 옮기기", name)], [1, "↓", t("{0} 뒤로 옮기기", name)]].forEach(([d, sym, lab]) => {
+        const b = el("button", "toc-mv", sym); b.type = "button"; b.setAttribute("aria-label", lab); b.title = lab; b.disabled = !moveRanges(i, d);
+        b.addEventListener("click", (ev) => { ev.stopPropagation(); moveUnit(i, d); });
+        mv.appendChild(b);
+      });
+      row.append(btn, mv); tocList.appendChild(row);
     });
     const current = tocList.querySelector(".current");
     if (current) current.scrollIntoView({ block: "nearest" });
   }
-  function anyPanel() { return [toc, shelf, loreEl, goalsEl, coverPanel].some(pn => pn.classList.contains("open")); }
+  function allPanels() { return [toc, shelf, loreEl, goalsEl, coverPanel, settingsPanel, filePanel].filter(Boolean); }
+  function anyPanel() { return allPanels().some(pn => pn.classList.contains("open")); }
   function setPanel(el2, open) { el2.classList.toggle("open", open); el2.setAttribute("aria-hidden", String(!open)); }
-  function openToc() { saveNow(); closeShelf(true); closeLore(true); closeGoals(true); closeCover(true); renderToc(); setPanel(toc, true); backdrop.classList.add("show"); }
-  function closeToc(keep) { setPanel(toc, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
-  function openShelf() { saveNow(); closeToc(true); closeLore(true); closeGoals(true); closeCover(true); renderShelf(); setPanel(shelf, true); backdrop.classList.add("show"); }
-  function closeShelf(keep) { document.getElementById("deleteConfirm").hidden = true; setPanel(shelf, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
-  function openLore(tab) { saveNow(); closeToc(true); closeShelf(true); closeGoals(true); closeCover(true); if (tab) loreTab = tab; ensureLoreTab(); renderLore(); setPanel(loreEl, true); backdrop.classList.add("show"); }
-  function closeLore(keep) { setPanel(loreEl, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
-  function openGoals() { saveNow(); closeToc(true); closeShelf(true); closeLore(true); closeCover(true); renderGoals(); setPanel(goalsEl, true); backdrop.classList.add("show"); }
-  function closeGoals(keep) { setPanel(goalsEl, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
-  function openCover() { saveNow(); closeToc(true); closeShelf(true); closeLore(true); closeGoals(true); renderCover(); setPanel(coverPanel, true); backdrop.classList.add("show"); }
-  function closeCover(keep) { setPanel(coverPanel, false); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
-  function closePanels() { closeCover(true); closeToc(true); closeShelf(true); closeLore(true); closeGoals(true); backdrop.classList.remove("show"); }
+  function hidePanel(pn) { if (pn === shelf) document.getElementById("deleteConfirm").hidden = true; setPanel(pn, false); }
+  function openPanel(pn, render) { saveNow(); allPanels().forEach(x => { if (x !== pn) hidePanel(x); }); if (render) render(); setPanel(pn, true); backdrop.classList.add("show"); }
+  function closePanel(pn, keep) { hidePanel(pn); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
+  function openToc() { openPanel(toc, renderToc); }
+  function closeToc(keep) { closePanel(toc, keep); }
+  function openShelf() { openPanel(shelf, renderShelf); }
+  function closeShelf(keep) { closePanel(shelf, keep); }
+  function openLore(tab) { openPanel(loreEl, () => { if (tab) loreTab = tab; ensureLoreTab(); renderLore(); }); }
+  function closeLore(keep) { closePanel(loreEl, keep); }
+  function openGoals() { openPanel(goalsEl, renderGoals); }
+  function closeGoals(keep) { closePanel(goalsEl, keep); }
+  function openCover() { openPanel(coverPanel, renderCover); }
+  function closeCover(keep) { closePanel(coverPanel, keep); }
+  function closePanels() { allPanels().forEach(hidePanel); backdrop.classList.remove("show"); }
   function ensureLoreTab() { const defs = loreDefs(); if (!defs.some(d => d.key === loreTab)) loreTab = defs[0].key; }
   function adopt(book) {
     state = book;
-    loreSel = {}; loreMode = "list"; loreQuery = ""; ensureLoreTab();
+    loreSel = {}; loreMode = "list"; loreQuery = ""; ensureLoreTab(); findHits = [];
     library.currentId = book.id;
     toldJump = false;
     invalidateCap();
@@ -1553,6 +1647,7 @@
     if (loreEl.classList.contains("open")) renderLore();
     if (goalsEl.classList.contains("open")) renderGoals();
     if (coverPanel.classList.contains("open")) renderCover();
+    if (filePanel.classList.contains("open")) renderVersions();
     if (state.opened) requestAnimationFrame(() => requestAnimationFrame(settlePaper));
   }
   function createTocPage() {
@@ -1676,12 +1771,14 @@
         const code = err && err.code;
         if (code === "declined") toast(t("내려받기를 취소했어요"));
         else if (code === "rate_limited") toast(t("잠시 뒤에 다시 눌러 주세요"));
-        else copyFallback(text);
+        else if (code === "too_large") toast(t("파일이 너무 커서 저장하지 못했어요"));
+        else if (typeof text === "string") copyFallback(text);
+        else toast(t("여기서는 파일로 저장할 수 없어요"));
       }
       return;
     }
-    if (dl === null) { copyFallback(text); return; }
-    const blob = new Blob([text], { type }); const url = URL.createObjectURL(blob);
+    if (dl === null) { if (typeof text === "string") copyFallback(text); else toast(t("여기서는 파일로 저장할 수 없어요")); return; }
+    const blob = text instanceof Blob ? text : new Blob([text], { type }); const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast(doneMsg);
@@ -1734,6 +1831,566 @@
     };
     reader.readAsText(file);
   }
+  // ---------- 원고지 매수 (200자 원고지, 어림값) ----------
+  // 문단 첫 칸 들여쓰기, 줄 첫머리 띄어쓰기 생략, 숫자·영문 소문자는 한 칸에 두 자, 줄 끝 문장부호는 마지막 칸에 붙여 셉니다.
+  function wongoji(text) {
+    let lines = 0;
+    String(text || "").replace(/\r/g, "").split("\n").forEach(par => {
+      const u = Array.from(par.trim());
+      if (!u.length) return;
+      let col = 1, ln = 1;
+      for (let k = 0; k < u.length; k++) {
+        const c = u[k];
+        if (/[0-9a-z]/.test(c) && /[0-9a-z]/.test(u[k + 1] || "")) k++;
+        if (col >= 20) {
+          if (/[.,!?…'"”’)\]」』〉》]/.test(c)) continue;
+          ln++; col = 0;
+          if (c === " ") continue;
+        }
+        col++;
+      }
+      lines += ln;
+    });
+    return { lines, sheets: Math.ceil(lines / 10) };
+  }
+  function bodyStreams() { // 본문을 쪽 나눔과 상관없이 구역(부·장·+쪽)별로 이어 붙여요. 목차 쪽은 빼요.
+    const out = []; let i = tocCount();
+    while (i < state.pages.length) { const e = sectionEnd(i); out.push(state.pages.slice(i, e + 1).join("")); i = e + 1; }
+    return out;
+  }
+  function bookWongoji() { let lines = 0; bodyStreams().forEach(s => { lines += wongoji(s).lines; }); return Math.ceil(lines / 10); }
+  var countTimer = 0;
+  function updateCountNote() {
+    clearTimeout(countTimer);
+    countTimer = setTimeout(() => {
+      const box = document.getElementById("countNote"); if (!box) return;
+      if (!state.opened) { box.textContent = ""; return; }
+      box.textContent = t("원고지 약 {0}매 · 공백 포함 {1}자", nf(bookWongoji()), nf(bodyChars()));
+      box.title = t("200자 원고지 기준 어림값이에요. 문단 첫 칸 들여쓰기, 숫자·영문 소문자는 한 칸에 두 자로 셌어요.");
+    }, 250);
+  }
+
+  // ---------- 찾기·바꾸기 ----------
+  var findHits = [], findAt = -1, findHi = null, findTimer = 0;
+  function findEls() { return { bar: document.getElementById("findBar"), q: document.getElementById("findInput"), r: document.getElementById("replaceInput"), count: document.getElementById("findCount") }; }
+  function openFind() {
+    const f = findEls();
+    closePanels();
+    f.bar.hidden = false; f.q.focus(); f.q.select();
+    if (f.q.value) runFind(true);
+  }
+  function closeFind() { findEls().bar.hidden = true; clearFindMark(); findHits = []; findAt = -1; }
+  function pagesBefore(i) { let n = 0; for (let j = 0; j < i; j++) n += state.pages[j].length; return n; }
+  function collectHits(q) {
+    const hits = []; if (!q) return hits;
+    if (state.opened) state.pages[state.index] = writing.value;
+    let i = 0, base = 0;
+    while (i < state.pages.length && hits.length < 5000) {
+      const e = sectionEnd(i), m = markAt(i);
+      if (m && m.t) { let p = m.t.indexOf(q); while (p >= 0) { hits.push({ head: true, page: i, off: p, abs: base - 0.5 + p / 1e6 }); p = m.t.indexOf(q, p + q.length); } }
+      const lens = state.pages.slice(i, e + 1).map(x => x.length), joined = state.pages.slice(i, e + 1).join("");
+      let p = joined.indexOf(q);
+      while (p >= 0 && hits.length < 5000) {
+        let page = i, off = p;
+        while (page < e && off >= lens[page - i]) { off -= lens[page - i]; page++; }
+        hits.push({ head: false, s: i, at: p, page, off, abs: base + p });
+        p = joined.indexOf(q, p + q.length);
+      }
+      base += joined.length; i = e + 1;
+    }
+    return hits;
+  }
+  function runFind(fromHere) {
+    const f = findEls(), q = f.q.value;
+    findHits = collectHits(q);
+    if (!findHits.length) { findAt = -1; f.count.textContent = q ? t("없음") : ""; clearFindMark(); return; }
+    if (fromHere) { const k = findHits.findIndex(h => h.page >= state.index); findAt = k < 0 ? 0 : k; }
+    else findAt = Math.min(Math.max(findAt, 0), findHits.length - 1);
+    showHit();
+  }
+  function stepFind(d) {
+    if (!findHits.length) { runFind(true); return; }
+    findAt = (findAt + d + findHits.length) % findHits.length; showHit();
+  }
+  function showHit() {
+    const f = findEls(), h = findHits[findAt], q = f.q.value;
+    if (!h) return;
+    f.count.textContent = (findAt + 1) + " / " + findHits.length;
+    if (!state.opened) { if (!animating) openBook().then(() => showHit()); return; }
+    if (h.page !== state.index) { state.pages[state.index] = writing.value; state.index = h.page; showPage(false); }
+    clearFindMark();
+    if (h.head) { phTitle.classList.add("find-on"); try { phTitle.setSelectionRange(h.off, h.off + q.length); } catch (e) {} }
+    else paintFindMark(h.off, Math.min(q.length, writing.value.length - h.off));
+  }
+  function paintFindMark(start, len) {
+    if (!findHi) { findHi = el("div", "find-hi"); findHi.setAttribute("aria-hidden", "true"); writing.parentNode.insertBefore(findHi, writing); }
+    const cs = getComputedStyle(writing);
+    ["fontFamily", "fontSize", "fontWeight", "lineHeight", "letterSpacing", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft", "wordBreak", "whiteSpace", "overflowWrap", "boxSizing"].forEach(k => { findHi.style[k] = cs[k]; });
+    findHi.style.left = writing.offsetLeft + "px"; findHi.style.top = writing.offsetTop + "px";
+    findHi.style.width = writing.offsetWidth + "px"; findHi.style.height = writing.offsetHeight + "px";
+    const v = writing.value, mk = document.createElement("mark");
+    mk.textContent = v.slice(start, start + len);
+    findHi.textContent = "";
+    findHi.append(v.slice(0, start), mk, v.slice(start + len) + " ");
+    findHi.hidden = false;
+    // 휴대폰처럼 글이 칸보다 길어 스크롤되면 찾은 곳이 보이게 내려요
+    if (writing.scrollHeight > writing.clientHeight + 2) writing.scrollTop = Math.max(0, mk.offsetTop - writing.clientHeight / 3);
+    findHi.scrollTop = writing.scrollTop;
+    try { writing.setSelectionRange(start, start + len); } catch (e) {}
+  }
+  function clearFindMark() {
+    if (findHi) { findHi.hidden = true; findHi.textContent = ""; }
+    if (phTitle) phTitle.classList.remove("find-on");
+  }
+  function replaceSection(s, fn) { // 구역의 글을 이어 붙여 고친 뒤, 다시 쪽을 나눌 수 있게 첫 쪽에 모아 둬요
+    const e = sectionEnd(s), joined = state.pages.slice(s, e + 1).join(""), out = fn(joined);
+    if (out === joined) return false;
+    state.pages.splice(s, e - s + 1, out, ...new Array(e - s).fill(""));
+    return true;
+  }
+  function afterReplace(q, absPos) {
+    findHits = collectHits(q);
+    const f = findEls();
+    if (!findHits.length) { findAt = -1; f.count.textContent = t("없음"); clearFindMark(); return; }
+    const k = findHits.findIndex(h => h.abs >= absPos);
+    findAt = k < 0 ? 0 : k; showHit();
+  }
+  function replaceOne() {
+    if (readOnly) return;
+    const f = findEls(), q = f.q.value, r = f.r.value, h = findHits[findAt];
+    if (!q) return;
+    if (!h) { runFind(true); return; }
+    state.pages[state.index] = writing.value;
+    if (h.head) {
+      const m = state.breaks[h.page];
+      if (isMark(m) && m.t.substr(h.off, q.length) === q) { m.t = m.t.slice(0, h.off) + r + m.t.slice(h.off + q.length); phTitle.value = m.t; scheduleSave(); applyChrome(); }
+      afterReplace(q, h.abs + 1e-3);
+      return;
+    }
+    const before = pagesBefore(h.s);
+    const ok = replaceSection(h.s, txt => txt.substr(h.at, q.length) === q ? txt.slice(0, h.at) + r + txt.slice(h.at + q.length) : txt);
+    if (ok) reflowAll(before + h.at + r.length);
+    afterReplace(q, before + h.at + r.length);
+  }
+  async function replaceAllHits() {
+    if (readOnly) return;
+    const f = findEls(), q = f.q.value, r = f.r.value;
+    if (!q) return;
+    const n = collectHits(q).length;
+    if (!n) { f.count.textContent = t("없음"); return; }
+    saveNow(); snapshotBook(state, "replace");
+    const here = pagesBefore(state.index);
+    let i = 0;
+    while (i < state.pages.length) {
+      const e = sectionEnd(i), m = markAt(i);
+      if (m && m.t.includes(q)) m.t = m.t.split(q).join(r).slice(0, 120);
+      replaceSection(i, txt => txt.split(q).join(r));
+      i = e + 1;
+    }
+    reflowAll(here);
+    toast(t("{0}곳을 바꿨어요. 내보내기의 이전 버전에서 되돌릴 수 있어요", nf(n)));
+    afterReplace(q, 0);
+  }
+
+  // ---------- 부·장 순서 바꾸기 ----------
+  function moveRanges(s, d) {
+    const tc = tocCount(), B = state.breaks, n = state.pages.length, m = B[s];
+    if (s < tc || !isMark(m)) return null;
+    const kinds = m.k === "p" ? ["p"] : null, end = (x) => spanEndFrom(x, kinds) + 1, e = end(s);
+    if (d < 0) {
+      let p = -1;
+      for (let j = s - 1; j >= tc; j--) if (isMark(B[j]) && (m.k === "c" || B[j].k === "p")) { p = j; break; }
+      return p < 0 ? null : { first: [s, e], second: [p, s], lo: p, hi: e, movedAt: p };
+    }
+    if (e >= n) return null;
+    const e2 = end(e);
+    return { first: [e, e2], second: [s, e], lo: s, hi: e2, movedAt: s + (e2 - e) };
+  }
+  function moveUnit(s, d) {
+    if (readOnly || animating) return;
+    state.pages[state.index] = writing.value;
+    const r = moveRanges(s, d); if (!r) return;
+    const label = labelOf(state.breaks[s].k, structure().marks[s].no);
+    const P = state.pages, B = state.breaks;
+    const take = (x) => [P.slice(x[0], x[1]), B.slice(x[0], x[1])];
+    const [p1, b1] = take(r.first), [p2, b2] = take(r.second);
+    P.splice(r.lo, r.hi - r.lo, ...p1, ...p2); B.splice(r.lo, r.hi - r.lo, ...b1, ...b2);
+    state.breaks[0] = state.breaks[0] || true;
+    state.index = r.movedAt;
+    showPage(false); scheduleSave();
+    if (toc.classList.contains("open")) renderToc();
+    toast(d < 0 ? t("{0}을(를) 앞으로 옮겼어요", label) : t("{0}을(를) 뒤로 옮겼어요", label));
+  }
+
+  // ---------- 이전 버전 (이 기기의 IndexedDB에 책마다 최근 20개) ----------
+  var verDbP = null, verLastSig = new Map();
+  const VER_KEEP = 20;
+  function verDb() {
+    if (verDbP) return verDbP;
+    verDbP = new Promise(res => {
+      try {
+        const rq = indexedDB.open("blackbook.versions" + (window.BB_SUFFIX ? ":" + window.BB_SUFFIX : ""), 1);
+        rq.onupgradeneeded = () => { const os = rq.result.createObjectStore("v", { keyPath: "key", autoIncrement: true }); os.createIndex("book", "book"); };
+        rq.onsuccess = () => res(rq.result); rq.onerror = () => res(null); rq.onblocked = () => res(null);
+      } catch (e) { res(null); }
+    });
+    return verDbP;
+  }
+  async function verList(bookId) {
+    const db = await verDb(); if (!db) return [];
+    return new Promise(res => {
+      try { const rq = db.transaction("v").objectStore("v").index("book").getAll(bookId); rq.onsuccess = () => res((rq.result || []).sort((a, b) => b.at - a.at)); rq.onerror = () => res([]); }
+      catch (e) { res([]); }
+    });
+  }
+  function charsOf(b) { let n = 0; b.pages.forEach(x => { n += x.length - (x.match(/\n/g) || []).length; }); return n; }
+  function snapshotBook(b, why) {
+    // 내용은 지금 바로 복사해 두고(뒤이어 바뀌어도 안전), 기록은 나중에 씁니다.
+    try {
+      if (!b || isBlankBook(b)) return Promise.resolve(false);
+      const sig = sigOf(b);
+      if (verLastSig.get(b.id) === sig) return Promise.resolve(false);
+      const rec = JSON.parse(JSON.stringify({ book: b.id, at: Date.now(), why, sig, title: b.title, chars: charsOf(b), pages: b.pages, breaks: b.breaks, hasToc: !!b.hasToc, mode: b.mode, notes: b.notes, cover: Object.assign({}, b.cover, { img: "" }) }));
+      verLastSig.set(b.id, sig);
+      return (async () => {
+        const db = await verDb(); if (!db) return false;
+        const list = await verList(b.id);
+        if (list[0] && list[0].sig === sig) return false;
+        await new Promise(res => {
+          try { const tx = db.transaction("v", "readwrite"), os = tx.objectStore("v"); os.add(rec); list.slice(VER_KEEP - 1).forEach(v => os.delete(v.key)); tx.oncomplete = res; tx.onerror = tx.onabort = res; }
+          catch (e) { res(); }
+        });
+        if (filePanel && filePanel.classList.contains("open")) renderVersions();
+        return true;
+      })();
+    } catch (e) { return Promise.resolve(false); }
+  }
+  function whyLabel(w) {
+    return w === "save" ? t("저장할 때") : w === "auto" ? t("쓰는 동안 자동") : w === "replace" ? t("모두 바꾸기 전") : w === "restore" ? t("되돌리기 전") : w === "remote" ? t("다른 기기 것 불러오기 전") : t("보관");
+  }
+  function fmtTime(at) { try { return new Date(at).toLocaleString(lang === "en" ? "en-US" : "ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
+  async function renderVersions() {
+    const box = document.getElementById("verList"); if (!box) return;
+    const id = state.id, list = await verList(id);
+    if (id !== state.id) return;
+    box.textContent = "";
+    if (!list.length) { box.appendChild(el("div", "ver-empty", t("아직 보관된 버전이 없어요. 저장을 누르면 여기에 쌓여요."))); return; }
+    list.forEach(v => {
+      const row = el("div", "ver-row"), info = el("div", "ver-info");
+      info.appendChild(el("b", null, fmtTime(v.at)));
+      info.appendChild(el("span", null, whyLabel(v.why) + " · " + t("{0}자", nf(v.chars || 0)) + " · " + shownTitle(v.title || "")));
+      const b = el("button", "pn-btn", t("되돌리기")); b.type = "button"; b.disabled = readOnly;
+      armConfirm(b, () => t("한 번 더 누르면 이 버전으로 바뀌어요"), () => restoreVersion(v));
+      row.append(info, b); box.appendChild(row);
+    });
+  }
+  function restoreVersion(v) {
+    if (readOnly || animating) return;
+    saveNow();
+    snapshotBook(state, "restore");
+    const nb = parseBook(Object.assign({}, v, { id: state.id, size: state.size, font: state.font, index: 0 }), state.id);
+    state.title = nb.title; state.pages = nb.pages; state.breaks = nb.breaks; state.hasToc = nb.hasToc; state.mode = nb.mode; state.notes = nb.notes;
+    state.cover = Object.assign(nb.cover, { img: state.cover.img });
+    state.index = 0; loreSel = {}; loreMode = "list"; ensureLoreTab();
+    showPage(false); applyCover(coverEl, state.cover);
+    if (state.opened) requestAnimationFrame(() => requestAnimationFrame(() => reflowAll(0)));
+    scheduleSave(); renderVersions();
+    toast(cloud ? t("이전 버전으로 되돌렸어요. 저장을 누르면 계정에도 반영돼요") : t("이전 버전으로 되돌렸어요"));
+  }
+
+  // ---------- 책 모양 PDF (라이브러리 없이: 쪽마다 그린 그림을 PDF로 묶어요) ----------
+  const PDF_DPI = 170;
+  const PDF_SERIF = '"Lora", "Nanum Myeongjo", "Noto Serif KR", "Apple Myungjo", "Batang", serif';
+  const PDF_SANS = '"IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif';
+  var pdfBusy = false;
+  function coverFamily(k) { return k === "sans" ? PDF_SANS : k === "pen" ? '"Nanum Pen Script", ' + PDF_SERIF : k === "heavy" ? '"Black Han Sans", ' + PDF_SANS : PDF_SERIF; }
+  async function pdfFonts() {
+    if (!document.fonts || !document.fonts.load) return;
+    const want = ['16px "Nanum Myeongjo"', 'bold 16px "Nanum Myeongjo"', '16px "Lora"', 'bold 16px "Lora"', '16px "IBM Plex Sans KR"', '16px "Nanum Pen Script"', '16px "Black Han Sans"'];
+    await Promise.race([Promise.all(want.map(f => document.fonts.load(f, "가A").catch(() => null))), new Promise(r => setTimeout(r, 4000))]);
+  }
+  // 책처럼 어절(띄어쓰기) 단위로 줄을 바꾸고, 문단 마지막 줄이 아니면 양쪽을 맞춰요. 한 줄보다 긴 낱말만 글자 단위로 자릅니다.
+  function wrapPara(ctx, par, maxW, out) {
+    if (!par.trim()) { out.push({ s: "", j: false }); return; }
+    let line = "", w = 0, first = true;
+    const flush = (j) => { out.push({ s: line.replace(/\s+$/, ""), j }); line = ""; w = 0; first = false; };
+    for (const tk of par.match(/\S+|\s+/g) || []) {
+      const sp = /^\s/.test(tk);
+      if (sp && !line && !first) continue; // 새 줄 첫머리 띄어쓰기는 버리고, 문단 첫 들여쓰기는 남겨요
+      const tw = ctx.measureText(tk).width;
+      if (w + tw <= maxW || sp) { line += tk; w += tw; continue; }
+      if (line.trim()) flush(true);
+      else { line = ""; w = 0; }
+      if (tw <= maxW) { line = tk; w = tw; continue; }
+      for (const ch of Array.from(tk)) { const cw = ctx.measureText(ch).width; if (w + cw > maxW && line) flush(false); line += ch; w += cw; }
+    }
+    if (line.trim() || first) out.push({ s: line.replace(/\s+$/, ""), j: false });
+  }
+  function supFoot(text) { return String(text).replace(/\[\^(\d+)\]/g, (m0, n) => Array.from(n).map(d => "⁰¹²³⁴⁵⁶⁷⁸⁹"[Number(d)]).join("")); } // 본문의 [^1] 표시는 책에서 위첨자 ¹ 로
+  function wrapText(ctx, text, maxW) { const out = []; String(text || "").replace(/\r/g, "").split("\n").forEach(p => wrapPara(ctx, p, maxW, out)); return out; }
+  function fillJustified(ctx, ln, x, y, maxW, fs) {
+    const lead = (ln.s.match(/^\s*/) || [""])[0], body = ln.s.slice(lead.length), words = body.split(/\s+/);
+    const gaps = words.length - 1, x0 = x + (lead ? ctx.measureText(lead).width : 0);
+    const extra = ln.j && gaps > 0 ? (maxW - (x0 - x) - ctx.measureText(body).width) / gaps : 0;
+    if (!ln.j || gaps < 1 || extra < 0 || extra > fs * 1.2) { ctx.fillText(ln.s, x, y); return; }
+    const space = ctx.measureText(" ").width;
+    let cx = x0;
+    words.forEach(wd => { ctx.fillText(wd, cx, y); cx += ctx.measureText(wd).width + space + extra; });
+  }
+  function layoutPdf(ctx) {
+    const p = PAPER[state.size] || PAPER.A5, k = PDF_DPI / 25.4;
+    const G = { k, W: Math.round(p.w * k), H: Math.round(p.h * k), x0: (p.w - p.textW) / 2 * k, tw: p.textW * k, top: p.top * k, bottom: p.bottom * k,
+      fs: state.font * PDF_DPI / 96, wPt: (p.w * 72 / 25.4).toFixed(2), hPt: (p.h * 72 / 25.4).toFixed(2) };
+    G.lh = G.fs * 1.9; G.rows = Math.max(4, Math.floor(p.textH * k / G.lh)); G.body = G.fs + "px " + PDF_SERIF;
+    ctx.font = G.body;
+    const body = [], st = structure(), tc = tocCount(), entries = [];
+    const newPage = (head) => { const pg = { type: "text", head, lines: [] }; body.push(pg); return pg; };
+    let i = tc, any = false;
+    while (i < state.pages.length) {
+      const e = sectionEnd(i), m = st.marks[i], text = supFoot(state.pages.slice(i, e + 1).join("").replace(/\s+$/, ""));
+      let pg = null;
+      if (m && m.k === "p") {
+        body.push({ type: "part", label: labelOf("p", m.no), title: m.title });
+        entries.push({ k: "p", label: labelOf("p", m.no), title: m.title, at: body.length - 1 });
+        any = true;
+        if (text) pg = newPage(null);
+      } else if (m) {
+        pg = newPage({ label: labelOf("c", m.no), title: m.title });
+        entries.push({ k: "c", label: labelOf("c", m.no), title: m.title, at: body.length - 1 });
+        any = true;
+      } else if (text) pg = newPage(null);
+      if (pg && text) {
+        any = true;
+        let cap = G.rows - (pg.head ? 4 : 0);
+        wrapText(ctx, text, G.tw).forEach(ln => { if (pg.lines.length >= cap) { pg = newPage(null); cap = G.rows; } pg.lines.push(ln); });
+      }
+      i = e + 1;
+    }
+    if (state.mode === "non") {
+      const fl = state.notes.foot.filter(x => x.f.text).sort((a, b) => a.no - b.no).map(x => { const sr = x.f.src ? state.notes.sources.find(y => y.id === x.f.src) : null; return x.no + ". " + x.f.text.trim().replace(/\n+/g, " ") + (sr && sr.title ? " (" + sr.title + ")" : ""); });
+      const addList = (label, lines) => { if (!lines.length) return; let pg = newPage({ label, title: "" }), cap = G.rows - 4; lines.forEach(src => wrapText(ctx, src, G.tw).forEach(ln => { if (pg.lines.length >= cap) { pg = newPage(null); cap = G.rows; } pg.lines.push(ln); })); };
+      addList(t("각주"), fl);
+      const rt = refsText(); if (rt) addList(t("참고문헌"), rt.split("\n").filter(x => x.trim()));
+    }
+    if (!any) return null;
+    const front = [{ type: "cover" }];
+    const tocRows = G.rows - 4;
+    if (entries.length) {
+      for (let a = 0; a < entries.length; a += tocRows) front.push({ type: "toc", entries: entries.slice(a, a + tocRows), first: a === 0 });
+    } else if (state.hasToc) {
+      const own = wrapText(ctx, state.pages.slice(0, tc).join("").replace(/\s+$/, ""), G.tw).map(x => ({ s: x.s, j: false }));
+      for (let a = 0; a < own.length; a += tocRows) if (own.slice(a, a + tocRows).some(x => x.s.trim())) front.push({ type: "text", head: a === 0 ? { label: t("목차"), title: "" } : null, lines: own.slice(a, a + tocRows), free: true });
+    }
+    return { G, all: front.concat(body), bodyStart: front.length, entries };
+  }
+  function fillCssGradient(ctx, g, W, H) {
+    const ang = parseFloat((String(g).match(/(-?\d+(?:\.\d+)?)deg/) || [0, 180])[1]) * Math.PI / 180, stops = [];
+    String(g).replace(/(#[0-9a-f]{3,8}|rgba?\([^)]*\))\s+(\d+(?:\.\d+)?)%/gi, (m0, c, pc) => { stops.push([c, Number(pc) / 100]); return m0; });
+    const dx = Math.sin(ang), dy = -Math.cos(ang), len = Math.abs(W * dx) + Math.abs(H * dy), cx = W / 2, cy = H / 2;
+    const gr = ctx.createLinearGradient(cx - dx * len / 2, cy - dy * len / 2, cx + dx * len / 2, cy + dy * len / 2);
+    if (!stops.length) stops.push(["#111", 0], ["#000", 1]);
+    stops.forEach(([c, pc]) => gr.addColorStop(Math.min(1, Math.max(0, pc)), c));
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+  }
+  function loadImg(src) { return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
+  function spaced(ctx, on, em) { try { ctx.letterSpacing = on ? em + "em" : "0px"; } catch (e) {} }
+  function diamond(ctx, x, y, r, color) { ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(x, y - r); ctx.lineTo(x + r, y); ctx.lineTo(x, y + r); ctx.lineTo(x - r, y); ctx.closePath(); ctx.fill(); }
+  async function drawPdfCover(ctx, G) {
+    const W = G.W, H = G.H, cv = state.cover, bg = COVER_BG[cv.bg] || COVER_BG.black, f = COVER_FOIL[cv.foil] || COVER_FOIL.gold;
+    fillCssGradient(ctx, bg.g, W, H);
+    if (cv.img) {
+      const im = await loadImg(cv.img);
+      if (im) {
+        const s = Math.max(W / im.width, H / im.height), iw = im.width * s, ih = im.height * s;
+        ctx.drawImage(im, (W - iw) / 2, (H - ih) / 2, iw, ih);
+        const ov = ctx.createLinearGradient(0, 0, 0, H); ov.addColorStop(0, "rgba(8, 6, 4, 0.35)"); ov.addColorStop(1, "rgba(8, 6, 4, 0.6)");
+        ctx.fillStyle = ov; ctx.fillRect(0, 0, W, H);
+      }
+    }
+    const sheen = ctx.createLinearGradient(0, 0, W, H * 0.6); sheen.addColorStop(0, "rgba(255, 255, 255, 0.07)"); sheen.addColorStop(0.45, "rgba(255, 255, 255, 0)");
+    ctx.fillStyle = sheen; ctx.fillRect(0, 0, W, H);
+    const foil = (a) => "rgba(" + f.rgb + ", " + a + ")", lw = Math.max(1.5, W * 0.0022), pad = W * 0.07;
+    ctx.lineWidth = lw;
+    if (cv.corner !== "none") {
+      ctx.strokeStyle = foil(0.82); ctx.strokeRect(pad, pad, W - pad * 2, H - pad * 2);
+      const ins = W * 0.014; ctx.strokeStyle = foil(0.38); ctx.strokeRect(pad + ins, pad + ins, W - (pad + ins) * 2, H - (pad + ins) * 2);
+      if (cv.corner === "double") { const i2 = W * 0.03; ctx.strokeStyle = foil(0.6); ctx.strokeRect(pad + i2, pad + i2, W - (pad + i2) * 2, H - (pad + i2) * 2); }
+      const c = W * 0.04, o = pad + W * 0.018;
+      ctx.strokeStyle = f.hex; ctx.lineWidth = lw * 1.4;
+      [[o, o, 1, 1], [W - o, o, -1, 1], [o, H - o, 1, -1], [W - o, H - o, -1, -1]].forEach(([x, y, sx, sy]) => {
+        ctx.beginPath(); ctx.moveTo(x, y + c * sy); ctx.lineTo(x, y); ctx.lineTo(x + c * sx, y); ctx.stroke(); diamond(ctx, x, y, W * 0.008, f.hi);
+      });
+    }
+    const title = shownTitle(state.title) || t("블랙북"), fam = coverFamily(cv.font), cx = W / 2;
+    let ts = W * 0.13;
+    ctx.font = "bold " + ts + "px " + fam; spaced(ctx, true, 0.12);
+    let lines = wrapText(ctx, title, W * 0.68).map(x => x.s);
+    while (lines.length > 3 && ts > W * 0.06) { ts *= 0.85; ctx.font = "bold " + ts + "px " + fam; lines = wrapText(ctx, title, W * 0.68).map(x => x.s); }
+    lines = lines.slice(0, 3);
+    const crestR = W * 0.045, gap = W * 0.04, tlh = ts * 1.3;
+    const blockH = crestR * 2 + gap + 10 + gap + lines.length * tlh + gap + W * 0.03 + gap + 10 + gap + W * 0.035;
+    let y = (H - blockH) / 2;
+    ctx.strokeStyle = f.hex; ctx.lineWidth = lw; ctx.beginPath(); ctx.arc(cx, y + crestR, crestR, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = foil(0.75); ctx.beginPath(); ctx.arc(cx, y + crestR, crestR * 0.82, 0, Math.PI * 2); ctx.stroke();
+    diamond(ctx, cx, y + crestR, crestR * 0.3, f.hex);
+    y += crestR * 2 + gap;
+    const orn = (yy) => { ctx.strokeStyle = f.hex; ctx.lineWidth = lw; ctx.beginPath(); ctx.moveTo(cx - W * 0.13, yy); ctx.lineTo(cx + W * 0.13, yy); ctx.stroke(); diamond(ctx, cx - W * 0.13, yy, W * 0.007, f.hi); diamond(ctx, cx + W * 0.13, yy, W * 0.007, f.hi); };
+    orn(y + 5); y += 10 + gap;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = "bold " + ts + "px " + fam; spaced(ctx, true, 0.12);
+    lines.forEach(ln => { ctx.fillStyle = "rgba(70, 46, 8, 0.45)"; ctx.fillText(ln, cx, y + tlh / 2 + ts * 0.04); ctx.fillStyle = f.title; ctx.fillText(ln, cx, y + tlh / 2); y += tlh; });
+    y += gap;
+    ctx.font = (W * 0.03) + "px " + PDF_SANS; spaced(ctx, true, 0.32); ctx.fillStyle = foil(0.78); ctx.fillText("BLACK BOOK", cx, y + W * 0.015); y += W * 0.03 + gap;
+    orn(y + 5); y += 10 + gap;
+    ctx.font = (W * 0.034) + "px " + PDF_SANS; spaced(ctx, true, 0.16); ctx.fillStyle = foil(0.7);
+    ctx.fillText(state.mode === "non" ? t("생각을 책으로") : t("혼자 쓰는 노트"), cx, y + W * 0.017);
+    spaced(ctx, false); ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  }
+  function pdfHead(ctx, G, head, y) {
+    const cx = G.W / 2;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = (G.fs * 0.8) + "px " + PDF_SERIF; spaced(ctx, true, 0.2); ctx.fillStyle = "#8c6230";
+    ctx.fillText(head.label, cx, y + G.lh * 0.9);
+    if (head.title) {
+      ctx.font = "bold " + (G.fs * 1.3) + "px " + PDF_SERIF; spaced(ctx, true, 0.04); ctx.fillStyle = "#2a241c";
+      const tl = wrapText(ctx, head.title, G.tw * 0.9).slice(0, 2).map(x => x.s);
+      tl.forEach((ln, n) => ctx.fillText(ln, cx, y + G.lh * (2.1 + n * 0.85)));
+    }
+    ctx.strokeStyle = "rgba(120, 84, 40, 0.45)"; ctx.lineWidth = Math.max(1, G.W * 0.0015);
+    ctx.beginPath(); ctx.moveTo(cx - G.fs * 1.4, y + G.lh * 3.5); ctx.lineTo(cx + G.fs * 1.4, y + G.lh * 3.5); ctx.stroke();
+    spaced(ctx, false); ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  }
+  async function drawPdfPage(ctx, L, pg, idx) {
+    const G = L.G, W = G.W, H = G.H;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); spaced(ctx, false);
+    if (pg.type === "cover") { await drawPdfCover(ctx, G); return; }
+    ctx.fillStyle = "#fffdf9"; ctx.fillRect(0, 0, W, H);
+    const base = (row) => G.top + row * G.lh + G.lh / 2 + G.fs * 0.36;
+    if (pg.type === "part") {
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.font = (G.fs * 0.9) + "px " + PDF_SERIF; spaced(ctx, true, 0.3); ctx.fillStyle = "#8c6230";
+      ctx.fillText(pg.label, W / 2, H * 0.36);
+      ctx.strokeStyle = "rgba(120, 84, 40, 0.5)"; ctx.lineWidth = Math.max(1, W * 0.0015);
+      ctx.beginPath(); ctx.moveTo(W / 2 - G.fs * 1.6, H * 0.36 + G.lh * 0.8); ctx.lineTo(W / 2 + G.fs * 1.6, H * 0.36 + G.lh * 0.8); ctx.stroke();
+      if (pg.title) {
+        ctx.font = "bold " + (G.fs * 1.6) + "px " + PDF_SERIF; spaced(ctx, true, 0.06); ctx.fillStyle = "#2a241c";
+        wrapText(ctx, pg.title, G.tw * 0.9).slice(0, 3).forEach((ln, n) => ctx.fillText(ln.s, W / 2, H * 0.36 + G.lh * (1.9 + n * 1.1)));
+      }
+      spaced(ctx, false); ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+      return;
+    }
+    if (pg.type === "toc") {
+      let row = 0;
+      if (pg.first) { pdfHead(ctx, G, { label: t("목차"), title: "" }, G.top); }
+      row = 4;
+      ctx.font = G.fs + "px " + PDF_SERIF; ctx.fillStyle = "#2a241c";
+      pg.entries.forEach(en => {
+        const num = String(en.at + 1), indent = en.k === "c" ? G.fs * 1.2 : 0, y = base(row);
+        ctx.font = (en.k === "p" ? "bold " : "") + G.fs + "px " + PDF_SERIF;
+        const numW = ctx.measureText(num).width, label = en.label + "  " + (en.title || t("제목 없음"));
+        let txt = label; const maxW = G.tw - indent - numW - G.fs * 1.5;
+        while (txt.length > 1 && ctx.measureText(txt).width > maxW) txt = txt.slice(0, -2) + "…";
+        ctx.fillText(txt, G.x0 + indent, y);
+        const tw = ctx.measureText(txt).width;
+        ctx.fillStyle = "rgba(42, 36, 28, 0.35)";
+        for (let x = G.x0 + indent + tw + G.fs * 0.5; x < G.x0 + G.tw - numW - G.fs * 0.5; x += G.fs * 0.45) ctx.fillRect(x, y - G.fs * 0.08, Math.max(1.5, G.fs * 0.07), Math.max(1.5, G.fs * 0.07));
+        ctx.fillStyle = "#2a241c"; ctx.fillText(num, G.x0 + G.tw - numW, y);
+        row++;
+      });
+      return;
+    }
+    let row = 0;
+    if (pg.head) { pdfHead(ctx, G, pg.head, G.top); row = 4; }
+    ctx.font = G.body; ctx.fillStyle = "#2a241c";
+    pg.lines.forEach(ln => { if (ln.s) fillJustified(ctx, ln, G.x0, base(row), G.tw, G.fs); row++; });
+    if (idx >= L.bodyStart) {
+      ctx.textAlign = "center"; ctx.font = (G.fs * 0.6) + "px " + PDF_SERIF; spaced(ctx, true, 0.18); ctx.fillStyle = "rgba(42, 36, 28, 0.55)";
+      ctx.fillText("— " + (idx - L.bodyStart + 1) + " —", W / 2, H - G.bottom / 2);
+      spaced(ctx, false); ctx.textAlign = "left";
+    }
+  }
+  function canvasJpeg(cvs, q) { return new Promise((res, rej) => cvs.toBlob(b => (b ? b.arrayBuffer().then(a => res(new Uint8Array(a)), rej) : rej(new Error("jpeg"))), "image/jpeg", q)); }
+  function pdfHex16(s) {
+    let h = "FEFF";
+    for (const ch of String(s)) {
+      const cp = ch.codePointAt(0);
+      if (cp > 0xffff) { const v = cp - 0x10000; h += (0xd800 + (v >> 10)).toString(16).padStart(4, "0") + (0xdc00 + (v & 0x3ff)).toString(16).padStart(4, "0"); }
+      else h += cp.toString(16).padStart(4, "0");
+    }
+    return "<" + h.toUpperCase() + ">";
+  }
+  function buildPdf(jpgs, G, title) {
+    const enc = new TextEncoder(), chunks = [], offs = [];
+    let pos = 0;
+    const push = (x) => { const b = typeof x === "string" ? enc.encode(x) : x; chunks.push(b); pos += b.length; };
+    const obj = (num, write) => { offs[num] = pos; push(num + " 0 obj\n"); write(); push("\nendobj\n"); };
+    push("%PDF-1.4\n"); push(new Uint8Array([0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]));
+    const n = jpgs.length, total = 4 + n * 3;
+    obj(1, () => push("<< /Type /Catalog /Pages 2 0 R >>"));
+    obj(2, () => push("<< /Type /Pages /Kids [" + jpgs.map((_, k) => (4 + k * 3) + " 0 R").join(" ") + "] /Count " + n + " >>"));
+    obj(3, () => push("<< /Title " + pdfHex16(title) + " /Creator (Blackbook) /Producer (Blackbook) >>"));
+    jpgs.forEach((jpg, k) => {
+      const pn = 4 + k * 3, cn = pn + 1, im = pn + 2, cs = "q " + G.wPt + " 0 0 " + G.hPt + " 0 0 cm /Im0 Do Q";
+      obj(pn, () => push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + G.wPt + " " + G.hPt + "] /Resources << /XObject << /Im0 " + im + " 0 R >> >> /Contents " + cn + " 0 R >>"));
+      obj(cn, () => push("<< /Length " + cs.length + " >>\nstream\n" + cs + "\nendstream"));
+      obj(im, () => { push("<< /Type /XObject /Subtype /Image /Width " + G.W + " /Height " + G.H + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpg.length + " >>\nstream\n"); push(jpg); push("\nendstream"); });
+    });
+    const xref = pos;
+    push("xref\n0 " + total + "\n0000000000 65535 f \n");
+    for (let i = 1; i < total; i++) push(String(offs[i]).padStart(10, "0") + " 00000 n \n");
+    push("trailer\n<< /Size " + total + " /Root 1 0 R /Info 3 0 R >>\nstartxref\n" + xref + "\n%%EOF\n");
+    return new Blob(chunks, { type: "application/pdf" });
+  }
+  async function makePdf(onProgress) {
+    if (state.opened) state.pages[state.index] = writing.value;
+    await pdfFonts();
+    const cvs = document.createElement("canvas"), ctx = cvs.getContext("2d");
+    const L = layoutPdf(ctx);
+    if (!L) return null;
+    cvs.width = L.G.W; cvs.height = L.G.H;
+    const jpgs = [];
+    for (let k = 0; k < L.all.length; k++) {
+      await drawPdfPage(ctx, L, L.all[k], k);
+      jpgs.push(await canvasJpeg(cvs, 0.82));
+      if (onProgress && (k % 2 === 0 || k === L.all.length - 1)) { onProgress(k + 1, L.all.length); await new Promise(r => setTimeout(r, 0)); }
+    }
+    return { blob: buildPdf(jpgs, L.G, shownTitle(state.title) || t("블랙북")), pages: L.all.length };
+  }
+  async function exportPdf() {
+    if (pdfBusy) return;
+    const btn = document.getElementById("exportPdf"), prog = document.getElementById("pdfProgress");
+    pdfBusy = true; btn.disabled = true; prog.hidden = false; prog.textContent = t("PDF를 만드는 중…");
+    try {
+      saveNow();
+      const out = await makePdf((a, b) => { prog.textContent = t("PDF를 만드는 중… {0} / {1}쪽", nf(a), nf(b)); });
+      if (!out) { toast(t("아직 쓴 글이 없어요. 본문을 쓰거나 부·장을 추가해 보세요")); return; }
+      await download(safeName(state.title) + ".pdf", out.blob, "application/pdf", t("PDF를 내려받았어요 ({0}쪽)", nf(out.pages)));
+    } catch (e) { toast(t("PDF를 만들지 못했어요. 잠시 뒤에 다시 해 주세요")); }
+    finally { pdfBusy = false; btn.disabled = false; prog.hidden = true; }
+  }
+  window.BB_PDF = makePdf; // 시험용
+
+  // ---------- 설정 · 내보내기 패널 ----------
+  var settingsPanel = document.getElementById("settingsPanel"), filePanel = document.getElementById("filePanel");
+  function openSettings() { openPanel(settingsPanel, () => { document.getElementById("settingsStats").textContent = shownTitle(state.title); renderSpecTable(); }); }
+  function openFilePanel() { openPanel(filePanel, () => { document.getElementById("fileStats").textContent = shownTitle(state.title); renderVersions(); }); }
+  document.getElementById("settingsBtn").addEventListener("click", openSettings);
+  document.getElementById("settingsClose").addEventListener("click", () => closePanel(settingsPanel));
+  document.getElementById("fileBtn").addEventListener("click", openFilePanel);
+  document.getElementById("fileClose").addEventListener("click", () => closePanel(filePanel));
+  document.getElementById("exportPdf").addEventListener("click", exportPdf);
+  document.getElementById("findBtn").addEventListener("click", () => { if (findEls().bar.hidden) openFind(); else closeFind(); });
+  document.getElementById("findClose").addEventListener("click", closeFind);
+  document.getElementById("findPrev").addEventListener("click", () => stepFind(-1));
+  document.getElementById("findNext").addEventListener("click", () => stepFind(1));
+  document.getElementById("replaceOne").addEventListener("click", replaceOne);
+  document.getElementById("replaceAll").addEventListener("click", replaceAllHits);
+  document.getElementById("findInput").addEventListener("input", () => { clearTimeout(findTimer); findTimer = setTimeout(() => runFind(true), 160); });
+  document.getElementById("findInput").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); clearTimeout(findTimer); if (!findHits.length) runFind(true); else stepFind(e.shiftKey ? -1 : 1); } });
+  document.getElementById("replaceInput").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); replaceOne(); } });
+  writing.addEventListener("input", () => { if (findHi && !findHi.hidden) clearFindMark(); findHits = []; });
+  writing.addEventListener("scroll", () => { if (findHi && !findHi.hidden) findHi.scrollTop = writing.scrollTop; });
+  setInterval(() => { if (!readOnly && state.opened) { saveNow(); snapshotBook(state, "auto"); } }, 15 * 60 * 1000);
   document.querySelectorAll("[data-psize]").forEach(btn => btn.addEventListener("click", () => setSize(btn.dataset.psize)));
   document.querySelectorAll("[data-theme-pref]").forEach(btn => btn.addEventListener("click", () => { themePref = btn.dataset.themePref; try { localStorage.setItem(THEME_KEY, themePref); } catch (e) {} applyTheme(); }));
   document.getElementById("loreBtn").addEventListener("click", () => openLore());
@@ -1810,7 +2467,8 @@
   backdrop.addEventListener("click", closePanels);
   document.addEventListener("keydown", (e) => {
     if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "s") { e.preventDefault(); saveToAccount(false); return; }
-    if (e.key === "Escape") { closePanels(); return; }
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "f" && !e.isComposing) { e.preventDefault(); openFind(); return; }
+    if (e.key === "Escape") { if (!findEls().bar.hidden) closeFind(); closePanels(); return; }
     if (e.altKey && e.key === "ArrowLeft") { e.preventDefault(); turn(-1); }
     if (e.altKey && e.key === "ArrowRight") { e.preventDefault(); turn(1); }
   });
@@ -2028,7 +2686,7 @@
       set("total", total, g.total); set("daily", today, g.daily);
       const st = streakDays();
       stats.textContent = "";
-      [[t("본문"), t("{0}자", nf(total))], [t("현재 판형 기준"), t("약 {0}쪽", nf(Math.ceil(total / spec.chars)))], [t("오늘"), "+" + t("{0}자", nf(today))], [t("연속 달성"), g.daily ? t("{0}일", st) : "-"]].forEach(([k, v]) => { const s2 = el("span"); s2.append(k + " ", el("b", null, v)); stats.appendChild(s2); });
+      [[t("본문"), t("{0}자", nf(total))], [t("현재 판형 기준"), t("약 {0}쪽", nf(Math.ceil(total / spec.chars)))], [t("원고지"), t("약 {0}매", nf(bookWongoji()))], [t("오늘"), "+" + t("{0}자", nf(today))], [t("연속 달성"), g.daily ? t("{0}일", st) : "-"]].forEach(([k, v]) => { const s2 = el("span"); s2.append(k + " ", el("b", null, v)); stats.appendChild(s2); });
     };
     const h2 = el("h3", null, t("마일스톤"));
     const ms = el("div", "lore-ms"); ms.style.cssText = "display:flex;flex-direction:column;gap:8px";
@@ -2086,8 +2744,10 @@
     readOnly = !!on;
     writing.readOnly = readOnly; phTitle.readOnly = readOnly; titleInput.contentEditable = readOnly ? "false" : "true";
     document.body.toggleAttribute("data-ro", readOnly);
-    ["addPartBtn", "addChapterBtn", "addFootBtn", "delHeadBtn", "newLitBtn", "newNonBtn", "deleteBookBtn", "importBtn", "tocPageBtn", "tocPageDel", "tocFillBtn"].forEach(id => { const b = document.getElementById(id); if (b) b.disabled = readOnly; });
+    ["addPartBtn", "addChapterBtn", "addFootBtn", "delHeadBtn", "newLitBtn", "newNonBtn", "deleteBookBtn", "importBtn", "tocPageBtn", "tocPageDel", "tocFillBtn", "replaceOne", "replaceAll"].forEach(id => { const b = document.getElementById(id); if (b) b.disabled = readOnly; });
     if (!readOnly) applyChrome();
+    if (toc.classList.contains("open")) renderToc();
+    if (filePanel.classList.contains("open")) renderVersions();
   }
   window.BB_APP = { setReadOnly, hasUnsaved: () => [...unsaved].some(id => library.books[id]) || removed.size > 0, toast: (m) => toast(m), lang: () => lang };
   function updateSaveStatus() {
@@ -2102,7 +2762,8 @@
   }
   async function saveToAccount(force) {
     saveNow();
-    if (readOnly) { toast(t("체험이 끝나서 새로 저장할 수 없어요. 구독하면 계속 쓸 수 있어요")); return; }
+    if (!readOnly) snapshotBook(state, "save");
+    if (readOnly) { toast(t("체험이 끝나서 새로 저장할 수 없어요. 이용권을 사면 계속 쓸 수 있어요")); return; }
     if (!cloud) { toast(t("계정에 연결되지 않아서 이 브라우저에만 저장돼요")); return; }
     if (saving) return;
     if (![...unsaved].some(id => library.books[id]) && !removed.size) { toast(t("이미 저장돼 있어요")); return; }
@@ -2128,6 +2789,7 @@
     if (!conflict) return;
     const { ids, parsed } = conflict; conflict = null;
     saveNow();
+    ids.forEach(id => { const b = library.books[id]; if (b) snapshotBook(b, "remote"); });
     ids.forEach(id => { const b = library.books[id]; if (b) { cloudSig.set(id, sigOf(b)); b.updated = 1; } unsaved.delete(id); if (id === state.id) state.updated = 1; });
     applyRemote(parsed, false); updateSaveStatus();
     toast(t("다른 기기의 저장본을 불러왔어요"));

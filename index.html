@@ -4,9 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>블랙북 · AI가 아닌 내가 쓰는, 나만의 책</title>
-<meta name="description" content="AI가 대신 쓰지 않는, 나만의 글쓰기 공간. 소설, 에세이, 연구서를 한 권의 책 모양으로 쓰세요. 부·장 구조, 주장집, 목표, 표지 꾸미기까지. 카드 등록 없이 무료로 시작." />
+<meta name="description" content="빈 문서 말고, 빈 책에 쓰세요. 표지·부·장·목차가 처음부터 있는 책 모양 글쓰기 공간. 원고지 매수 표시, 찾기·바꾸기, 이전 버전, 책 모양 PDF까지. AI가 대신 쓰지 않는 나만의 공간" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="블랙북 · 당신의 이야기를 한 권의 책으로" />
+<meta property="og:title" content="블랙북 · 빈 문서 말고, 빈 책에 쓰세요" />
 <meta property="og:description" content="AI가 아닌 내가 쓰는 나만의 책. 책 모양 편집기에서 직접 써 보세요. 카드 등록 없이 무료로 시작." />
 <meta name="theme-color" content="#0f0c09" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315110d'/%3E%3Cpath d='M32 20c-5-4-13-5-21-3v30c8-2 16-1 21 3 5-4 13-5 21-3V17c-8-2-16-1-21 3z' fill='none' stroke='%23e6c56a' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M32 20v30' stroke='%23e6c56a' stroke-width='3'/%3E%3C/svg%3E" />
@@ -62,8 +62,8 @@
   .logo { display: inline-flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 700; font-size: 21px; letter-spacing: 0.08em; color: var(--cream); text-decoration: none; }
   .logo svg { width: 36px; height: 36px; stroke: var(--gold); }
   .logo small { font-family: var(--serif); font-weight: 600; font-size: 15px; letter-spacing: 0.02em; color: var(--on-dark-muted); }
-  .nav-right { display: flex; align-items: center; gap: 40px; }
-  .links { display: flex; align-items: center; gap: 40px; font-size: 15px; font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 32px; }
+  .links { display: flex; align-items: center; gap: 26px; font-size: 15px; font-weight: 500; }
   .links a { text-decoration: none; color: var(--on-dark); opacity: 0.9; }
   .links a:hover { color: var(--gold-title); }
   .nav .actions { display: flex; align-items: center; gap: 12px; }
@@ -81,10 +81,6 @@
   .hero .cta .btn { min-height: 54px; padding: 0 30px; font-size: 17px; }
 
   /* real product screenshots */
-  .laptop { position: relative; width: 100%; max-width: 660px; margin-left: auto; }
-  .laptop .lid { border-radius: 16px 16px 6px 6px; padding: 10px 10px 0; background: linear-gradient(#2a2724, #171513); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 40px 70px rgba(0, 0, 0, 0.6), 0 0 100px rgba(230, 197, 106, 0.1); }
-  .laptop .lid img { display: block; width: 100%; height: auto; border-radius: 8px 8px 0 0; }
-  .laptop .base { height: 14px; margin: 0 -4%; border-radius: 0 0 16px 16px; background: linear-gradient(#3a3631, #1a1815); box-shadow: 0 18px 28px rgba(0, 0, 0, 0.5); }
   .shot { margin: 0; }
   .shot img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid rgba(230, 197, 106, 0.22); box-shadow: 0 30px 56px rgba(0, 0, 0, 0.5); }
   .on-paper-deep .shot img { border-color: var(--line-paper); box-shadow: 0 24px 44px rgba(42, 36, 28, 0.28); }
@@ -140,28 +136,71 @@
   .wnote a { color: var(--gold-title); }
   @media (prefers-reduced-motion: reduce) { .tcover, .tbook[data-open="true"] .tcover { transition: none; } .tpaper textarea.turned { animation: none; } }
 
-  /* feature strip */
-  .strip { background: linear-gradient(to bottom, #0f0c09, #100d0a); border-top: 1px solid rgba(230, 197, 106, 0.14); border-bottom: 1px solid rgba(230, 197, 106, 0.14); }
-  .strip .wrap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .strip .item { display: flex; align-items: center; gap: 12px; padding: 24px 14px; min-width: 0; }
-  .strip .item + .item { border-left: 1px solid rgba(230, 197, 106, 0.16); }
-  .strip svg { flex: 0 0 38px; width: 38px; height: 38px; stroke: var(--gold); fill: none; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
-  .strip b { display: block; font-weight: 600; font-size: 15px; color: var(--on-dark); line-height: 1.4; }
-  .strip span { display: block; font-size: 12.5px; color: var(--on-dark-muted); line-height: 1.5; margin-top: 2px; }
+  /* numbers strip */
+  .nums { background: linear-gradient(to bottom, #0f0c09, #100d0a); border-top: 1px solid rgba(230, 197, 106, 0.14); border-bottom: 1px solid rgba(230, 197, 106, 0.14); }
+  .nums .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .num { padding: 26px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .num + .num { border-left: 1px solid rgba(230, 197, 106, 0.16); }
+  .nums .num[hidden] + .num { border-left: 0; }
+  .num b { font-family: var(--serif); font-weight: 700; font-size: clamp(26px, 3.2vw, 36px); line-height: 1.15; color: var(--gold-title); font-variant-numeric: tabular-nums; }
+  .num span { font-size: 14px; color: var(--on-dark-muted); line-height: 1.5; }
+  .hero .trust { margin-top: 16px; font-size: 14px; color: var(--on-dark-muted); letter-spacing: 0.02em; }
 
-  /* app showcase on a laptop */
-  .showcase-app { background: #0f0c09; padding-block: 72px 96px; }
-  .showcase-app .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 56px; align-items: center; }
-  .showcase-app h2 { color: var(--cream); font-weight: 600; font-size: clamp(26px, 3.6vw, 38px); line-height: 1.5; }
-  .showcase-app .rule { height: 1px; background: linear-gradient(to right, rgba(230, 197, 106, 0.4), transparent); margin: 26px 0; }
-  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
-  .checks li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; font-size: 17px; line-height: 1.6; }
-  .checks li::before { content: "✓"; color: var(--gold); font-weight: 700; }
-  .checks b { font-weight: 600; color: var(--gold-title); }
+  /* comparison */
+  .compare { background: #0f0c09; }
+  .compare .head h2 { color: var(--cream); }
+  .compare .head .eyebrow, #modes .head .eyebrow { color: var(--gold); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 16px; }
+  .cmp th, .cmp td { word-break: keep-all; text-align: left; vertical-align: top; padding: 18px 18px; border-bottom: 1px solid rgba(230, 197, 106, 0.14); line-height: 1.6; }
+  .cmp thead th { font-family: var(--serif); font-size: 18px; color: var(--on-dark-muted); border-bottom-color: rgba(230, 197, 106, 0.3); }
+  .cmp thead th.us { color: var(--gold-title); }
+  .cmp tbody th { font-weight: 600; color: var(--on-dark-muted); width: 18%; font-size: 15px; }
+  .cmp td.us { color: var(--on-dark); background: rgba(230, 197, 106, 0.06); font-weight: 500; }
+  .cmp thead th.us { background: rgba(230, 197, 106, 0.08); border-radius: 14px 14px 0 0; }
+  .cmp td:not(.us) { color: rgba(243, 234, 223, 0.55); }
 
-    position: relative; width: 100%; aspect-ratio: 148 / 210; container-type: inline-size; border-radius: 2px 6px 6px 2px; padding: 7%; display: flex; overflow: hidden;
-    background: radial-gradient(ellipse at 28% 18%, rgba(255, 255, 255, 0.08), transparent 42%), var(--bg);
-    box-shadow: inset 0 0 0 1px rgba(var(--foil-rgb), 0.28), 0 28px 44px rgba(0, 0, 0, 0.55); }
+  /* pdf illustration + small features */
+  .pdfdemo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; aspect-ratio: 16 / 10; align-items: center; padding: 18px; border-radius: var(--r-md); background: #181410; border: 1px solid var(--line-paper); }
+  .pp { position: relative; aspect-ratio: 148 / 210; background: #fffdf9; border-radius: 2px 4px 4px 2px; box-shadow: 0 10px 18px rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; align-items: center; padding: 14% 12%; gap: 7%; }
+  .pp i { display: block; }
+  .pp.cover { background: linear-gradient(165deg, #2c2c2c 0%, #141414 40%, #070707 100%); box-shadow: inset 0 0 0 1px rgba(230, 197, 106, 0.35), 0 10px 18px rgba(0, 0, 0, 0.45); justify-content: center; }
+  .pp.cover::before { content: ""; position: absolute; inset: 7%; border: 1px solid rgba(230, 197, 106, 0.7); }
+  .pp .crest { width: 16%; aspect-ratio: 1; border: 1px solid var(--gold); border-radius: 50%; }
+  .pp .t { width: 56%; height: 9%; background: var(--gold-title); border-radius: 2px; opacity: 0.9; }
+  .pp .en { width: 34%; height: 2.5%; background: var(--gold); opacity: 0.6; }
+  .pp .lab { width: 18%; height: 3%; background: #c09a5c; border-radius: 2px; margin-bottom: 6%; }
+  .pp .r { width: 100%; height: 3%; background: repeating-linear-gradient(to right, rgba(42, 36, 28, 0.55) 0 60%, transparent 60% 63%, rgba(42, 36, 28, 0.2) 63% 92%, rgba(42, 36, 28, 0.55) 92% 100%); border-radius: 1px; }
+  .pp .r.c { width: 90%; align-self: flex-end; opacity: 0.8; }
+  .pp .ttl { width: 54%; height: 5%; background: rgba(42, 36, 28, 0.75); border-radius: 2px; }
+  .pp .rule { width: 18%; height: 1px; background: rgba(120, 84, 40, 0.5); margin: 2% 0 6%; }
+  .pp .l { width: 100%; height: 2.6%; background: rgba(42, 36, 28, 0.35); border-radius: 1px; }
+  .pp .l.s { width: 55%; align-self: flex-start; }
+  .minis { list-style: none; margin: 0; padding: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; aspect-ratio: 16 / 10; align-content: center; border-radius: var(--r-md); background: #181410; border: 1px solid var(--line-paper); }
+  .minis li { border: 1px solid rgba(230, 197, 106, 0.22); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .minis b { color: var(--gold-title); font-weight: 600; font-size: 15px; }
+  .minis span { color: var(--on-dark-muted); font-size: 13px; line-height: 1.5; }
+
+  /* worries */
+  .worries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .worry { background: var(--paper-card); border: 1px solid var(--line-paper); border-radius: var(--r-lg); padding: 26px 28px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .worry h3 { font-size: 19px; line-height: 1.45; }
+  .worry h3::before { content: "“"; color: var(--gold-deep); margin-right: 2px; }
+  .worry h3::after { content: "”"; color: var(--gold-deep); margin-left: 2px; }
+  .worry p { color: var(--on-paper-muted); }
+
+  /* founder */
+  .founder { background: radial-gradient(ellipse 50% 70% at 20% 0%, rgba(255, 214, 150, 0.08), transparent 70%), #0f0c09; }
+  .founder h2 { color: var(--cream); margin-bottom: 30px; }
+  .founder blockquote { margin: 0; max-width: 40em; border-left: 2px solid var(--gold); padding: 4px 0 4px 26px; display: grid; gap: 14px; }
+  .founder blockquote p { font-family: var(--serif); font-size: clamp(18px, 2.2vw, 21px); line-height: 1.85; color: var(--on-dark); }
+  .founder blockquote footer { background: none; border: 0; padding: 0; font-size: 14px; color: var(--gold); letter-spacing: 0.08em; }
+
+  /* calculator band */
+  .calc-band { padding-block: 64px; }
+  .calc { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
+  .calc h2 { font-size: clamp(24px, 3.4vw, 32px); }
+  .calc p { margin-top: 10px; color: var(--on-paper-muted); max-width: 34em; }
 
   /* sections */
   section { padding-block: 104px; }
@@ -176,7 +215,6 @@
   .feature { background: var(--paper-card); border: 1px solid var(--line-paper); border-radius: var(--r-lg); padding: 30px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
   .feature p { color: var(--on-paper-muted); }
 
-  .ficon { width: 44px; height: 44px; stroke: var(--gold-deep); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 
   /* modes */
   .modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
@@ -205,16 +243,6 @@
   .steps b { display: block; font-weight: 600; }
   .steps span { color: var(--on-dark-muted); font-size: 15px; }
 
-  /* faq */
-  .faq { max-width: 780px; display: grid; gap: 12px; }
-  details { background: var(--paper-card); border: 1px solid var(--line-paper); border-radius: var(--r-md); padding: 0 22px; }
-  summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; font-weight: 600; }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; font-size: 22px; color: var(--gold-deep); transition: transform 0.2s; }
-  details[open] summary::after { transform: rotate(45deg); }
-  details p { padding: 0 0 20px; color: var(--on-paper-muted); }
-  summary:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 4px; border-radius: var(--r-sm); }
-
   /* closing + footer */
   .closing { text-align: center; background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255, 214, 150, 0.1), transparent 70%), var(--ink); border-top: 1px solid var(--line-dark); }
   .closing h2 { color: var(--gold-title); }
@@ -229,23 +257,25 @@
     .nav-right { gap: 0; }
     section { padding-block: 72px; }
     .hero { padding-block: 48px 40px; }
-    .hero .wrap, .showcase, .pricing, .showcase-app .wrap { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .hero .wrap, .showcase, .pricing { grid-template-columns: minmax(0, 1fr); gap: 40px; }
     .hero .wrap { min-height: 0; }
     .write-stage { order: 2; }
-    .features, .modes { grid-template-columns: minmax(0, 1fr); }
-    .strip .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .strip .item + .item { border-left: 0; }
-    .strip .item:nth-child(even) { border-left: 1px solid rgba(230, 197, 106, 0.16); }
-    .strip .item { border-top: 1px solid rgba(230, 197, 106, 0.1); }
-    .showcase-app { padding-block: 56px 72px; }
+    .features, .modes, .worries { grid-template-columns: minmax(0, 1fr); }
+    .nums .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .num { border-top: 1px solid rgba(230, 197, 106, 0.1); }
+    .num + .num { border-left: 0; }
+    .cmp th, .cmp td { padding: 14px 10px; font-size: 14.5px; }
+    .cmp tbody th { width: 24%; font-size: 13.5px; }
   }
   @media (max-width: 520px) {
     .price { font-size: 42px; }
     .nav .btn.line-only { display: none; }
     .logo small { display: none; }
-    .strip .wrap { grid-template-columns: minmax(0, 1fr); }
-    .strip .item:nth-child(even) { border-left: 0; }
-    .feature, .mode, .price-card { padding: 24px; }
+    .feature, .mode, .price-card, .worry { padding: 22px; }
+    .cmp th, .cmp td { padding: 12px 8px; font-size: 13.5px; }
+    .cmp thead th { font-size: 15px; }
+    .minis { grid-template-columns: minmax(0, 1fr); aspect-ratio: auto; }
+    .pdfdemo { padding: 12px; gap: 8px; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
@@ -259,7 +289,7 @@
       블랙북 <small>Blackbook</small>
     </a>
     <div class="nav-right">
-      <nav class="links" aria-label="주요 메뉴"><a href="#features">기능 안내</a><a href="#pricing">요금제</a><a href="#faq">가이드</a></nav>
+      <nav class="links" aria-label="주요 메뉴"><a href="#why">왜 블랙북</a><a href="#features">기능</a><a href="#worries">질문</a><a href="#pricing">요금</a><a href="wongoji/">원고지 계산기</a></nav>
       <div class="actions"><a class="btn btn-line line-only" href="app/">로그인</a><a class="btn btn-tan" href="app/">무료로 시작하기</a></div>
     </div>
   </div>
@@ -270,9 +300,10 @@
     <div class="wrap">
       <div>
         <p class="brandline" aria-hidden="true">BLACKBOOK</p>
-        <h1 id="hero-title">당신의 이야기를<br>한 권의 책으로</h1>
-        <p class="lead">AI가 대신 쓰지 않는, 나만의 공간.<br>소설도, 에세이도, 연구서도 — 내 손으로 한 권까지.</p>
+        <h1 id="hero-title">빈 문서 말고,<br>빈 책에 쓰세요.</h1>
+        <p class="lead">표지·부·장·목차가 처음부터 있는 책 모양 글쓰기 공간.<br>AI가 대신 쓰지 않아요. 모든 문장이 당신의 문장이에요.</p>
         <div class="cta"><a class="btn btn-tan" href="app/">지금, 블랙북 시작하기 &nbsp;→</a><button type="button" class="btn btn-line" id="tryBtn">직접 써 보기</button></div>
+        <p class="trust"><span data-show="paid">14일 무료 · 카드 등록 없음 · 자동 결제 없음</span><span data-show="beta">지금은 베타라 무료 · 가입 없이 바로 써 보기</span></p>
       </div>
       <div class="write-stage">
         <div class="tbook" id="tbook" data-open="false">
@@ -302,30 +333,31 @@
     </div>
   </section>
 
-  <div class="strip" role="list">
+  <div class="nums" role="list" aria-label="블랙북을 숫자로">
     <div class="wrap">
-      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 12c-3-2.4-8-3-14-2v20c6-1 11-.4 14 2 3-2.4 8-3 14-2V10c-6-1-11-.4-14 2z"/><path d="M20 12v20"/></svg><div><b>책처럼 쓰는 편집기</b><span>쪽을 넘기며 쓰는 원고</span></div></div>
-      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 8l14 7-14 7-14-7z"/><path d="M6 21l14 7 14-7"/><path d="M6 27l14 7 14-7"/></svg><div><b>체계적인 책 구조</b><span>부 · 장 · 목차로 정리</span></div></div>
-      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M31 6C19 8 10 18 9 33l3-3c1-8 6-14 13-17-5 5-8 10-9 16 6-2 14-8 15-23z"/><path d="M12 30l-4 4"/></svg><div><b>문학 · 비문학 모드</b><span>주장집으로 깊이 있게</span></div></div>
-      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><circle cx="20" cy="20" r="8"/><circle cx="20" cy="20" r="2.5"/><path d="M20 20L33 7"/></svg><div><b>목표와 진행 관리</b><span>하루 목표 · 마일스톤</span></div></div>
-      <div class="item" role="listitem"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="5" width="22" height="30" rx="2"/><path d="M14 10h12M14 30h12"/><path d="M20 16l3 4-3 4-3-4z"/></svg><div><b>아름다운 표지 디자인</b><span>나만의 책으로 완성</span></div></div>
+      <div class="num" role="listitem" data-show="paid"><b>14일</b><span>카드 없이 모든 기능 무료</span></div>
+      <div class="num" role="listitem" data-show="paid"><b>4,900원</b><span>30일 이용권 · 자동 결제 없음</span></div>
+      <div class="num" role="listitem" data-show="beta"><b>0원</b><span>지금은 베타라 무료</span></div>
+      <div class="num" role="listitem" data-show="beta"><b>4가지</b><span>A6 · B6 · A5 · 신국판 판형</span></div>
+      <div class="num" role="listitem"><b>200자</b><span>원고지 매수를 쓰면서 바로 확인</span></div>
+      <div class="num" role="listitem"><b>0문장</b><span>AI가 대신 써 주는 문장</span></div>
     </div>
   </div>
 
-  <section class="showcase-app" aria-labelledby="sa-title">
-    <div class="wrap">
-      <figure class="shot"><img src="img/app-toc.jpg" width="1800" height="1125" alt="블랙북의 목차 패널과 부·장 추가 버튼" loading="lazy"></figure>
-      <div>
-        <h2 id="sa-title">기획부터 집필, 정리까지<br>오직 내가 쓰는 책을 위한 공간</h2>
-        <div class="rule"></div>
-        <ul class="checks">
-          <li><span>책 모양 편집기로 실제 책처럼 집필</span></li>
-          <li><span>세계관 · 아틀라스 · 캐릭터 · 플롯 등 <b>주장집</b> 제공</span></li>
-          <li><span>각주 · 참고자료 · 용어집으로 탄탄한 <b>비문학</b> 집필</span></li>
-          <li><span>목표 설정과 진행률로 꾸준한 집필 습관</span></li>
-          <li><span>AI 자동 작성 없음 — <b>모든 문장이 내 문장</b></span></li>
-        </ul>
-      </div>
+  <section class="compare" id="why" aria-labelledby="cmp-title">
+    <div class="wrap on-ink">
+      <div class="head"><p class="eyebrow">왜 블랙북인가</p><h2 id="cmp-title">같은 글도, 어디에 쓰느냐에 따라 달라져요</h2><p>문서 프로그램은 보고서를 위해 만들어졌어요. 블랙북은 처음부터 책을 위해 만들었어요.</p></div>
+      <table class="cmp">
+        <caption class="sr">블랙북과 일반 문서 프로그램 비교</caption>
+        <thead><tr><th scope="col"><span class="sr">항목</span></th><th scope="col" class="us">블랙북</th><th scope="col">일반 문서 프로그램</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">처음 열면</th><td class="us">표지가 있는 책 한 권. 쪽을 넘기며 써요</td><td>빈 A4 문서</td></tr>
+          <tr><th scope="row">부·장 나누기</th><td class="us">버튼 한 번. 목차에 바로 들어가고, 순서도 ↑ ↓ 로 바꿔요</td><td>제목 서식을 직접 맞춰야 해요</td></tr>
+          <tr><th scope="row">인물·세계관·자료</th><td class="us">설정집·주장집에 책과 함께 보관</td><td>다른 파일이나 앱에 따로</td></tr>
+          <tr><th scope="row">분량 확인</th><td class="us">글자 수·쪽 수·원고지 매수를 쓰면서 바로</td><td>따로 계산하거나 메뉴에서 확인</td></tr>
+          <tr><th scope="row">다 쓰면</th><td class="us">표지·목차가 들어간 책 모양 PDF</td><td>서식을 직접 꾸며야 해요</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -335,20 +367,37 @@
       <div class="features">
         <article class="feature">
           <img class="fshot" src="img/app-toc.jpg" width="1800" height="1125" alt="블랙북의 목차 패널" loading="lazy">
-          <h3>부와 장으로 나누는 책</h3><p>"부 추가", "장 추가" 버튼으로 구조를 만들어요. 목차는 한 번에 채워지고, 장이 시작되는 쪽에는 제목이 붙어요.</p>
+          <h3>부와 장으로 나누는 책</h3><p>"부 추가", "장 추가" 버튼으로 구조를 만들어요. 장이 시작되는 쪽에는 제목이 붙고, 목차에서 ↑ ↓ 로 순서를 바꿔요.</p>
         </article>
         <article class="feature">
-          <img class="fshot" src="img/app-lore.jpg" width="1800" height="1125" alt="블랙북의 주장집 패널" loading="lazy">
-          <h3>주장집으로 모으는 자료</h3><p>문학 모드에는 세계관, 아틀라스, 캐릭터, 플롯. 비문학 모드에는 핵심 주장, 참고자료, 각주, 용어집, 사례가 있어요.</p>
+          <img class="fshot" src="img/app-lore.jpg" width="1800" height="1125" alt="블랙북의 설정집 패널" loading="lazy">
+          <h3>설정집·주장집으로 모으는 자료</h3><p>문학 모드의 설정집에는 세계관, 아틀라스, 캐릭터, 플롯. 비문학 모드의 주장집에는 핵심 주장, 참고자료, 각주, 용어집, 사례가 있어요.</p>
         </article>
         <article class="feature">
           <img class="fshot" src="img/app-goals.jpg" width="1800" height="1125" alt="블랙북의 목표 패널" loading="lazy">
-          <h3>목표가 보이는 집필</h3><p>책 전체 목표와 하루 목표를 정하면 진행률과 연속 달성 일수를 보여 줘요. 마일스톤은 체크리스트로 남겨요.</p>
+          <h3>목표가 보이는 집필</h3><p>책 전체 목표와 하루 목표를 정하면 진행률과 연속 달성 일수를 보여 줘요. 원고지 몇 매인지도 함께 보여요.</p>
         </article>
         <article class="feature">
           <img class="fshot" src="img/app-open.jpg" width="1800" height="1125" alt="블랙북의 저장 버튼이 있는 편집 화면" loading="lazy" style="object-position:50% 0">
           <h3 data-show="paid">내가 누르면 올라가는 저장</h3><p data-show="paid">저장 버튼을 눌러야 계정에 올라가요. 두 기기에서 따로 고쳤다면 어느 쪽을 쓸지 고를 수 있어요.</p>
           <h3 data-show="beta">내가 누르는 저장, 내 손의 원고</h3><p data-show="beta">저장 버튼으로 글을 남기고, 원고와 백업 파일은 언제든 내려받아 보관할 수 있어요.</p>
+        </article>
+        <article class="feature">
+          <div class="pdfdemo" role="img" aria-label="책 모양 PDF의 표지, 목차, 장 첫 쪽을 그린 그림">
+            <div class="pp cover"><i class="crest"></i><i class="t"></i><i class="en"></i></div>
+            <div class="pp"><i class="lab"></i><i class="r p"></i><i class="r c"></i><i class="r c"></i><i class="r p"></i><i class="r c"></i></div>
+            <div class="pp"><i class="lab"></i><i class="ttl"></i><i class="rule"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l s"></i></div>
+          </div>
+          <h3>다 쓰면, 진짜 책으로</h3><p>표지, 목차, 부·장 제목, 쪽 번호가 들어간 책 모양 PDF로 내려받아요. 어절 단위로 줄을 바꾸고 양쪽을 맞춰 책처럼 짜여요.</p>
+        </article>
+        <article class="feature">
+          <ul class="minis">
+            <li><b>찾기·바꾸기</b><span>원고 전체에서 인물 이름 하나도 한 번에 바꿔요</span></li>
+            <li><b>이전 버전</b><span>저장할 때마다 보관돼서, 날린 글도 되돌려요</span></li>
+            <li><b>원고지 매수</b><span>공모전 분량을 쓰면서 바로 확인해요</span></li>
+            <li><b>장 순서 바꾸기</b><span>목차에서 ↑ ↓ 로 장을 옮겨요</span></li>
+          </ul>
+          <h3>고쳐 쓰기 쉽게</h3><p>책은 한 번에 완성되지 않아요. 다시 읽고, 고치고, 옮기는 일을 편하게 만들었어요.</p>
         </article>
       </div>
     </div>
@@ -358,8 +407,8 @@
     <div class="wrap on-ink">
       <div class="head"><p class="eyebrow">두 가지 모드</p><h2 id="m-title">이야기를 쓰든, 주장을 쓰든</h2><p>책마다 모드를 골라요. 바꿔도 반대쪽 자료는 지워지지 않아요.</p></div>
       <div class="modes">
-        <article class="mode"><h3>문학 모드</h3><p>인물과 세계, 줄거리를 한곳에서 챙기며 쓰는 소설·에세이용이에요.</p><ul><li>세계관</li><li>아틀라스</li><li>캐릭터</li><li>플롯</li></ul></article>
-        <article class="mode"><h3>비문학 모드</h3><p>주장과 근거, 출처를 정리하며 쓰는 책이에요. 본문에 각주를 달면 참고문헌까지 원고에 담겨요.</p><ul><li>핵심 주장</li><li>참고자료</li><li>각주</li><li>용어집</li><li>사례</li></ul></article>
+        <article class="mode"><h3>문학 모드 · 설정집</h3><p>인물과 세계, 줄거리를 한곳에서 챙기며 쓰는 소설·에세이용이에요.</p><ul><li>세계관</li><li>아틀라스</li><li>캐릭터</li><li>플롯</li></ul></article>
+        <article class="mode"><h3>비문학 모드 · 주장집</h3><p>주장과 근거, 출처를 정리하며 쓰는 책이에요. 본문에 각주를 달면 참고문헌까지 원고에 담겨요.</p><ul><li>핵심 주장</li><li>참고자료</li><li>각주</li><li>용어집</li><li>사례</li></ul></article>
       </div>
     </div>
   </section>
@@ -390,7 +439,7 @@
       <div class="price-card">
         <span class="trial">14일 무료 체험 후</span>
         <div class="price">4,900원<small>/ 30일</small></div>
-        <ul><li>카카오페이 · 토스페이 결제</li><li>모든 기능 제한 없이</li><li>여러 기기에서 이어쓰기</li><li>원고·백업 파일 내려받기</li><li>표지 꾸미기 포함</li></ul>
+        <ul><li>카카오페이 · 토스페이 결제</li><li>모든 기능 제한 없이</li><li>여러 기기에서 이어쓰기</li><li>책 모양 PDF · 원고 · 백업 내려받기</li><li>표지 꾸미기 포함</li></ul>
         <a class="btn btn-ink" href="app/">무료로 시작하기</a>
         <p class="fine">부가가치세 포함. 환불 조건은 <a href="legal/refund.html">환불 안내</a>를 확인하세요.</p>
       </div>
@@ -402,34 +451,56 @@
         <h2 style="color:var(--gold-title)">지금은 베타예요. 무료로 쓰세요</h2>
         <ol class="steps">
           <li><div><b>카드 등록 없이 바로 시작</b><span>모든 기능을 써 볼 수 있어요.</span></div></li>
-          <li><div><b>원고는 언제든 내 손에</b><span>원고(.txt)와 백업 파일을 내려받아 보관하세요.</span></div></li>
+          <li><div><b>원고는 언제든 내 손에</b><span>책 모양 PDF, 원고, 백업 파일로 언제든 내려받아요.</span></div></li>
           <li><div><b>요금이 생기면 미리 알려요</b><span>정식 요금은 정해지면 이 자리에 먼저 안내해요.</span></div></li>
         </ol>
       </div>
       <div class="price-card">
         <span class="trial">베타 기간</span>
         <div class="price">무료</div>
-        <ul><li>모든 기능 제한 없이</li><li>원고·백업 파일 내려받기</li><li>표지 꾸미기 포함</li></ul>
+        <ul><li>모든 기능 제한 없이</li><li>책 모양 PDF · 원고 · 백업 내려받기</li><li>표지 꾸미기 포함</li></ul>
         <a class="btn btn-ink" href="app/">무료로 시작하기</a>
         <p class="fine">베타 기간에는 기능과 화면이 바뀔 수 있어요.</p>
       </div>
     </div>
   </section>
 
-  <section class="on-paper" id="faq" aria-labelledby="q-title">
+  <section class="on-paper" id="worries" aria-labelledby="q-title">
     <div class="wrap">
-      <div class="head"><p class="eyebrow">자주 묻는 질문</p><h2 id="q-title">궁금한 것</h2></div>
-      <div class="faq">
-        <details><summary>블랙북에 AI 글쓰기 기능이 있나요?</summary><p>없어요. 블랙북은 대신 써 주는 도구가 아니라, 내가 직접 생각하고 쓰는 나만의 공간이에요. 앞으로도 문장을 대신 만들어 주는 기능은 넣지 않을 계획이에요.</p></details>
-        <details data-show="paid"><summary>정말 카드 없이 시작하나요?</summary><p>네. 가입하면 14일 동안 카드 없이 모든 기능을 쓸 수 있어요. 체험이 끝났다고 자동으로 결제되지 않아요.</p></details>
-        <details data-show="paid"><summary>체험이 끝나면 쓴 글은 어떻게 되나요?</summary><p>글은 그대로 남아요. 읽기와 원고 내려받기는 계속 되고, 새로 쓰거나 저장하려면 이용권이 필요해요.</p></details>
-        <details data-show="paid"><summary>휴대폰과 노트북을 같이 쓸 수 있나요?</summary><p>저장 버튼을 누르면 계정에 올라가고, 다른 기기에서 열면 같은 책이 보여요. 두 기기에서 따로 고친 경우에는 어느 쪽을 쓸지 고를 수 있어요.</p></details>
-        <details data-show="paid"><summary>어떻게 결제하나요? 자동으로 결제되나요?</summary><p>앱 위쪽의 "이용권 구매"를 눌러 카카오페이나 토스페이로 결제해요. 30일에 4,900원이고, 자동으로 다시 결제되지 않아요. 기간이 남았을 때 연장하면 남은 기간 뒤로 이어져요.</p></details>
-        <details data-show="paid"><summary>내 글은 안전한가요?</summary><p>내 계정으로 로그인한 나만 내 책을 볼 수 있어요. 운영자가 글을 광고나 학습에 쓰지 않아요. 계정을 삭제하면 글도 함께 지워지고, 언제든 파일로 내려받을 수 있어요.</p></details>
-        <details data-show="beta"><summary>정말 무료인가요?</summary><p>지금은 베타 기간이라 무료예요. 카드 등록도 필요 없어요. 요금이 생기면 미리 안내할게요.</p></details>
-        <details data-show="beta"><summary>휴대폰과 노트북을 같이 쓸 수 있나요?</summary><p>계정에 연결된 상태에서 저장하면 다른 기기에서도 같은 책을 볼 수 있어요. 연결되지 않았을 때는 글이 이 브라우저에만 남으니, 원고 파일을 내려받아 옮겨 주세요.</p></details>
-        <details data-show="beta"><summary>내 글은 어디에 저장되나요?</summary><p>글은 먼저 쓰고 있는 브라우저에 남아요. 계정에 연결된 경우에만 저장 버튼으로 계정에도 올라가요. 중요한 원고는 파일로 내려받아 따로 보관하세요.</p></details>
+      <div class="head"><p class="eyebrow">써 보기 전에</p><h2 id="q-title">이런 걱정, 먼저 답할게요</h2></div>
+      <div class="worries">
+        <article class="worry"><h3>그냥 워드나 한글 쓰면 되잖아요?</h3><p>문서 프로그램은 빈 A4에서 시작해요. 블랙북은 표지가 있는 책 한 권에서 시작하고, 부·장·목차가 버튼 한 번이에요. 위의 비교표를 보세요.</p></article>
+        <article class="worry"><h3>AI가 대신 써 주나요?</h3><p>없어요. 블랙북은 대신 써 주는 도구가 아니라, 내가 직접 생각하고 쓰는 나만의 공간이에요. 앞으로도 문장을 대신 만들어 주는 기능은 넣지 않을 계획이에요.</p></article>
+        <article class="worry" data-show="paid"><h3>쓰다가 글이 날아가면요?</h3><p>쓰는 동안 이 기기에 계속 남고, 저장을 누르면 계정에도 올라가요. 저장할 때마다 이전 버전이 이 기기에 보관돼서 언제든 되돌릴 수 있어요.</p></article>
+        <article class="worry" data-show="beta"><h3>쓰다가 글이 날아가면요?</h3><p>쓰는 동안 이 브라우저에 계속 남고, 저장할 때마다 이전 버전이 보관돼서 되돌릴 수 있어요. 중요한 원고는 백업 파일로도 내려받아 두세요.</p></article>
+        <article class="worry" data-show="paid"><h3>내 글을 AI 학습에 쓰는 거 아니에요?</h3><p>아니요. 쓴 글의 저작권은 쓴 사람에게 있고, 운영자는 글을 광고나 학습에 쓰지 않아요. 내 계정으로 로그인한 나만 내 책을 볼 수 있고, 계정을 지우면 글도 함께 지워져요.</p></article>
+        <article class="worry" data-show="beta"><h3>내 글을 AI 학습에 쓰는 거 아니에요?</h3><p>아니요. 쓴 글의 저작권은 쓴 사람에게 있어요. 지금 베타에서는 글이 이 브라우저 밖으로 나가지 않아요.</p></article>
+        <article class="worry" data-show="paid"><h3>카드가 없어요.</h3><p>14일은 카드 없이 무료예요. 그 뒤에는 카카오페이나 토스페이로 30일씩 결제해요. 체험이 끝나도 쓴 글은 그대로 남아 읽고 내려받을 수 있어요.</p></article>
+        <article class="worry" data-show="paid"><h3>자동으로 돈이 빠져나가지 않아요?</h3><p>자동 결제가 없어요. 30일이 끝나면 추가 요금 없이 끝나요. 남은 기간이 있을 때 연장하면 그 뒤로 이어져요.</p></article>
+        <article class="worry" data-show="beta"><h3>정말 무료예요?</h3><p>지금은 베타라 무료이고, 카드도 가입도 필요 없어요. 요금이 생기면 미리 안내할게요.</p></article>
+        <article class="worry"><h3>다 쓰면 어떻게 꺼내요?</h3><p>표지·목차가 들어간 책 모양 PDF, 다른 프로그램에 붙여 넣을 원고 텍스트, 블랙북으로 다시 불러올 백업 파일로 언제든 내려받아요.</p></article>
+        <article class="worry" data-show="paid"><h3>폰에서도 돼요?</h3><p>폰과 노트북 모두 돼요. 저장을 누르면 다른 기기에서 이어 쓰고, 두 기기에서 따로 고쳤다면 어느 쪽을 쓸지 고를 수 있어요.</p></article>
+        <article class="worry" data-show="beta"><h3>폰에서도 돼요?</h3><p>폰과 노트북 모두 열려요. 지금은 글이 그 기기의 브라우저에만 남으니, 기기를 옮길 땐 백업 파일로 옮겨 주세요.</p></article>
       </div>
+    </div>
+  </section>
+
+  <section class="founder" aria-labelledby="fd-title">
+    <div class="wrap">
+      <p class="eyebrow">만든 이유</p>
+      <h2 id="fd-title">책을 쓰고 싶었는데,<br>쓸 곳이 없었어요</h2>
+      <blockquote>
+        <p>책에는 표지가 있고, 부가 있고, 장이 있잖아요. 그런데 워드나 한글에는 그런 게 없어서 글 쓰는 맛이 안 났어요. 보고서를 쓰는 기분이었어요.</p>
+        <p>그래서 빈 책에 그냥 글을 쓰는 느낌을 주는 공간을 직접 만들었어요. 글쓰기 앱들이 너무 비싸서, 학생도 부담 없는 값으로 정했어요.</p>
+        <footer>블랙북을 만든 사람</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="on-paper-deep calc-band" aria-labelledby="cb-title">
+    <div class="wrap calc">
+      <div><p class="eyebrow">무료 도구</p><h2 id="cb-title">원고지 몇 매인지 궁금할 때</h2><p>공모전·과제 분량, 붙여 넣기만 하면 200자 원고지 매수를 바로 알려 줘요. 가입도 저장도 없어요.</p></div>
+      <a class="btn btn-ink" href="wongoji/">원고지 매수 계산기 열기 &nbsp;→</a>
     </div>
   </section>
 
@@ -446,7 +517,7 @@
   <div class="wrap">
     <div class="row">
       <a class="logo" href="#top">블랙북</a>
-      <div class="legal"><a href="legal/terms.html" data-show="paid">이용약관</a><a href="legal/privacy.html" data-show="paid">개인정보처리방침</a><a href="legal/refund.html" data-show="paid">환불 안내</a><a href="#" id="contactLink">문의하기</a></div>
+      <div class="legal"><a href="legal/terms.html" data-show="paid">이용약관</a><a href="legal/privacy.html" data-show="paid">개인정보처리방침</a><a href="legal/refund.html" data-show="paid">환불 안내</a><a href="wongoji/">원고지 매수 계산기</a><a href="#" id="contactLink">문의하기</a></div>
     </div>
     <p class="biz" id="bizLine"></p>
   </div>
@@ -470,6 +541,11 @@
     biz.textContent = parts.join(" · ");
     if (!parts.length) biz.hidden = true;
   }
+  // 검색 결과·AI 답변이 읽을 수 있게, 지금 보이는 "걱정" 카드로 FAQ 구조화 데이터를 만들어요(모드별로 다른 답이 섞이지 않게).
+  var qa = [].slice.call(document.querySelectorAll(".worry")).filter(function (w) { return !w.hidden; }).map(function (w) {
+    return { "@type": "Question", name: w.querySelector("h3").textContent.trim(), acceptedAnswer: { "@type": "Answer", text: w.querySelector("p").textContent.trim() } };
+  });
+  if (qa.length) { var ld = document.createElement("script"); ld.type = "application/ld+json"; ld.textContent = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: qa }); document.head.appendChild(ld); }
 })();
 </script>
 <script>
