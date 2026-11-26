@@ -1463,11 +1463,13 @@
     renderSpecTable();
     updateCount();
   }
+  // 폰·태블릿에서는 글 칸에 커서가 가면 화면 키보드가 올라와 책을 가려요. 쪽을 넘기거나 설정을 바꿀 때 저절로 커서를 옮기지 않고, 글 칸을 직접 눌렀을 때만 키보드가 나와요.
+  function canAutoFocus() { try { return !window.matchMedia("(pointer: coarse)").matches; } catch (e) { return true; } }
   function showPage(focus) {
     clearFindMark();
     writing.value = state.pages[state.index] || "";
     applyChrome();
-    if (focus && state.opened) writing.focus({ preventScroll: true });
+    if (focus && state.opened && canAutoFocus()) writing.focus({ preventScroll: true });
     if (toc.classList.contains("open")) renderToc();
     if (shelf.classList.contains("open")) renderShelf();
   }
@@ -1671,7 +1673,7 @@
     state.index = Math.max(0, Math.min(state.index - tc, state.pages.length - 1));
     showPage(state.opened); scheduleSave(); toast(t("목차 쪽을 없앴어요"));
   }
-  function jump(i) { if (animating || i === state.index || i < 0 || i >= state.pages.length) { closeToc(); return; } state.pages[state.index] = writing.value; state.index = i; state.hintSeen = true; showPage(true); scheduleSave(); closeToc(); if (state.opened) writing.focus({ preventScroll: true }); }
+  function jump(i) { if (animating || i === state.index || i < 0 || i >= state.pages.length) { closeToc(); return; } state.pages[state.index] = writing.value; state.index = i; state.hintSeen = true; showPage(true); scheduleSave(); closeToc(); if (state.opened && canAutoFocus()) writing.focus({ preventScroll: true }); }
   function playCover(opening) {
     const cover = document.getElementById("cover");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
@@ -2515,7 +2517,8 @@
     if (state.notes.foot.length >= ENTRY_CAP) { toast(t("항목이 너무 많아요")); return; }
     const n = nextFootNo(), entry = { id: uid(), title: "", f: {}, updated: Date.now(), no: n };
     const pos = writing.selectionEnd == null ? writing.value.length : writing.selectionEnd;
-    writing.focus({ preventScroll: true }); writing.setSelectionRange(pos, pos);
+    if (canAutoFocus()) writing.focus({ preventScroll: true });
+    writing.setSelectionRange(pos, pos);
     writing.setRangeText("[^" + n + "]", pos, pos, "end");
     writing.dispatchEvent(new Event("input", { bubbles: true }));
     state.notes.foot.push(entry); loreSel.foot = entry.id; loreMode = "edit";
