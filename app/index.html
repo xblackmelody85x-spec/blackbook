@@ -1513,7 +1513,8 @@
   }
   function allPanels() { return [toc, shelf, loreEl, goalsEl, coverPanel, settingsPanel, filePanel].filter(Boolean); }
   function anyPanel() { return allPanels().some(pn => pn.classList.contains("open")); }
-  function setPanel(el2, open) { el2.classList.toggle("open", open); el2.setAttribute("aria-hidden", String(!open)); }
+  // 패널이 열려 있는 동안 뒤의 책 화면은 누르거나 초점을 받을 수 없게 해요(글 칸이 패널 조작 중에 키보드를 불러내지 않도록).
+  function setPanel(el2, open) { el2.classList.toggle("open", open); el2.setAttribute("aria-hidden", String(!open)); const app = document.querySelector(".app"); if (app) app.inert = anyPanel(); }
   function hidePanel(pn) { if (pn === shelf) document.getElementById("deleteConfirm").hidden = true; setPanel(pn, false); }
   function openPanel(pn, render) { saveNow(); allPanels().forEach(x => { if (x !== pn) hidePanel(x); }); if (render) render(); setPanel(pn, true); backdrop.classList.add("show"); }
   function closePanel(pn, keep) { hidePanel(pn); if (!keep && !anyPanel()) backdrop.classList.remove("show"); }
@@ -1670,7 +1671,7 @@
     state.index = Math.max(0, Math.min(state.index - tc, state.pages.length - 1));
     showPage(state.opened); scheduleSave(); toast(t("목차 쪽을 없앴어요"));
   }
-  function jump(i) { if (animating || i === state.index || i < 0 || i >= state.pages.length) { closeToc(); return; } state.pages[state.index] = writing.value; state.index = i; state.hintSeen = true; showPage(true); scheduleSave(); closeToc(); }
+  function jump(i) { if (animating || i === state.index || i < 0 || i >= state.pages.length) { closeToc(); return; } state.pages[state.index] = writing.value; state.index = i; state.hintSeen = true; showPage(true); scheduleSave(); closeToc(); if (state.opened) writing.focus({ preventScroll: true }); }
   function playCover(opening) {
     const cover = document.getElementById("cover");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
