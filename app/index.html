@@ -1185,11 +1185,11 @@
   function focusInStream(start, offset) {
     let left = Math.max(0, offset), i = start;
     while (i < state.pages.length) {
-      if (left <= state.pages[i].length) { state.index = i; showPage(true); writing.setSelectionRange(left, left); return; }
+      if (left <= state.pages[i].length) { state.index = i; showPage(true); caretTo(writing, left); return; }
       left -= state.pages[i].length; i++;
     }
     state.index = Math.max(0, state.pages.length - 1); showPage(true);
-    writing.setSelectionRange(writing.value.length, writing.value.length);
+    caretTo(writing, writing.value.length);
   }
   function reflowAll(cursorAbs) {
     const cursor = cursorAbs == null ? absCursor() : cursorAbs;
@@ -1464,6 +1464,8 @@
     updateCount();
   }
   // 폰·태블릿에서는 글 칸에 커서가 가면 화면 키보드가 올라와 책을 가려요. 쪽을 넘기거나 설정을 바꿀 때 저절로 커서를 옮기지 않고, 글 칸을 직접 눌렀을 때만 키보드가 나와요.
+  // 커서·선택 위치는 그 칸이 지금 입력 중일 때만 옮겨요. 안드로이드는 초점 없는 칸의 선택을 바꾸면 키보드 입력이 그 칸으로 넘어가는 일이 있어요(찾기 막대에 친 글이 본문에 들어가던 문제).
+  function caretTo(elx, a, b) { if (document.activeElement !== elx) return; try { elx.setSelectionRange(a, b == null ? a : b); } catch (e) {} }
   function canAutoFocus() { try { return !window.matchMedia("(pointer: coarse)").matches; } catch (e) { return true; } }
   function showPage(focus) {
     clearFindMark();
@@ -1922,7 +1924,7 @@
     if (!state.opened) { if (!animating) openBook().then(() => showHit()); return; }
     if (h.page !== state.index) { state.pages[state.index] = writing.value; state.index = h.page; showPage(false); }
     clearFindMark();
-    if (h.head) { phTitle.classList.add("find-on"); try { phTitle.setSelectionRange(h.off, h.off + q.length); } catch (e) {} }
+    if (h.head) phTitle.classList.add("find-on");
     else paintFindMark(h.off, Math.min(q.length, writing.value.length - h.off));
   }
   function paintFindMark(start, len) {
@@ -1939,7 +1941,7 @@
     // 휴대폰처럼 글이 칸보다 길어 스크롤되면 찾은 곳이 보이게 내려요
     if (writing.scrollHeight > writing.clientHeight + 2) writing.scrollTop = Math.max(0, mk.offsetTop - writing.clientHeight / 3);
     findHi.scrollTop = writing.scrollTop;
-    try { writing.setSelectionRange(start, start + len); } catch (e) {}
+    caretTo(writing, start, start + len);
   }
   function clearFindMark() {
     if (findHi) { findHi.hidden = true; findHi.textContent = ""; }
@@ -2393,6 +2395,9 @@
   document.getElementById("replaceInput").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); replaceOne(); } });
   writing.addEventListener("input", () => { if (findHi && !findHi.hidden) clearFindMark(); findHits = []; });
   writing.addEventListener("scroll", () => { if (findHi && !findHi.hidden) findHi.scrollTop = writing.scrollTop; });
+  // 찾기 막대에서 입력하는 동안 본문 글 칸은 잠가 둬요. 키보드 입력이 엉뚱하게 본문으로 들어가도 원고가 바뀌지 않게.
+  document.getElementById("findBar").addEventListener("focusin", () => { writing.readOnly = true; });
+  document.getElementById("findBar").addEventListener("focusout", (e) => { if (!e.relatedTarget || !document.getElementById("findBar").contains(e.relatedTarget)) writing.readOnly = readOnly; });
   setInterval(() => { if (!readOnly && state.opened) { saveNow(); snapshotBook(state, "auto"); } }, 15 * 60 * 1000);
   document.querySelectorAll("[data-psize]").forEach(btn => btn.addEventListener("click", () => setSize(btn.dataset.psize)));
   document.querySelectorAll("[data-theme-pref]").forEach(btn => btn.addEventListener("click", () => { themePref = btn.dataset.themePref; try { localStorage.setItem(THEME_KEY, themePref); } catch (e) {} applyTheme(); }));
@@ -2938,7 +2943,7 @@
       const sel = writing.selectionStart || 0;
       state = library.books[curId];
       showPage(false);
-      try { const c = Math.min(sel, writing.value.length); writing.setSelectionRange(c, c); } catch (e) {}
+      caretTo(writing, Math.min(sel, writing.value.length));
       if (state.opened) reflowSoon();
     }
     saveNow();
